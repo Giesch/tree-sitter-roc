@@ -1,0 +1,11 @@
+===
+ident_module
+===
+
+a=variable
+a=Module.variable
+a=Module.SubModule.variable
+a=Module.SubModule.variable.field
+a=Module.SubModule.variable.function()
+
+---

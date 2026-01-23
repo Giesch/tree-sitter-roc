@@ -1,7 +1,7 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 const PREC = {
-  FIELD_ACCESS_START: 0,
+  FIELD_ACCESS_START: 1,
   WHERE_IMPLEMENTS: 1,
   PATTERN: 0,
   TAG: 1,
@@ -74,13 +74,15 @@ module.exports = grammar({
     // [$.field_access_expr, $.long_identifier],
     [$.list_pattern, $.list_expr],
     [$._module_elem, $.value_declaration],
+    [$._module_elem, $.var_declaration],
     [$._module_elem, $._expr_inner],
     [$._more_match_branches],
     [$.operator_identifier, $.suffix_operator_identifier],
     [$.record_type],
     [$.tags_type],
     [$.body_expression, $.record_expr],
-    [$.body_expression, $._atom_expr]
+    [$.body_expression, $._atom_expr],
+    [$.long_identifier, $.long_upper_identifier]
   ],
   words: ($) => /\s+/,
   word: ($) => $._lower_identifier,
@@ -115,6 +117,7 @@ module.exports = grammar({
         $.nominal_type_def,
         $.expect,
         $.value_declaration,
+        $.var_declaration,
         $.expr_body,
         $.import_expr,
         $.import_file_expr,
@@ -135,13 +138,33 @@ module.exports = grammar({
         ),
       ),
 
+    // Mutable variable binding: `var $name = expr`
+    // Supports optional type annotations for parity with value declarations.
+    var_declaration: ($) =>
+      prec(
+        0,
+        seq(
+          optional(seq($.annotation_type_def)),
+          "var",
+          field("name", $.identifier),
+          "=",
+          field("body", alias($.expr_body_terminal, $.expr_body)),
+        ),
+      ),
+
     /**
       Expressions that can appear anywhere in the body of an expression.
       */
     body_expression: ($) =>
       seq(
         "{",
-        repeat(choice($.value_declaration, $._expr_inner, $.body_expression)),
+        repeat(
+          choice(
+            $.value_declaration,
+            $.var_declaration,
+            $._expr_inner,
+          ),
+        ),
         "}"
       ),
 
@@ -182,8 +205,10 @@ module.exports = grammar({
       choice(
         $.bin_op_expr,
         $._atom_expr,
+        $.for_expr,
         $.if_expr,
         $.match_expr,
+        $.early_return_expr
         // $.chain_expr,
       ),
 
@@ -209,8 +234,22 @@ module.exports = grammar({
     else_if: ($) =>
       prec.left(seq("else", "if", field("guard", $._expr_inner), $.then)),
 
+    // `for` loop expression: `for pattern in iterable { ... }`
+    for_expr: ($) =>
+      seq(
+        "for",
+        field("pattern", $._pattern),
+        "in",
+        field("iterable", $._expr_inner),
+        field("body", $.expr_body),
+      ),
+    early_return_expr: ($) =>
+      seq(
+        "return",
+        field("body", $.expr_body),
+      ),
+
     variable_expr: ($) => alias($.long_identifier, $.variable_expr),
-    long_identifier: ($) => seq(repeat(seq($.module, ".")), $.identifier),
     parenthesized_expr: ($) => seq("(", field("expression", $.expr_body), ")"),
     if_expr: ($) =>
       seq(
@@ -235,8 +274,9 @@ module.exports = grammar({
     // ),
     field_access_expr: ($) =>
       prec.right(
+        PREC.FIELD_ACCESS_START,
         seq(
-          field("target", $._field_access_start),
+          field("target", $._atom_expr),
           repeat1(prec(1, seq(".", $.identifier))),
         )),
 
@@ -255,7 +295,7 @@ module.exports = grammar({
         seq(
           field("caller", $._atom_expr),
           seq(
-            "(",
+            imm("("),
             field("args", sep_tail($._expr_inner, ",")),
             ")",
           )
@@ -323,7 +363,7 @@ module.exports = grammar({
     tag_expr: ($) =>
       prec.left(
         PREC.TAG,
-        seq(choice($.opaque_tag, $.tag), repeat(seq("(", $._atom_expr, ")"))),
+        seq($.tag, repeat(seq("(", $._atom_expr, ")"))),
       ),
     anon_fun_expr: ($) =>
       prec.left(
@@ -398,7 +438,7 @@ module.exports = grammar({
     tag_pattern: ($) =>
       prec.left(
         PREC.TAG,
-        seq(choice($.opaque_tag, $.tag), repeat($._atomic_pattern)),
+        seq($.tag, repeat($._atomic_pattern)),
       ),
     tuple_pattern: ($) =>
       prec.right(
@@ -684,7 +724,7 @@ module.exports = grammar({
 
 
     tags_type: ($) =>
-      seq("[", optional($._tags_only), optional(","), optional(seq("..", $.type_variable)), optional(","), "]"),
+      seq("[", optional($._tags_only), optional(","), optional(seq("..", optional($.type_variable))), optional(","), "]"),
 
     _tags_only: ($) => seq(sep1(choice($.tag_type), ",")),
 
@@ -711,7 +751,7 @@ module.exports = grammar({
 
     //we need a n optional \n to stop this eating the value that follows it
     _apply_type_args: ($) =>
-      field("type_args", prec.right(seq("(", prec.right(PREC.ARGS, sep1_tail($.apply_type_arg, ",")), ")"))),
+      field("type_args", prec.right(seq(imm("("), prec.right(PREC.ARGS, sep1_tail($.apply_type_arg, ",")), ")"))),
 
     apply_type_arg: ($) => prec.left($._type_annotation_no_fun),
 
@@ -795,7 +835,7 @@ module.exports = grammar({
         ),
       ),
 
-    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))|(\\u\([0-9A-F]{4}\))/),
+    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))|(\\u\([0-9A-F]{1,8}\))/),
     interpolation_char: ($) =>
       seq(
         imm("${"), //This is the new interpolation syntax
@@ -830,25 +870,33 @@ module.exports = grammar({
 
     float: ($) => token(seq(/[0-9]+(\.)?[0-9]*(e-?[0-9]*)?((f32)|(f64))?/)),
     _hex_int: ($) => token(/0[x][0-9abcdefABCDEF]*/),
+    _ocal_int: ($) => token(/0[o][0-7]*/),
     _binary_int: ($) => token(seq(/0[b]/, /[01][01_]*/)),
-    xint: ($) => choice($._binary_int, $._hex_int),
+    xint: ($) => choice($._binary_int, $._hex_int, $._ocal_int),
 
 
     //PRIMATIVES
-    back_arrow: ($) => "<-",
+    back_arrow: ($) => "<-"0A,
     arrow: ($) => "->",
     fat_arrow: ($) => "=>",
     field_name: ($) => alias($.identifier, $.field_name),
+
+    long_identifier: ($) => seq(repeat(seq($.module, ".")), $.identifier),
+    long_upper_identifier: ($) =>
+      prec.right(
+        seq(repeat(seq($.module, ".")), alias($._upper_identifier, $.identifier,))),
     ident: ($) => choice($.identifier, $.module),
 
     identifier: ($) =>
-      prec(100, seq(optional("_"), $._lower_identifier, optional(imm("!")))),
+      prec(
+        100,
+        seq(optional("$"), optional("_"), $._lower_identifier, optional(imm("!"))),
+      ),
 
     _lower_identifier: ($) => /[\p{Ll}][\p{XID_Continue}]*/,
 
     _upper_identifier: ($) => /[\p{Lu}][\p{XID_Continue}]*/,
-    tag: ($) => alias($._upper_identifier, $.tag),
-    opaque_tag: ($) => /@[A-Z][0-9a-zA-Z_]*/,
+    tag: ($) => alias($.long_upper_identifier, $.tag),
     module: ($) => alias($._upper_identifier, $.module),
     backslash: ($) => "\\",
 
@@ -881,7 +929,7 @@ module.exports = grammar({
         "and",
         // "++",
         // "<|",
-        "|>",
+        "->",
         // "<<",
         // ">>",
         // "::",

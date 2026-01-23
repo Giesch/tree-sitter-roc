@@ -6,22 +6,156 @@ a=
 	b else if c
 	d
 	else d
-b=|x|
-	if a
-	b
-	x
 ---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (if_expr
+        (variable_expr
+          (identifier))
+        (then
+          (expr_body
+            (variable_expr
+              (identifier))))
+        (else_if
+          (variable_expr
+            (identifier))
+          (then
+            (expr_body
+              (variable_expr
+                (identifier)))))
+        (else
+          (expr_body
+            (variable_expr
+              (identifier))))))))
+
 ===
 structures_for
 ===
-var $sum = 0
-for num in num_list {
-	$sum = $sum + num
+a={
+	var $sum = 0
+	for num in num_list {
+		$sum = $sum + num
+	}
+	for num in num_list
+		thing!(num)
 }
 
 ---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (body_expression
+        (var_declaration
+          (identifier)
+          (expr_body
+            (const
+              (int))))
+        (for_expr
+          (identifier_pattern
+            (identifier))
+          (variable_expr
+            (identifier))
+          (expr_body
+            (body_expression
+              (value_declaration
+                (decl_left
+                  (identifier_pattern
+                    (identifier)))
+                (expr_body
+                  (bin_op_expr
+                    (variable_expr
+                      (identifier))
+                    (operator)
+                    (variable_expr
+                      (identifier))))))))
+        (for_expr
+          (identifier_pattern
+            (identifier))
+          (variable_expr
+            (identifier))
+          (expr_body
+            (function_call_pnc_expr
+              (variable_expr
+                (identifier))
+              (variable_expr
+                (identifier)))))))))
+
 ===
 structures_todo
 ===
 implement_me_later = |_str| ...
 ---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (todo_expr))))))
+
+===
+structures_early_return
+===
+early_return = |arg| {
+	first =
+		if !arg {
+			return 99
+		} else {
+			"continue"
+		}
+    other
+}
+---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (if_expr
+                  (prefixed_expression
+                    (variable_expr
+                      (identifier)))
+                  (then
+                    (expr_body
+                      (body_expression
+                        (early_return_expr
+                          (expr_body
+                            (const
+                              (int)))))))
+                  (else
+                    (expr_body
+                      (body_expression
+                        (const
+                          (string))))))))
+            (variable_expr
+              (identifier))))))))
+
+

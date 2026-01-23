@@ -1,0 +1,39 @@
+===
+tags_usage
+===
+b=Test
+a=Bool.True
+a= boolean_operators(Bool.True, Bool.False)
+
+---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (tag_expr
+        (tag))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (tag_expr
+        (tag
+          (module)))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (function_call_pnc_expr
+        (variable_expr
+          (identifier))
+        (tag_expr
+          (tag
+            (module)))
+        (tag_expr
+          (tag
+            (module)))))))

@@ -37,15 +37,16 @@ x =
       (identifier_pattern
         (identifier)))
     (expr_body
-      (value_declaration
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier)))))
+      (body_expression
+        (value_declaration
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 value_decl_typed
@@ -85,39 +86,41 @@ x =
       (identifier_pattern
         (identifier)))
     (expr_body
-      (value_declaration
-        (annotation_type_def
-          (annotation_pre_colon
-            (identifier))
-          (apply_type
-            (concrete_type)))
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier))))
+      (body_expression
+        (value_declaration
+          (annotation_type_def
+            (annotation_pre_colon
+              (identifier))
+            (apply_type
+              (concrete_type)))
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier)))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
     (expr_body
-      (value_declaration
-        (annotation_type_def
-          (annotation_pre_colon
-            (identifier))
-          (apply_type
-            (concrete_type)))
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier)))))
+      (body_expression
+        (value_declaration
+          (annotation_type_def
+            (annotation_pre_colon
+              (identifier))
+            (apply_type
+              (concrete_type)))
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 value_record
@@ -139,7 +142,7 @@ value_record
           (identifier_pattern
             (identifier)))))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (variable_expr
           (identifier))
         (variable_expr
@@ -219,3 +222,46 @@ _a= a
     (expr_body
       (variable_expr
         (identifier)))))
+
+================================================================================
+value_var
+================================================================================
+a:Str
+var a= ""
+--------------------------------------------------------------------------------
+
+(file
+  (var_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (apply_type
+        (concrete_type)))
+    (identifier)
+    (expr_body
+      (const
+        (string)))))
+
+================================================================================
+value_var_$
+================================================================================
+$a:Str
+var $a= ""
+--------------------------------------------------------------------------------
+
+(file
+  (var_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (apply_type
+        (concrete_type)))
+    (identifier)
+    (expr_body
+      (const
+        (string)))))
+====
+value_tuple
+====
+tup = ("Roc", 1)
+----

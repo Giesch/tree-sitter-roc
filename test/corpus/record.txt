@@ -140,6 +140,7 @@ main= match a {
         (identifier)))
     (expr_body
       (match_expr
+        (match)
         (variable_expr
           (identifier))
         (match_branch
@@ -154,5 +155,7 @@ main= match a {
                 (field_name))
               (record_field_pattern
                 (field_name))))
-          (variable_expr
-            (identifier)))))))
+          (fat_arrow)
+          (expr_body
+            (variable_expr
+              (identifier))))))))
