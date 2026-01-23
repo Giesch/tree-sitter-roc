@@ -3,8 +3,10 @@ type_annotation
 ================================================================================
 main : Try({}, [])
 main =
+{
 	task = a
 	task
+    }
 --------------------------------------------------------------------------------
 
 (file
@@ -14,24 +16,24 @@ main =
         (identifier))
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (apply_type_arg
-            (record_type))
-          (apply_type_arg
-            (tags_type)))))
+        (apply_type_arg
+          (record_type))
+        (apply_type_arg
+          (tags_type))))
     (decl_left
       (identifier_pattern
         (identifier)))
     (expr_body
-      (value_declaration
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (variable_expr
-            (identifier))))
-      (variable_expr
-        (identifier)))))
+      (body_expression
+        (value_declaration
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          (expr_body
+            (variable_expr
+              (identifier))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 internal
@@ -140,7 +142,7 @@ Wrapper := Str.{}
 ================================================================================
 types_functions
 ================================================================================
-A: R->B a
+A: R->B(a)
   ->Int
   ->String
 
@@ -156,9 +158,8 @@ A: R->B a
       (arrow)
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (apply_type_arg
-            (bound_variable))))
+        (apply_type_arg
+          (bound_variable)))
       (arrow)
       (apply_type
         (concrete_type))
@@ -213,9 +214,9 @@ a:
   (
     a->
     b->
-    S a
+    S(a)
   )->
-  SS b->
+  SS(b)->
   b
 --------------------------------------------------------------------------------
 
@@ -234,22 +235,20 @@ a:
           (arrow)
           (apply_type
             (concrete_type)
-            (apply_type_args
-              (apply_type_arg
-                (bound_variable))))))
+            (apply_type_arg
+              (bound_variable)))))
       (arrow)
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (apply_type_arg
-            (bound_variable))))
+        (apply_type_arg
+          (bound_variable)))
       (arrow)
       (bound_variable))))
 
 ================================================================================
 types_tuples
 ================================================================================
-a:(Num a,Num b)
+a:(Num(a),Num(b))
 --------------------------------------------------------------------------------
 
 (file
@@ -420,3 +419,23 @@ write! : Str, Str => Try({}, Str)
             (record_type)
             (apply_type
               (concrete_type))))))))
+
+===
+types_tag_union_extensible
+===
+# Type alias for an extensible tag union. You can use a type var (`others`) like so:
+Letters(others) : [A, B, ..others]
+---
+
+(file
+  (line_comment)
+  (alias_type_def
+    (apply_type
+      (concrete_type)
+      (apply_type_arg
+        (bound_variable)))
+    (tags_type
+      (tag_type)
+      (tag_type)
+      (type_variable
+        (bound_variable)))))

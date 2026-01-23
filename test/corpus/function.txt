@@ -2,12 +2,14 @@
 function_call
 ================================================================================
 a=
-  b 1
-a=
-  b=someFunc
-  b
-    1
+  b(1)
+a={
+  b=someFunc(
+  b,
+    1,
     a
+    )
+    }
 c= 10
 --------------------------------------------------------------------------------
 
@@ -17,7 +19,7 @@ c= 10
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (variable_expr
           (identifier))
         (const
@@ -27,20 +29,21 @@ c= 10
       (identifier_pattern
         (identifier)))
     (expr_body
-      (value_declaration
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (variable_expr
-            (identifier))))
-      (function_call_expr
-        (variable_expr
-          (identifier))
-        (const
-          (int))
-        (variable_expr
-          (identifier)))))
+      (body_expression
+        (value_declaration
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          (expr_body
+            (function_call_pnc_expr
+              (variable_expr
+                (identifier))
+              (variable_expr
+                (identifier))
+              (const
+                (int))
+              (variable_expr
+                (identifier))))))))
   (value_declaration
     (decl_left
       (identifier_pattern
@@ -52,7 +55,7 @@ c= 10
 ================================================================================
 function_nested
 ================================================================================
-a= f a b (a b)
+a= f( a, b(a, b))
 --------------------------------------------------------------------------------
 
 (file
@@ -61,20 +64,18 @@ a= f a b (a b)
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (variable_expr
           (identifier))
         (variable_expr
           (identifier))
-        (variable_expr
-          (identifier))
-        (parenthesized_expr
-          (expr_body
-            (function_call_expr
-              (variable_expr
-                (identifier))
-              (variable_expr
-                (identifier)))))))))
+        (function_call_pnc_expr
+          (variable_expr
+            (identifier))
+          (variable_expr
+            (identifier))
+          (variable_expr
+            (identifier)))))))
 
 ================================================================================
 function_with_match
@@ -162,7 +163,7 @@ a=| _ | a
 ================================================================================
 function_field
 ================================================================================
-a= a.bb a a
+a= a.bb( a, a)
 
 --------------------------------------------------------------------------------
 
@@ -172,7 +173,7 @@ a= a.bb a a
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (field_access_expr
           (variable_expr
             (identifier))
@@ -185,8 +186,7 @@ a= a.bb a a
 ================================================================================
 function_same_line
 ================================================================================
-a= html
-  "<div>"
+a= html("<div>")
 
 --------------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ a= html
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (variable_expr
           (identifier))
         (const
@@ -205,10 +205,7 @@ a= html
 ================================================================================
 function_same_line_long
 ================================================================================
-myHtml=html
-  """
-  <div>
-  """
+myHtml=html(hi)
 
 --------------------------------------------------------------------------------
 
@@ -218,11 +215,11 @@ myHtml=html
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (function_call_pnc_expr
         (variable_expr
           (identifier))
-        (const
-          (multiline_string))))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 function_block_body
@@ -245,16 +242,18 @@ add = |a, b| {
             (identifier))
           (identifier_pattern
             (identifier)))
-        (block_body
-          (block_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
-            (bin_op_expr
-              (variable_expr
-                (identifier))
-              (operator)
-              (variable_expr
-                (identifier))))
-          (variable_expr
-            (identifier)))))))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (variable_expr
+                    (identifier)))))
+            (variable_expr
+              (identifier))))))))

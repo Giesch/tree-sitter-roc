@@ -220,6 +220,18 @@
         "required": false,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
             "type": "apply_type_arg",
             "named": true
           }
@@ -465,14 +477,6 @@
         },
         {
           "type": "if_expr",
-          "named": true
-        },
-        {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
           "named": true
         },
         {
@@ -982,14 +986,6 @@
             "named": true
           },
           {
-            "type": "import_expr",
-            "named": true
-          },
-          {
-            "type": "import_file_expr",
-            "named": true
-          },
-          {
             "type": "list_expr",
             "named": true
           },
@@ -1150,14 +1146,6 @@
         },
         {
           "type": "if_expr",
-          "named": true
-        },
-        {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
           "named": true
         },
         {
@@ -1373,14 +1361,6 @@
           },
           {
             "type": "if_expr",
-            "named": true
-          },
-          {
-            "type": "import_expr",
-            "named": true
-          },
-          {
-            "type": "import_file_expr",
             "named": true
           },
           {
@@ -1699,14 +1679,6 @@
           "named": true
         },
         {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
-          "named": true
-        },
-        {
           "type": "list_expr",
           "named": true
         },
@@ -1795,14 +1767,6 @@
           },
           {
             "type": "if_expr",
-            "named": true
-          },
-          {
-            "type": "import_expr",
-            "named": true
-          },
-          {
-            "type": "import_file_expr",
             "named": true
           },
           {
@@ -2063,14 +2027,6 @@
           "named": true
         },
         {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
-          "named": true
-        },
-        {
           "type": "list_expr",
           "named": true
         },
@@ -2159,14 +2115,6 @@
           },
           {
             "type": "if_expr",
-            "named": true
-          },
-          {
-            "type": "import_expr",
-            "named": true
-          },
-          {
-            "type": "import_file_expr",
             "named": true
           },
           {
@@ -2421,14 +2369,6 @@
         },
         {
           "type": "if_expr",
-          "named": true
-        },
-        {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
           "named": true
         },
         {
@@ -3309,14 +3249,6 @@
           "named": true
         },
         {
-          "type": "import_expr",
-          "named": true
-        },
-        {
-          "type": "import_file_expr",
-          "named": true
-        },
-        {
           "type": "list_expr",
           "named": true
         },
@@ -3661,6 +3593,18 @@
         "required": false,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
             "type": "apply_type_arg",
             "named": true
           }
@@ -3737,14 +3681,6 @@
           },
           {
             "type": "if_expr",
-            "named": true
-          },
-          {
-            "type": "import_expr",
-            "named": true
-          },
-          {
-            "type": "import_file_expr",
             "named": true
           },
           {
