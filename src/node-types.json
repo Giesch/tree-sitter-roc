@@ -42,6 +42,10 @@
           {
             "type": "tuple_type",
             "named": true
+          },
+          {
+            "type": "where_implements",
+            "named": true
           }
         ]
       }
@@ -114,6 +118,10 @@
         },
         {
           "type": "tuple_type",
+          "named": true
+        },
+        {
+          "type": "where_implements",
           "named": true
         }
       ]
@@ -354,10 +362,6 @@
             "named": true
           },
           {
-            "type": "record_update_expr",
-            "named": true
-          },
-          {
             "type": "suffix_op_expr",
             "named": true
           },
@@ -443,10 +447,6 @@
         },
         {
           "type": "record_expr",
-          "named": true
-        },
-        {
-          "type": "record_update_expr",
           "named": true
         },
         {
@@ -952,10 +952,6 @@
             "named": true
           },
           {
-            "type": "record_update_expr",
-            "named": true
-          },
-          {
             "type": "suffix_op_expr",
             "named": true
           },
@@ -1115,10 +1111,6 @@
           "named": true
         },
         {
-          "type": "record_update_expr",
-          "named": true
-        },
-        {
           "type": "suffix_op_expr",
           "named": true
         },
@@ -1168,10 +1160,6 @@
           },
           {
             "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "record_update_expr",
             "named": true
           },
           {
@@ -1330,10 +1318,6 @@
             "named": true
           },
           {
-            "type": "record_update_expr",
-            "named": true
-          },
-          {
             "type": "suffix_op_expr",
             "named": true
           },
@@ -1401,10 +1385,6 @@
           },
           {
             "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "record_update_expr",
             "named": true
           },
           {
@@ -1629,10 +1609,6 @@
           "named": true
         },
         {
-          "type": "record_update_expr",
-          "named": true
-        },
-        {
           "type": "suffix_op_expr",
           "named": true
         },
@@ -1717,10 +1693,6 @@
           },
           {
             "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "record_update_expr",
             "named": true
           },
           {
@@ -1903,10 +1875,6 @@
           "named": true
         },
         {
-          "type": "record_update_expr",
-          "named": true
-        },
-        {
           "type": "suffix_op_expr",
           "named": true
         },
@@ -1991,10 +1959,6 @@
           },
           {
             "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "record_update_expr",
             "named": true
           },
           {
@@ -2256,10 +2220,6 @@
           "named": true
         },
         {
-          "type": "record_update_expr",
-          "named": true
-        },
-        {
           "type": "suffix_op_expr",
           "named": true
         },
@@ -2429,6 +2389,10 @@
         {
           "type": "tuple_type",
           "named": true
+        },
+        {
+          "type": "where_implements",
+          "named": true
         }
       ]
     }
@@ -2479,6 +2443,10 @@
         },
         {
           "type": "tuple_type",
+          "named": true
+        },
+        {
+          "type": "where_implements",
           "named": true
         }
       ]
@@ -2714,6 +2682,10 @@
         },
         {
           "type": "tuple_type",
+          "named": true
+        },
+        {
+          "type": "where_implements",
           "named": true
         }
       ]
@@ -3028,6 +3000,10 @@
         {
           "type": "tuple_type",
           "named": true
+        },
+        {
+          "type": "where_implements",
+          "named": true
         }
       ]
     }
@@ -3065,25 +3041,6 @@
         },
         {
           "type": "type_variable",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "record_update_expr",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "record_field_expr",
           "named": true
         }
       ]
@@ -3203,10 +3160,6 @@
           "named": true
         },
         {
-          "type": "record_update_expr",
-          "named": true
-        },
-        {
           "type": "suffix_op_expr",
           "named": true
         },
@@ -3237,6 +3190,59 @@
       "multiple": false,
       "required": false,
       "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "static_dispatch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "static_dispatch_target",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "static_dispatch_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "static_dispatch",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "static_dispatch_target",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bound_variable",
+          "named": true
+        },
         {
           "type": "identifier",
           "named": true
@@ -3313,10 +3319,6 @@
           },
           {
             "type": "record_expr",
-            "named": true
-          },
-          {
-            "type": "record_update_expr",
             "named": true
           },
           {
@@ -3406,10 +3408,6 @@
         },
         {
           "type": "record_expr",
-          "named": true
-        },
-        {
-          "type": "record_update_expr",
           "named": true
         },
         {
@@ -3638,10 +3636,6 @@
             "named": true
           },
           {
-            "type": "record_update_expr",
-            "named": true
-          },
-          {
             "type": "suffix_op_expr",
             "named": true
           },
@@ -3766,6 +3760,10 @@
         },
         {
           "type": "tuple_type",
+          "named": true
+        },
+        {
+          "type": "where_implements",
           "named": true
         }
       ]
@@ -3923,6 +3921,10 @@
         {
           "type": "tuple_type",
           "named": true
+        },
+        {
+          "type": "where_implements",
+          "named": true
         }
       ]
     }
@@ -3971,6 +3973,74 @@
         },
         {
           "type": "module",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "where_implements",
+    "named": true,
+    "fields": {
+      "implements": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "static_dispatch_list",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "apply_type",
+            "named": true
+          },
+          {
+            "type": "bound_variable",
+            "named": true
+          },
+          {
+            "type": "function_type",
+            "named": true
+          },
+          {
+            "type": "inferred",
+            "named": true
+          },
+          {
+            "type": "parenthesized_type",
+            "named": true
+          },
+          {
+            "type": "record_type",
+            "named": true
+          },
+          {
+            "type": "tags_type",
+            "named": true
+          },
+          {
+            "type": "tuple_type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "where",
           "named": true
         }
       ]
@@ -4143,11 +4213,11 @@
   },
   {
     "type": "as",
-    "named": false
+    "named": true
   },
   {
     "type": "as",
-    "named": true
+    "named": false
   },
   {
     "type": "bound_variable",
@@ -4241,11 +4311,11 @@
   },
   {
     "type": "module",
-    "named": true
+    "named": false
   },
   {
     "type": "module",
-    "named": false
+    "named": true
   },
   {
     "type": "natural",
@@ -4288,10 +4358,6 @@
     "named": true
   },
   {
-    "type": "then",
-    "named": false
-  },
-  {
     "type": "to",
     "named": true
   },
@@ -4309,6 +4375,10 @@
   },
   {
     "type": "uint_dot",
+    "named": true
+  },
+  {
+    "type": "where",
     "named": true
   },
   {

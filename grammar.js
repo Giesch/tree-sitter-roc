@@ -80,7 +80,6 @@ module.exports = grammar({
     [$.record_type],
     [$.tags_type],
     [$.body_expression, $.record_expr],
-    [$._expr_body_actual, $._atom_expr],
     [$.body_expression, $._atom_expr]
   ],
   words: ($) => /\s+/,
@@ -146,13 +145,13 @@ module.exports = grammar({
         "}"
       ),
 
-    _expr_body_actual: ($) =>
 
-      choice($.body_expression, $._expr_inner),
+
+
     expr_body: ($) =>
-      $._expr_body_actual,
+      $._expr_inner,
     expr_body_terminal: ($) =>
-      $._expr_body_actual,
+      $._expr_inner,
 
 
     /**
@@ -165,7 +164,6 @@ module.exports = grammar({
           $.const,
           $.record_expr,
           $.record_builder_expr,
-          $.record_update_expr,
           $.variable_expr,
           $.parenthesized_expr,
           $.body_expression,
@@ -207,7 +205,7 @@ module.exports = grammar({
     dbg_expr: ($) => seq("dbg", alias($.expr_body_terminal, $.expr_body)),
     else: ($) => seq("else", $.expr_body),
     // biome-ignore lint/suspicious/noThenProperty: <explanation>
-    then: ($) => seq("then", field("then", $.expr_body)),
+    then: ($) => seq(field("then", $.expr_body)),
     else_if: ($) =>
       prec.left(seq("else", "if", field("guard", $._expr_inner), $.then)),
 
@@ -232,7 +230,6 @@ module.exports = grammar({
         $.parenthesized_expr,
         $.record_expr,
         $.record_builder_expr,
-        $.record_update_expr,
         $.function_call_pnc_expr,
       ),
     // ),
@@ -344,13 +341,16 @@ module.exports = grammar({
     record_builder_expr: ($) =>
       seq("{", $.identifier, "<-", sep1_tail($.record_field_expr, ","), "}"),
 
-    record_update_expr: ($) =>
-      seq("{", $.identifier, "&", sep1_tail($.record_field_expr, ","), "}"),
+    //ELI:not needed because of spread
+    // record_update_expr: ($) =>
+    //   seq("{", $.spread_expr, sep1_tail($.record_field_expr, ","), "}"),
 
     _list_body: ($) =>
       sep1_tail(field("exprList", choice($._expr_inner, $.spread_expr)), ","),
     list_expr: ($) => seq("[", optional($._list_body), "]"),
+
     spread_expr: ($) => seq("..", $._expr_inner),
+
     _tuple_body: ($) =>
       seq(
         field("expr", $._expr_inner),
@@ -607,9 +607,7 @@ module.exports = grammar({
     _type_annotation: ($) =>
       prec.left(
         choice(
-          seq(
-            choice($._type_annotation_no_fun, $.function_type),
-          ),
+          $.where_implements,
           choice($._type_annotation_no_fun, $.function_type),
         ),
       ),
@@ -656,14 +654,33 @@ module.exports = grammar({
       ),
 
 
-    // where_implements: ($) =>
-    //   prec.right(
-    //     seq(
-    //       $._type_annotation_no_fun,
-    //       alias("where", $.where),
-    //       sep1($._implements_body, ","),
-    //     ),
-    //   ),
+    // Static dispatch constraints: `Type where [a.to_str : a -> b]`.
+    // This attaches a constraint list to any type annotation or function type.
+    where_implements: ($) =>
+      prec.right(
+        seq(
+          field("type", choice($._type_annotation_no_fun, $.function_type)),
+          alias("where", $.where),
+          field("implements", $.static_dispatch_list),
+        ),
+      ),
+
+    static_dispatch_list: ($) =>
+      seq("[", sep_tail($.static_dispatch, ","), "]"),
+
+    static_dispatch: ($) =>
+      seq(
+        $.static_dispatch_target,
+        ":",
+        $.function_type,
+      ),
+
+    static_dispatch_target: ($) =>
+      seq(
+        $.bound_variable,
+        ".",
+        $.identifier,
+      ),
 
 
     tags_type: ($) =>
@@ -778,7 +795,7 @@ module.exports = grammar({
         ),
       ),
 
-    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))|(\\u([0-9A-F]{4}))/),
+    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))|(\\u\([0-9A-F]{4}\))/),
     interpolation_char: ($) =>
       seq(
         imm("${"), //This is the new interpolation syntax

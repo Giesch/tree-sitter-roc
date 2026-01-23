@@ -414,6 +414,140 @@ write! : Str, Str => Try({}, Str)
             (concrete_type)))))))
 
 ===
+types_static_basic
+===
+helper1 : a -> b where [a.to_str : a -> b]
+helper1 = |x| x.to_str()
+---
+
+(file
+  (value_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (where_implements
+        (function_type
+          (bound_variable)
+          (arrow)
+          (bound_variable))
+        (where)
+        (static_dispatch_list
+          (static_dispatch
+            (static_dispatch_target
+              (bound_variable)
+              (identifier))
+            (function_type
+              (bound_variable)
+              (arrow)
+              (bound_variable))))))
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (function_call_pnc_expr
+            (field_access_expr
+              (variable_expr
+                (identifier))
+              (identifier))))))))
+
+===
+types_static_complex
+===
+modify : a, (Str -> Str) -> a where [a.transform : a, (Str -> Str) -> a]
+modify = |x, fn| x.transform(fn)
+
+multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
+
+---
+
+(file
+  (value_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (where_implements
+        (function_type
+          (bound_variable)
+          (parenthesized_type
+            (function_type
+              (apply_type
+                (concrete_type))
+              (arrow)
+              (apply_type
+                (concrete_type))))
+          (arrow)
+          (bound_variable))
+        (where)
+        (static_dispatch_list
+          (static_dispatch
+            (static_dispatch_target
+              (bound_variable)
+              (identifier))
+            (function_type
+              (bound_variable)
+              (parenthesized_type
+                (function_type
+                  (apply_type
+                    (concrete_type))
+                  (arrow)
+                  (apply_type
+                    (concrete_type))))
+              (arrow)
+              (bound_variable))))))
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier))
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (function_call_pnc_expr
+            (field_access_expr
+              (variable_expr
+                (identifier))
+              (identifier))
+            (variable_expr
+              (identifier)))))))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
+    (where_implements
+      (function_type
+        (bound_variable)
+        (arrow)
+        (bound_variable))
+      (where)
+      (static_dispatch_list
+        (static_dispatch
+          (static_dispatch_target
+            (bound_variable)
+            (identifier))
+          (function_type
+            (bound_variable)
+            (bound_variable)
+            (arrow)
+            (bound_variable)))
+        (static_dispatch
+          (static_dispatch_target
+            (bound_variable)
+            (identifier))
+          (function_type
+            (bound_variable)
+            (apply_type
+              (concrete_type))
+            (arrow)
+            (bound_variable)))))))
+
+===
 types_tag_union_extensible
 ===
 # Type alias for an extensible tag union. You can use a type var (`others`) like so:
@@ -432,6 +566,7 @@ Letters(others) : [A, B, ..others]
       (tag_type)
       (type_variable
         (bound_variable)))))
+
 ===
 types_static_basic
 ===
@@ -439,9 +574,128 @@ helper1 : a -> b where [a.to_str : a -> b]
 helper1 = |x| x.to_str()
 ---
 
+(file
+  (value_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (where_implements
+        (function_type
+          (bound_variable)
+          (arrow)
+          (bound_variable))
+        (where)
+        (static_dispatch_list
+          (static_dispatch
+            (static_dispatch_target
+              (bound_variable)
+              (identifier))
+            (function_type
+              (bound_variable)
+              (arrow)
+              (bound_variable))))))
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (function_call_pnc_expr
+            (field_access_expr
+              (variable_expr
+                (identifier))
+              (identifier))))))))
+
 ===
 types_static_complex
 ===
 modify : a, (Str -> Str) -> a where [a.transform : a, (Str -> Str) -> a]
 modify = |x, fn| x.transform(fn)
+
+multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
 ---
+
+(file
+  (value_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (where_implements
+        (function_type
+          (bound_variable)
+          (parenthesized_type
+            (function_type
+              (apply_type
+                (concrete_type))
+              (arrow)
+              (apply_type
+                (concrete_type))))
+          (arrow)
+          (bound_variable))
+        (where)
+        (static_dispatch_list
+          (static_dispatch
+            (static_dispatch_target
+              (bound_variable)
+              (identifier))
+            (function_type
+              (bound_variable)
+              (parenthesized_type
+                (function_type
+                  (apply_type
+                    (concrete_type))
+                  (arrow)
+                  (apply_type
+                    (concrete_type))))
+              (arrow)
+              (bound_variable))))))
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier))
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (function_call_pnc_expr
+            (field_access_expr
+              (variable_expr
+                (identifier))
+              (identifier))
+            (variable_expr
+              (identifier)))))))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
+    (where_implements
+      (function_type
+        (bound_variable)
+        (arrow)
+        (bound_variable))
+      (where)
+      (static_dispatch_list
+        (static_dispatch
+          (static_dispatch_target
+            (bound_variable)
+            (identifier))
+          (function_type
+            (bound_variable)
+            (bound_variable)
+            (arrow)
+            (bound_variable)))
+        (static_dispatch
+          (static_dispatch_target
+            (bound_variable)
+            (identifier))
+          (function_type
+            (bound_variable)
+            (apply_type
+              (concrete_type))
+            (arrow)
+            (bound_variable)))))))

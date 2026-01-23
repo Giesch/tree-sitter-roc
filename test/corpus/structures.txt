@@ -1,0 +1,27 @@
+===
+structures_if
+===
+a=
+	if a
+	b else if c
+	d
+	else d
+b=|x|
+	if a
+	b
+	x
+---
+===
+structures_for
+===
+var $sum = 0
+for num in num_list {
+	$sum = $sum + num
+}
+
+---
+===
+structures_todo
+===
+implement_me_later = |_str| ...
+---

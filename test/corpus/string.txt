@@ -65,7 +65,6 @@ main =
       (const
         (multiline_string
           (escape_char)
-          (escape_char)
           (escape_char))))))
 
 ================================================================================
@@ -176,9 +175,7 @@ msg =
         (identifier)))
     (expr_body
       (const
-        (line_string
-          (line_string_segment)
-          (line_string_segment))))))
+        (multiline_string)))))
 
 ================================================================================
 line_string_with_interpolation
@@ -195,16 +192,14 @@ msg =
         (identifier)))
     (expr_body
       (const
-        (line_string
-          (line_string_segment
-            (interpolation_char
+        (multiline_string
+          (interpolation_char
+            (variable_expr
+              (identifier)))
+          (interpolation_char
+            (bin_op_expr
               (variable_expr
-                (identifier))))
-          (line_string_segment
-            (interpolation_char
-              (bin_op_expr
-                (variable_expr
-                  (identifier))
-                (operator)
-                (const
-                  (int))))))))))
+                (identifier))
+              (operator)
+              (const
+                (int)))))))))

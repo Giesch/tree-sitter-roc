@@ -56,9 +56,10 @@ a =
             (if_expr
               (variable_expr
                 (identifier))
-              (expr_body
-                (variable_expr
-                  (identifier)))
+              (then
+                (expr_body
+                  (variable_expr
+                    (identifier))))
               (else
                 (expr_body
                   (variable_expr
@@ -67,9 +68,9 @@ a =
 ================================================================================
 record_update
 ================================================================================
-main={ a & b: c }
+main={ ..a ,b: c }
 main=
-  a {a & a: B a, c:a b (c+d)}
+  a {..a, a: B(a), c:a( b, (c+d))}
 --------------------------------------------------------------------------------
 
 (file
@@ -78,8 +79,10 @@ main=
       (identifier_pattern
         (identifier)))
     (expr_body
-      (record_update_expr
-        (identifier)
+      (record_expr
+        (spread_expr
+          (variable_expr
+            (identifier)))
         (record_field_expr
           (field_name)
           (expr_body
@@ -90,34 +93,37 @@ main=
       (identifier_pattern
         (identifier)))
     (expr_body
-      (function_call_expr
+      (variable_expr
+        (identifier))))
+  (expr_body
+    (record_expr
+      (spread_expr
         (variable_expr
-          (identifier))
-        (record_update_expr
-          (identifier)
-          (record_field_expr
-            (field_name)
-            (expr_body
-              (tag_expr
-                (tag)
-                (variable_expr
-                  (identifier)))))
-          (record_field_expr
-            (field_name)
-            (expr_body
-              (function_call_expr
-                (variable_expr
-                  (identifier))
-                (variable_expr
-                  (identifier))
-                (parenthesized_expr
-                  (expr_body
-                    (bin_op_expr
-                      (variable_expr
-                        (identifier))
-                      (operator)
-                      (variable_expr
-                        (identifier)))))))))))))
+          (identifier)))
+      (record_field_expr
+        (field_name)
+        (expr_body
+          (function_call_pnc_expr
+            (tag_expr
+              (tag))
+            (variable_expr
+              (identifier)))))
+      (record_field_expr
+        (field_name)
+        (expr_body
+          (function_call_pnc_expr
+            (variable_expr
+              (identifier))
+            (variable_expr
+              (identifier))
+            (parenthesized_expr
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (variable_expr
+                    (identifier)))))))))))
 
 ================================================================================
 record pattern
@@ -150,4 +156,3 @@ main= match a {
                 (field_name))))
           (variable_expr
             (identifier)))))))
-
