@@ -9,7 +9,7 @@ x = a
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier)))))
 
@@ -29,20 +29,20 @@ x =
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (body_expression
         (value_declaration
           (decl_left
             (identifier_pattern
               (identifier)))
-          (expr_body
+          body: (expr_body
             (const
               (int))))
         (variable_expr
@@ -78,14 +78,14 @@ x =
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (body_expression
         (value_declaration
           (annotation_type_def
@@ -96,7 +96,7 @@ x =
           (decl_left
             (identifier_pattern
               (identifier)))
-          (expr_body
+          body: (expr_body
             (const
               (int))))
         (variable_expr
@@ -105,7 +105,7 @@ x =
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (body_expression
         (value_declaration
           (annotation_type_def
@@ -116,7 +116,7 @@ x =
           (decl_left
             (identifier_pattern
               (identifier)))
-          (expr_body
+          body: (expr_body
             (const
               (int))))
         (variable_expr
@@ -141,11 +141,11 @@ value_record
           (field_name)
           (identifier_pattern
             (identifier)))))
-    (expr_body
+    body: (expr_body
       (function_call_pnc_expr
-        (variable_expr
+        caller: (variable_expr
           (identifier))
-        (variable_expr
+        args: (variable_expr
           (identifier))))))
 
 ================================================================================
@@ -162,7 +162,7 @@ a= a.field.b.c.d
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (module)
         (identifier))))
@@ -170,35 +170,37 @@ a= a.field.b.c.d
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (field_access_expr
-        (record_expr
-          (record_field_expr
-            (field_name)))
+        target: (body_expression
+          (variable_expr
+            (identifier)))
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (field_access_expr
-        (parenthesized_expr
-          (expr_body
-            (record_expr
-              (record_field_expr
-                (field_name)))))
+        target: (parenthesized_expr
+          expression: (body_expression
+            (variable_expr
+              (identifier))))
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (field_access_expr
-        (variable_expr
+        target: (field_access_expr
+          target: (field_access_expr
+            target: (field_access_expr
+              target: (variable_expr
+                (identifier))
+              (identifier))
+            (identifier))
           (identifier))
-        (identifier)
-        (identifier)
-        (identifier)
         (identifier)))))
 
 ================================================================================
@@ -212,14 +214,14 @@ _a= a
   (value_declaration
     (decl_left
       (wildcard_pattern))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier)))))
 
@@ -237,8 +239,8 @@ var a= ""
         (identifier))
       (apply_type
         (concrete_type)))
-    (identifier)
-    (expr_body
+    name: (identifier)
+    body: (expr_body
       (const
         (string)))))
 
@@ -256,12 +258,25 @@ var $a= ""
         (identifier))
       (apply_type
         (concrete_type)))
-    (identifier)
-    (expr_body
+    name: (identifier)
+    body: (expr_body
       (const
         (string)))))
+
 ====
 value_tuple
 ====
 tup = ("Roc", 1)
 ----
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
+      (tuple_expr
+        expr: (const
+          (string))
+        expr: (const
+          (int))))))

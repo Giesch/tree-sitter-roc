@@ -15,27 +15,27 @@ a=
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (bin_op_expr
-        (variable_expr
+        part: (variable_expr
           (identifier))
-        (operator)
-        (function_call_pnc_expr
-          (variable_expr
+        part: (operator)
+        part: (function_call_pnc_expr
+          caller: (variable_expr
             (identifier)))
-        (operator)
-        (function_call_pnc_expr
-          (variable_expr
+        part: (operator)
+        part: (function_call_pnc_expr
+          caller: (variable_expr
             (identifier))))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (bin_op_expr
-        (variable_expr
+        part: (variable_expr
           (identifier))
-        (operator)
-        (function_call_pnc_expr
-          (variable_expr
+        part: (operator)
+        part: (function_call_pnc_expr
+          caller: (variable_expr
             (identifier)))))))

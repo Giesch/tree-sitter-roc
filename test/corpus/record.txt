@@ -9,18 +9,16 @@ a = {b:10,c:inp,d}
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (record_expr
         (record_field_expr
           (field_name)
-          (expr_body
-            (const
-              (int))))
+          (const
+            (int)))
         (record_field_expr
           (field_name)
-          (expr_body
-            (variable_expr
-              (identifier))))
+          (variable_expr
+            (identifier)))
         (record_field_expr
           (field_name))))))
 
@@ -43,27 +41,23 @@ a =
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (record_expr
         (record_field_expr
           (field_name)
-          (expr_body
-            (const
-              (int))))
+          (const
+            (int)))
         (record_field_expr
           (field_name)
-          (expr_body
-            (if_expr
+          (if_expr
+            guard: (variable_expr
+              (identifier))
+            (then
+              then: (variable_expr
+                (identifier)))
+            (else
               (variable_expr
-                (identifier))
-              (then
-                (expr_body
-                  (variable_expr
-                    (identifier))))
-              (else
-                (expr_body
-                  (variable_expr
-                    (identifier)))))))))))
+                (identifier)))))))))
 
 ================================================================================
 record_update
@@ -78,52 +72,48 @@ main=
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (record_expr
         (spread_expr
           (variable_expr
             (identifier)))
         (record_field_expr
           (field_name)
-          (expr_body
-            (variable_expr
-              (identifier)))))))
+          (variable_expr
+            (identifier))))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
-  (expr_body
-    (record_expr
-      (spread_expr
-        (variable_expr
-          (identifier)))
-      (record_field_expr
-        (field_name)
-        (expr_body
-          (function_call_pnc_expr
-            (tag_expr
-              (tag))
-            (variable_expr
-              (identifier)))))
-      (record_field_expr
-        (field_name)
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
+  (record_expr
+    (spread_expr
+      (variable_expr
+        (identifier)))
+    (record_field_expr
+      (field_name)
+      (function_call_pnc_expr
+        caller: (tag_expr
+          (tag
+            (identifier)))
+        args: (variable_expr
+          (identifier))))
+    (record_field_expr
+      (field_name)
+      (function_call_pnc_expr
+        caller: (variable_expr
+          (identifier))
+        args: (variable_expr
+          (identifier))
+        args: (parenthesized_expr
+          expression: (bin_op_expr
+            part: (variable_expr
               (identifier))
-            (variable_expr
-              (identifier))
-            (parenthesized_expr
-              (expr_body
-                (bin_op_expr
-                  (variable_expr
-                    (identifier))
-                  (operator)
-                  (variable_expr
-                    (identifier)))))))))))
+            part: (operator)
+            part: (variable_expr
+              (identifier))))))))
 
 ================================================================================
 record pattern
@@ -138,24 +128,25 @@ main= match a {
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (match_expr
         (match)
         (variable_expr
           (identifier))
         (match_branch
-          (tag_pattern
-            (tag)
+          pattern: (tag_pattern
+            (tag
+              (identifier))
             (record_pattern
               (record_field_pattern
                 (field_name)
                 (tag_pattern
-                  (tag)))
+                  (tag
+                    (identifier))))
               (record_field_pattern
                 (field_name))
               (record_field_pattern
                 (field_name))))
           (fat_arrow)
-          (expr_body
-            (variable_expr
-              (identifier))))))))
+          expr: (variable_expr
+            (identifier)))))))

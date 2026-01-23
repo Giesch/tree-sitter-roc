@@ -12,28 +12,32 @@ a= boolean_operators(Bool.True, Bool.False)
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (tag_expr
-        (tag))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
+    body: (expr_body
       (tag_expr
         (tag
-          (module)))))
+          (identifier)))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
+      (tag_expr
+        (tag
+          (module)
+          (identifier)))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
       (function_call_pnc_expr
-        (variable_expr
+        caller: (variable_expr
           (identifier))
-        (tag_expr
+        args: (tag_expr
           (tag
-            (module)))
-        (tag_expr
+            (module)
+            (identifier)))
+        args: (tag_expr
           (tag
-            (module)))))))
+            (module)
+            (identifier)))))))

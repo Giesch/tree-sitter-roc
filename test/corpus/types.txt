@@ -16,20 +16,20 @@ main =
         (identifier))
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (record_type))
-        (apply_type_arg
+        type_args: (apply_type_arg
           (tags_type))))
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (body_expression
         (value_declaration
           (decl_left
             (identifier_pattern
               (identifier)))
-          (expr_body
+          body: (expr_body
             (variable_expr
               (identifier))))
         (variable_expr
@@ -51,21 +51,22 @@ main=
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (value_declaration
-        (annotation_type_def
-          (annotation_pre_colon
-            (identifier))
-          (apply_type
-            (concrete_type)))
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier)))))
+    body: (expr_body
+      (body_expression
+        (value_declaration
+          (annotation_type_def
+            (annotation_pre_colon
+              (identifier))
+            (apply_type
+              (concrete_type)))
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          body: (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 types_nominal_simple
@@ -105,7 +106,7 @@ Color := [Red, Green, Blue].{
           (annotation_pre_colon
             (identifier))
           (function_type
-            (apply_type
+            param: (apply_type
               (concrete_type))
             (arrow)
             (apply_type
@@ -113,14 +114,13 @@ Color := [Red, Green, Blue].{
         (decl_left
           (identifier_pattern
             (identifier)))
-        (expr_body
+        body: (expr_body
           (anon_fun_expr
             (argument_patterns
               (identifier_pattern
                 (identifier)))
-            (expr_body
-              (variable_expr
-                (identifier)))))))))
+            (variable_expr
+              (identifier))))))))
 
 ================================================================================
 types_nominal_empty_methods
@@ -140,8 +140,8 @@ Wrapper := Str.{}
 ================================================================================
 types_functions
 ================================================================================
-A: R->B(a)
-  ->Int
+A: R,(B(a)
+  ->Int)
   ->String
 
 --------------------------------------------------------------------------------
@@ -150,17 +150,18 @@ A: R->B(a)
   (alias_type_def
     (apply_type
       (concrete_type))
-    (function_type
-      (apply_type
+    body: (function_type
+      param: (apply_type
         (concrete_type))
-      (arrow)
-      (apply_type
-        (concrete_type)
-        (apply_type_arg
-          (bound_variable)))
-      (arrow)
-      (apply_type
-        (concrete_type))
+      param: (parenthesized_type
+        (function_type
+          param: (apply_type
+            (concrete_type)
+            type_args: (apply_type_arg
+              (bound_variable)))
+          (arrow)
+          (apply_type
+            (concrete_type))))
       (arrow)
       (apply_type
         (concrete_type)))))
@@ -177,17 +178,16 @@ a=|a| b
   (alias_type_def
     (apply_type
       (concrete_type))
-    (apply_type
+    body: (apply_type
       (concrete_type)))
-  (expr_body
-    (variable_expr
-      (identifier)))
+  (variable_expr
+    (identifier))
   (value_declaration
     (annotation_type_def
       (annotation_pre_colon
         (identifier))
       (function_type
-        (apply_type
+        param: (apply_type
           (concrete_type))
         (arrow)
         (apply_type
@@ -195,27 +195,25 @@ a=|a| b
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (anon_fun_expr
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (expr_body
-          (variable_expr
-            (identifier)))))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 types_nested_func
 ================================================================================
-a:
-  a->
+fun:  a,
   (
-    a->
+    a,
     b->
     S(a)
   )->
-  SS(b)->
-  b
+  (SS(b)->
+  b)
 --------------------------------------------------------------------------------
 
 (file
@@ -223,25 +221,25 @@ a:
     (annotation_pre_colon
       (identifier))
     (function_type
-      (bound_variable)
-      (arrow)
-      (parenthesized_type
+      param: (bound_variable)
+      param: (tuple_type
+        (bound_variable)
         (function_type
-          (bound_variable)
-          (arrow)
-          (bound_variable)
+          param: (bound_variable)
           (arrow)
           (apply_type
             (concrete_type)
-            (apply_type_arg
+            type_args: (apply_type_arg
               (bound_variable)))))
       (arrow)
-      (apply_type
-        (concrete_type)
-        (apply_type_arg
-          (bound_variable)))
-      (arrow)
-      (bound_variable))))
+      (parenthesized_type
+        (function_type
+          param: (apply_type
+            (concrete_type)
+            type_args: (apply_type_arg
+              (bound_variable)))
+          (arrow)
+          (bound_variable))))))
 
 ================================================================================
 types_tuples
@@ -256,11 +254,11 @@ a:(Num(a),Num(b))
     (tuple_type
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (bound_variable)))
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (bound_variable))))))
 
 ================================================================================
@@ -272,34 +270,30 @@ A2 b2 c2 : B2 b2 c2
 --------------------------------------------------------------------------------
 
 (file
-  (expr_body
-    (tag_expr
-      (tag)))
-  (annotation_type_def
-    (annotation_pre_colon
-      (identifier))
-    (apply_type
-      (concrete_type)))
-  (expr_body
-    (variable_expr
-      (identifier)))
-  (expr_body
-    (tag_expr
-      (tag)))
-  (expr_body
-    (variable_expr
+  (tag_expr
+    (tag
       (identifier)))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))
     (apply_type
       (concrete_type)))
-  (expr_body
-    (variable_expr
+  (variable_expr
+    (identifier))
+  (tag_expr
+    (tag
       (identifier)))
-  (expr_body
-    (variable_expr
-      (identifier))))
+  (variable_expr
+    (identifier))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
+    (apply_type
+      (concrete_type)))
+  (variable_expr
+    (identifier))
+  (variable_expr
+    (identifier)))
 
 ================================================================================
 types_paren_generic
@@ -312,14 +306,14 @@ foo : List(a) -> List(a)
     (annotation_pre_colon
       (identifier))
     (function_type
-      (apply_type
+      param: (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (bound_variable)))
       (arrow)
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (bound_variable))))))
 
 ================================================================================
@@ -333,12 +327,12 @@ foo : Result(Ok, Err) -> Bool
     (annotation_pre_colon
       (identifier))
     (function_type
-      (apply_type
+      param: (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (apply_type
             (concrete_type)))
-        (apply_type_arg
+        type_args: (apply_type_arg
           (apply_type
             (concrete_type))))
       (arrow)
@@ -356,7 +350,7 @@ print! : Str => {}
     (annotation_pre_colon
       (identifier))
     (function_type
-      (apply_type
+      param: (apply_type
         (concrete_type))
       (fat_arrow)
       (record_type))))
@@ -372,20 +366,20 @@ main! : List(Str) => Try({}, [Exit(I32)])
     (annotation_pre_colon
       (identifier))
     (function_type
-      (apply_type
+      param: (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (apply_type
             (concrete_type))))
       (fat_arrow)
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (record_type))
-        (apply_type_arg
+        type_args: (apply_type_arg
           (tags_type
             (tag_type
-              (apply_type_arg
+              type_args: (apply_type_arg
                 (apply_type
                   (concrete_type))))))))))
 
@@ -400,16 +394,16 @@ write! : Str, Str => Try({}, Str)
     (annotation_pre_colon
       (identifier))
     (function_type
-      (apply_type
+      param: (apply_type
         (concrete_type))
-      (apply_type
+      param: (apply_type
         (concrete_type))
       (fat_arrow)
       (apply_type
         (concrete_type)
-        (apply_type_arg
+        type_args: (apply_type_arg
           (record_type))
-        (apply_type_arg
+        type_args: (apply_type_arg
           (apply_type
             (concrete_type)))))))
 
@@ -426,34 +420,33 @@ helper1 = |x| x.to_str()
       (annotation_pre_colon
         (identifier))
       (where_implements
-        (function_type
-          (bound_variable)
+        type: (function_type
+          param: (bound_variable)
           (arrow)
           (bound_variable))
         (where)
-        (static_dispatch_list
+        implements: (static_dispatch_list
           (static_dispatch
             (static_dispatch_target
               (bound_variable)
               (identifier))
             (function_type
-              (bound_variable)
+              param: (bound_variable)
               (arrow)
               (bound_variable))))))
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (anon_fun_expr
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (field_access_expr
-              (variable_expr
-                (identifier))
-              (identifier))))))))
+        (function_call_pnc_expr
+          caller: (field_access_expr
+            target: (variable_expr
+              (identifier))
+            (identifier)))))))
 
 ===
 types_static_complex
@@ -471,11 +464,11 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
       (annotation_pre_colon
         (identifier))
       (where_implements
-        (function_type
-          (bound_variable)
-          (parenthesized_type
+        type: (function_type
+          param: (bound_variable)
+          param: (parenthesized_type
             (function_type
-              (apply_type
+              param: (apply_type
                 (concrete_type))
               (arrow)
               (apply_type
@@ -483,16 +476,16 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
           (arrow)
           (bound_variable))
         (where)
-        (static_dispatch_list
+        implements: (static_dispatch_list
           (static_dispatch
             (static_dispatch_target
               (bound_variable)
               (identifier))
             (function_type
-              (bound_variable)
-              (parenthesized_type
+              param: (bound_variable)
+              param: (parenthesized_type
                 (function_type
-                  (apply_type
+                  param: (apply_type
                     (concrete_type))
                   (arrow)
                   (apply_type
@@ -502,38 +495,37 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (anon_fun_expr
         (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (field_access_expr
-              (variable_expr
-                (identifier))
+        (function_call_pnc_expr
+          caller: (field_access_expr
+            target: (variable_expr
               (identifier))
-            (variable_expr
-              (identifier)))))))
+            (identifier))
+          args: (variable_expr
+            (identifier))))))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))
     (where_implements
-      (function_type
-        (bound_variable)
+      type: (function_type
+        param: (bound_variable)
         (arrow)
         (bound_variable))
       (where)
-      (static_dispatch_list
+      implements: (static_dispatch_list
         (static_dispatch
           (static_dispatch_target
             (bound_variable)
             (identifier))
           (function_type
-            (bound_variable)
-            (bound_variable)
+            param: (bound_variable)
+            param: (bound_variable)
             (arrow)
             (bound_variable)))
         (static_dispatch
@@ -541,8 +533,8 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
             (bound_variable)
             (identifier))
           (function_type
-            (bound_variable)
-            (apply_type
+            param: (bound_variable)
+            param: (apply_type
               (concrete_type))
             (arrow)
             (bound_variable)))))))
@@ -559,13 +551,14 @@ Letters(others) : [A, B, ..others]
   (alias_type_def
     (apply_type
       (concrete_type)
-      (apply_type_arg
+      type_args: (apply_type_arg
         (bound_variable)))
-    (tags_type
+    body: (tags_type
       (tag_type)
       (tag_type)
-      (type_variable
-        (bound_variable)))))
+      (spread_type
+        (type_variable
+          (bound_variable))))))
 
 ===
 types_static_basic
@@ -580,34 +573,33 @@ helper1 = |x| x.to_str()
       (annotation_pre_colon
         (identifier))
       (where_implements
-        (function_type
-          (bound_variable)
+        type: (function_type
+          param: (bound_variable)
           (arrow)
           (bound_variable))
         (where)
-        (static_dispatch_list
+        implements: (static_dispatch_list
           (static_dispatch
             (static_dispatch_target
               (bound_variable)
               (identifier))
             (function_type
-              (bound_variable)
+              param: (bound_variable)
               (arrow)
               (bound_variable))))))
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (anon_fun_expr
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (field_access_expr
-              (variable_expr
-                (identifier))
-              (identifier))))))))
+        (function_call_pnc_expr
+          caller: (field_access_expr
+            target: (variable_expr
+              (identifier))
+            (identifier)))))))
 
 ===
 types_static_complex
@@ -624,11 +616,11 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
       (annotation_pre_colon
         (identifier))
       (where_implements
-        (function_type
-          (bound_variable)
-          (parenthesized_type
+        type: (function_type
+          param: (bound_variable)
+          param: (parenthesized_type
             (function_type
-              (apply_type
+              param: (apply_type
                 (concrete_type))
               (arrow)
               (apply_type
@@ -636,16 +628,16 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
           (arrow)
           (bound_variable))
         (where)
-        (static_dispatch_list
+        implements: (static_dispatch_list
           (static_dispatch
             (static_dispatch_target
               (bound_variable)
               (identifier))
             (function_type
-              (bound_variable)
-              (parenthesized_type
+              param: (bound_variable)
+              param: (parenthesized_type
                 (function_type
-                  (apply_type
+                  param: (apply_type
                     (concrete_type))
                   (arrow)
                   (apply_type
@@ -655,38 +647,37 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (anon_fun_expr
         (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (field_access_expr
-              (variable_expr
-                (identifier))
+        (function_call_pnc_expr
+          caller: (field_access_expr
+            target: (variable_expr
               (identifier))
-            (variable_expr
-              (identifier)))))))
+            (identifier))
+          args: (variable_expr
+            (identifier))))))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))
     (where_implements
-      (function_type
-        (bound_variable)
+      type: (function_type
+        param: (bound_variable)
         (arrow)
         (bound_variable))
       (where)
-      (static_dispatch_list
+      implements: (static_dispatch_list
         (static_dispatch
           (static_dispatch_target
             (bound_variable)
             (identifier))
           (function_type
-            (bound_variable)
-            (bound_variable)
+            param: (bound_variable)
+            param: (bound_variable)
             (arrow)
             (bound_variable)))
         (static_dispatch
@@ -694,8 +685,8 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
             (bound_variable)
             (identifier))
           (function_type
-            (bound_variable)
-            (apply_type
+            param: (bound_variable)
+            param: (apply_type
               (concrete_type))
             (arrow)
             (bound_variable)))))))
