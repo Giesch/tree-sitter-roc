@@ -137,7 +137,7 @@
 
 (bin_op_expr
   (operator
-    "|>") @operator
+    "->") @operator
   (variable_expr
     (identifier) @function))
 
