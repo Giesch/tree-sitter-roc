@@ -74,7 +74,7 @@ Username :: Str
 --------------------------------------------------------------------------------
 
 (file
-  (nominal_type_def
+  (opaque_type_def
     (apply_type
       (concrete_type))
     (double_colon)
@@ -96,12 +96,9 @@ Color := [Red, Green, Blue].{
       (concrete_type))
     (colon_equals)
     (tags_type
-      (apply_type
-        (concrete_type))
-      (apply_type
-        (concrete_type))
-      (apply_type
-        (concrete_type)))
+      (tag_type)
+      (tag_type)
+      (tag_type))
     (nominal_methods
       (value_declaration
         (annotation_type_def
@@ -181,10 +178,10 @@ a=|a| b
     (apply_type
       (concrete_type))
     (apply_type
-      (concrete_type)
-      (apply_type_args
-        (apply_type_arg
-          (bound_variable)))))
+      (concrete_type)))
+  (expr_body
+    (variable_expr
+      (identifier)))
   (value_declaration
     (annotation_type_def
       (annotation_pre_colon
@@ -259,14 +256,12 @@ a:(Num(a),Num(b))
     (tuple_type
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (apply_type_arg
-            (bound_variable))))
+        (apply_type_arg
+          (bound_variable)))
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (apply_type_arg
-            (bound_variable)))))))
+        (apply_type_arg
+          (bound_variable))))))
 
 ================================================================================
 types_args
@@ -277,32 +272,34 @@ A2 b2 c2 : B2 b2 c2
 --------------------------------------------------------------------------------
 
 (file
-  (alias_type_def
+  (expr_body
+    (tag_expr
+      (tag)))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
     (apply_type
-      (concrete_type)
-      (apply_type_args
-        (apply_type_arg
-          (bound_variable))))
+      (concrete_type)))
+  (expr_body
+    (variable_expr
+      (identifier)))
+  (expr_body
+    (tag_expr
+      (tag)))
+  (expr_body
+    (variable_expr
+      (identifier)))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
     (apply_type
-      (concrete_type)
-      (apply_type_args
-        (apply_type_arg
-          (bound_variable)))))
-  (alias_type_def
-    (apply_type
-      (concrete_type)
-      (apply_type_args
-        (apply_type_arg
-          (bound_variable))
-        (apply_type_arg
-          (bound_variable))))
-    (apply_type
-      (concrete_type)
-      (apply_type_args
-        (apply_type_arg
-          (bound_variable))
-        (apply_type_arg
-          (bound_variable))))))
+      (concrete_type)))
+  (expr_body
+    (variable_expr
+      (identifier)))
+  (expr_body
+    (variable_expr
+      (identifier))))
 
 ================================================================================
 types_paren_generic
@@ -317,15 +314,13 @@ foo : List(a) -> List(a)
     (function_type
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (bound_variable))))
+        (apply_type_arg
+          (bound_variable)))
       (arrow)
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (bound_variable)))))))
+        (apply_type_arg
+          (bound_variable))))))
 
 ================================================================================
 types_paren_generic_multi
@@ -340,12 +335,12 @@ foo : Result(Ok, Err) -> Bool
     (function_type
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (apply_type
-              (concrete_type))
-            (apply_type
-              (concrete_type)))))
+        (apply_type_arg
+          (apply_type
+            (concrete_type)))
+        (apply_type_arg
+          (apply_type
+            (concrete_type))))
       (arrow)
       (apply_type
         (concrete_type)))))
@@ -363,7 +358,7 @@ print! : Str => {}
     (function_type
       (apply_type
         (concrete_type))
-      (effect_arrow)
+      (fat_arrow)
       (record_type))))
 
 ================================================================================
@@ -379,23 +374,20 @@ main! : List(Str) => Try({}, [Exit(I32)])
     (function_type
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (apply_type
-              (concrete_type)))))
-      (effect_arrow)
+        (apply_type_arg
+          (apply_type
+            (concrete_type))))
+      (fat_arrow)
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (record_type)
-            (tags_type
-              (apply_type
-                (concrete_type)
-                (apply_type_args
-                  (paren_type_args
-                    (apply_type
-                      (concrete_type))))))))))))
+        (apply_type_arg
+          (record_type))
+        (apply_type_arg
+          (tags_type
+            (tag_type
+              (apply_type_arg
+                (apply_type
+                  (concrete_type))))))))))
 
 ================================================================================
 types_effectful_multi_arg
@@ -412,14 +404,14 @@ write! : Str, Str => Try({}, Str)
         (concrete_type))
       (apply_type
         (concrete_type))
-      (effect_arrow)
+      (fat_arrow)
       (apply_type
         (concrete_type)
-        (apply_type_args
-          (paren_type_args
-            (record_type)
-            (apply_type
-              (concrete_type))))))))
+        (apply_type_arg
+          (record_type))
+        (apply_type_arg
+          (apply_type
+            (concrete_type)))))))
 
 ===
 types_tag_union_extensible
@@ -440,3 +432,16 @@ Letters(others) : [A, B, ..others]
       (tag_type)
       (type_variable
         (bound_variable)))))
+===
+types_static_basic
+===
+helper1 : a -> b where [a.to_str : a -> b]
+helper1 = |x| x.to_str()
+---
+
+===
+types_static_complex
+===
+modify : a, (Str -> Str) -> a where [a.transform : a, (Str -> Str) -> a]
+modify = |x, fn| x.transform(fn)
+---

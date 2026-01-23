@@ -600,38 +600,9 @@ module.exports = grammar({
     nominal_methods: ($) =>
       seq(
         token.immediate(".{"),
-        optional(
-         
-            repeat1($._module_elem),
-            $,
-        ),
+        repeat($._module_elem),
         "}",
       ),
-
-    // Nominal method annotations use a specialized function type node to match the corpus.
-    method_annotation: ($) =>
-      seq(
-        $.annotation_pre_colon,
-        ":",
-        $.method_function_type,
-      ),
-
-    // Nominal method declarations mirror value declarations but require an anonymous function body.
-    method_declaration: ($) =>
-      seq(
-        alias($._assignment_pattern, $.decl_left),
-        "=",
-        $.anon_fun_expr,
-      ),
-
-    method_function_type: ($) =>
-      seq(
-        sep1(field("param", $.method_apply_type), ","),
-        $.arrow,
-        sep1($.method_apply_type, $.arrow),
-      ),
-
-    method_apply_type: ($) => alias($.apply_type, $.method_apply_type),
 
     _type_annotation: ($) =>
       prec.left(
