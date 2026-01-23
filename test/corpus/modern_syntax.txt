@@ -26,12 +26,13 @@ main! = || Stdout.line!("Hello")
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (function_call_pnc_expr
-          caller: (variable_expr
-            (module)
-            (identifier))
-          args: (const
-            (string)))))))
+        body: (expr_body
+          (function_call_pnc_expr
+            caller: (variable_expr
+              (module)
+              (identifier))
+            args: (const
+              (string))))))))
 
 ================================================================================
 modern_match_expression
@@ -50,34 +51,38 @@ color_name = |color| match color {
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (match_expr
-          (match)
-          (variable_expr
-            (identifier))
-          (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier)))
-            (fat_arrow)
-            expr: (const
-              (string)))
-          branch: (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier)))
-            (fat_arrow)
-            expr: (const
-              (string)))
-          branch: (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier)))
-            (fat_arrow)
-            expr: (const
-              (string))))))))
+        body: (expr_body
+          (match_expr
+            (match)
+            (variable_expr
+              (identifier))
+            (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (const
+                  (string))))
+            branch: (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (const
+                  (string))))
+            branch: (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (const
+                  (string))))))))))
 
 ================================================================================
 modern_lambda_syntax
@@ -94,16 +99,29 @@ thunk = || 42
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (bin_op_expr
-          part: (variable_expr
-            (identifier))
-          part: (operator)
-          part: (variable_expr
+        body: (expr_body
+          (bin_op_expr
+            part: (variable_expr
+              (identifier))
+            part: (operator)
+            part: (variable_expr
+              (identifier)))))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
+      (anon_fun_expr
+        args: (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        body: (expr_body
+          (variable_expr
             (identifier))))))
   (value_declaration
     (decl_left
@@ -111,19 +129,9 @@ thunk = || 42
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (variable_expr
-          (identifier)))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    body: (expr_body
-      (anon_fun_expr
-        (const
-          (int))))))
+        body: (expr_body
+          (const
+            (int)))))))
 
 ================================================================================
 modern_opaque_type
@@ -159,11 +167,12 @@ Color := [Red, Green, Blue].{
             (identifier)))
         body: (expr_body
           (anon_fun_expr
-            (argument_patterns
+            args: (argument_patterns
               (identifier_pattern
                 (identifier)))
-            (const
-              (string))))))))
+            body: (expr_body
+              (const
+                (string)))))))))
 
 ================================================================================
 modern_type_alias
@@ -242,38 +251,39 @@ compute = |x| {
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (body_expression
-          (value_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
-            body: (expr_body
-              (bin_op_expr
-                part: (variable_expr
-                  (identifier))
-                part: (operator)
-                part: (const
-                  (int)))))
-          (value_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
-            body: (expr_body
-              (bin_op_expr
-                part: (variable_expr
-                  (identifier))
-                part: (operator)
-                part: (const
-                  (int)))))
-          (bin_op_expr
-            part: (variable_expr
-              (identifier))
-            part: (operator)
-            part: (variable_expr
-              (identifier))))))))
+        body: (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              body: (expr_body
+                (bin_op_expr
+                  part: (variable_expr
+                    (identifier))
+                  part: (operator)
+                  part: (const
+                    (int)))))
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              body: (expr_body
+                (bin_op_expr
+                  part: (variable_expr
+                    (identifier))
+                  part: (operator)
+                  part: (const
+                    (int)))))
+            (bin_op_expr
+              part: (variable_expr
+                (identifier))
+              part: (operator)
+              part: (variable_expr
+                (identifier)))))))))
 
 ================================================================================
 modern_match_with_payload
@@ -291,29 +301,32 @@ unwrap = |opt| match opt {
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (match_expr
-          (match)
-          (variable_expr
-            (identifier))
-          (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier))
-              (identifier_pattern
-                (identifier)))
-            (fat_arrow)
-            expr: (variable_expr
-              (identifier)))
-          branch: (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier)))
-            (fat_arrow)
-            expr: (const
-              (int))))))))
+        body: (expr_body
+          (match_expr
+            (match)
+            (variable_expr
+              (identifier))
+            (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier))
+                (identifier_pattern
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (variable_expr
+                  (identifier))))
+            branch: (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (const
+                  (int))))))))))
 
 ================================================================================
 modern_record_update
@@ -328,17 +341,19 @@ update_name = |person| { ..person, name: "New" }
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (record_expr
-          (spread_expr
-            (variable_expr
-              (identifier)))
-          (record_field_expr
-            (field_name)
-            (const
-              (string))))))))
+        body: (expr_body
+          (record_expr
+            (spread_expr
+              (variable_expr
+                (identifier)))
+            (record_field_expr
+              (field_name)
+              (expr_body
+                (const
+                  (string))))))))))
 
 ================================================================================
 modern_expect
@@ -348,12 +363,13 @@ expect 1 + 1 == 2
 
 (file
   (expect
-    body: (bin_op_expr
-      part: (const
-        (int))
-      part: (operator)
-      part: (const
-        (int))
-      part: (operator)
-      part: (const
-        (int)))))
+    body: (expr_body
+      (bin_op_expr
+        part: (const
+          (int))
+        part: (operator)
+        part: (const
+          (int))
+        part: (operator)
+        part: (const
+          (int))))))

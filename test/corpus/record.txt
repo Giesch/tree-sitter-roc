@@ -13,12 +13,14 @@ a = {b:10,c:inp,d}
       (record_expr
         (record_field_expr
           (field_name)
-          (const
-            (int)))
+          (expr_body
+            (const
+              (int))))
         (record_field_expr
           (field_name)
-          (variable_expr
-            (identifier)))
+          (expr_body
+            (variable_expr
+              (identifier))))
         (record_field_expr
           (field_name))))))
 
@@ -45,19 +47,21 @@ a =
       (record_expr
         (record_field_expr
           (field_name)
-          (const
-            (int)))
+          (expr_body
+            (const
+              (int))))
         (record_field_expr
           (field_name)
-          (if_expr
-            guard: (variable_expr
-              (identifier))
-            (then
-              then: (variable_expr
-                (identifier)))
-            (else
-              (variable_expr
-                (identifier)))))))))
+          (expr_body
+            (if_expr
+              guard: (variable_expr
+                (identifier))
+              (then
+                then: (variable_expr
+                  (identifier)))
+              (else
+                (variable_expr
+                  (identifier))))))))))
 
 ================================================================================
 record_update
@@ -79,8 +83,9 @@ main=
             (identifier)))
         (record_field_expr
           (field_name)
-          (variable_expr
-            (identifier))))))
+          (expr_body
+            (variable_expr
+              (identifier)))))))
   (value_declaration
     (decl_left
       (identifier_pattern
@@ -88,32 +93,36 @@ main=
     body: (expr_body
       (variable_expr
         (identifier))))
-  (record_expr
-    (spread_expr
-      (variable_expr
-        (identifier)))
-    (record_field_expr
-      (field_name)
-      (function_call_pnc_expr
-        caller: (tag_expr
-          (tag
-            (identifier)))
-        args: (variable_expr
-          (identifier))))
-    (record_field_expr
-      (field_name)
-      (function_call_pnc_expr
-        caller: (variable_expr
-          (identifier))
-        args: (variable_expr
-          (identifier))
-        args: (parenthesized_expr
-          expression: (bin_op_expr
-            part: (variable_expr
+  (expr_body
+    (record_expr
+      (spread_expr
+        (variable_expr
+          (identifier)))
+      (record_field_expr
+        (field_name)
+        (expr_body
+          (function_call_pnc_expr
+            caller: (tag_expr
+              (tag
+                (identifier)))
+            args: (variable_expr
+              (identifier)))))
+      (record_field_expr
+        (field_name)
+        (expr_body
+          (function_call_pnc_expr
+            caller: (variable_expr
               (identifier))
-            part: (operator)
-            part: (variable_expr
-              (identifier))))))))
+            args: (variable_expr
+              (identifier))
+            args: (parenthesized_expr
+              expression: (expr_body
+                (bin_op_expr
+                  part: (variable_expr
+                    (identifier))
+                  part: (operator)
+                  part: (variable_expr
+                    (identifier)))))))))))
 
 ================================================================================
 record pattern
@@ -148,5 +157,6 @@ main= match a {
               (record_field_pattern
                 (field_name))))
           (fat_arrow)
-          expr: (variable_expr
-            (identifier)))))))
+          expr: (expr_body
+            (variable_expr
+              (identifier))))))))

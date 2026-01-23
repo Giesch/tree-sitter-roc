@@ -340,6 +340,10 @@
         {
           "type": "SYMBOL",
           "name": "early_return_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dbg_expr"
         }
       ]
     },
@@ -971,24 +975,32 @@
             "value": "|"
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "argument_patterns"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "FIELD",
+            "name": "args",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "argument_patterns"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
           },
           {
             "type": "STRING",
             "value": "|"
           },
           {
-            "type": "SYMBOL",
-            "name": "expr_body"
+            "type": "FIELD",
+            "name": "body",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expr_body"
+            }
           }
         ]
       }
@@ -4543,7 +4555,6 @@
     }
   ],
   "inline": [
-    "expr_body",
     "expr_body_terminal",
     "_non_atomic_type",
     "_field_access_start",

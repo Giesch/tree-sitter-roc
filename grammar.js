@@ -81,7 +81,7 @@ module.exports = grammar({
 
   inline: ($) => [
     //ELI: temporary while we work out if these two can just go
-    $.expr_body,
+    // $.expr_body,
     $.expr_body_terminal,
 
     $._non_atomic_type,
@@ -190,6 +190,7 @@ module.exports = grammar({
         $.if_expr,
         $.match_expr,
         $.early_return_expr,
+        $.dbg_expr,
         // $.chain_expr,
       ),
 
@@ -324,7 +325,9 @@ module.exports = grammar({
     tag_expr: ($) =>
       prec.left(PREC.TAG, seq($.tag, repeat(seq("(", $._atom_expr, ")")))),
     anon_fun_expr: ($) =>
-      prec.left(seq("|", optional($.argument_patterns), "|", $.expr_body)),
+      prec.left(seq("|",
+        field("args", optional($.argument_patterns)), "|",
+        field("body", $.expr_body))),
 
     //RECORDS
 

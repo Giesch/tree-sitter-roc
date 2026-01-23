@@ -17,9 +17,6 @@
 
 
 
-(ability_chain "&" @operator.roc-special.in-typedef)
-
-
 
 (parenthesized_type ["(" ")"] @punctuation.bracket.roc-special.in-typedef)
 (record_type        ["{" "}"] @punctuation.bracket.roc-special.in-typedef)
@@ -92,7 +89,6 @@
 
 
 [
-  (opaque_tag)
   (tag)
 ] @constructor
 
@@ -100,7 +96,7 @@
 
 (annotation_type_def (annotation_pre_colon         (identifier) @function)
   (function_type))
-(bin_op_expr (operator "|>") (variable_expr        (identifier) @function))
+(bin_op_expr (operator "->") (variable_expr        (identifier) @function))
 (function_call_pnc_expr caller: (field_access_expr (identifier) @function .))
 (function_call_pnc_expr caller: (variable_expr     (identifier) @function))
 (value_declaration (decl_left (identifier_pattern  (identifier) @function))
@@ -133,7 +129,6 @@
   "as"
   "expect"
   "exposing"
-  (implements)
   "module"
   "package"
   "platform"
@@ -143,9 +138,8 @@
 [
   "else"
   "if"
-  (is)
-  "then"
-  (when)
+
+  (match)
 ] @keyword.control.conditional
 
 ; N/A
@@ -190,7 +184,7 @@
   ; "|" ; TODO: This conflicts with the `"|" @punctuation.bracket` query, so improve both.
   "<-"
   ".."
-  (wildcard_pattern) 
+  (wildcard_pattern)
   (operator)
 ] @operator
 
@@ -282,8 +276,6 @@
 (tag_type) @type.enum.variant
 
 (bound_variable)                                        @type.parameter
-(where_implements _ (where)                (identifier) @type.parameter
-  (implements) (ability_chain)                          @type.parameter)
 
 (inferred) @type.roc-special.inferred
 
@@ -315,7 +307,7 @@
 (argument_patterns (_ (_ (_ (_    (identifier_pattern (identifier) @variable.parameter))))))
 (argument_patterns (_ (_ (_ (_ (_ (identifier_pattern (identifier) @variable.parameter)))))))
 (spread_pattern                                       (identifier) @variable.parameter)
-(when_is_branch pattern: (_       (identifier_pattern (identifier) @variable.parameter)))
+(match_branch pattern: (_       (identifier_pattern (identifier) @variable.parameter)))
 
 
 

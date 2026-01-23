@@ -116,11 +116,12 @@ Color := [Red, Green, Blue].{
             (identifier)))
         body: (expr_body
           (anon_fun_expr
-            (argument_patterns
+            args: (argument_patterns
               (identifier_pattern
                 (identifier)))
-            (variable_expr
-              (identifier))))))))
+            body: (expr_body
+              (variable_expr
+                (identifier)))))))))
 
 ================================================================================
 types_nominal_empty_methods
@@ -180,8 +181,9 @@ a=|a| b
       (concrete_type))
     body: (apply_type
       (concrete_type)))
-  (variable_expr
-    (identifier))
+  (expr_body
+    (variable_expr
+      (identifier)))
   (value_declaration
     (annotation_type_def
       (annotation_pre_colon
@@ -197,11 +199,12 @@ a=|a| b
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (variable_expr
-          (identifier))))))
+        body: (expr_body
+          (variable_expr
+            (identifier)))))))
 
 ================================================================================
 types_nested_func
@@ -270,30 +273,36 @@ A2 b2 c2 : B2 b2 c2
 --------------------------------------------------------------------------------
 
 (file
-  (tag_expr
-    (tag
+  (expr_body
+    (tag_expr
+      (tag
+        (identifier))))
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
+    (apply_type
+      (concrete_type)))
+  (expr_body
+    (variable_expr
+      (identifier)))
+  (expr_body
+    (tag_expr
+      (tag
+        (identifier))))
+  (expr_body
+    (variable_expr
       (identifier)))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))
     (apply_type
       (concrete_type)))
-  (variable_expr
-    (identifier))
-  (tag_expr
-    (tag
+  (expr_body
+    (variable_expr
       (identifier)))
-  (variable_expr
-    (identifier))
-  (annotation_type_def
-    (annotation_pre_colon
-      (identifier))
-    (apply_type
-      (concrete_type)))
-  (variable_expr
-    (identifier))
-  (variable_expr
-    (identifier)))
+  (expr_body
+    (variable_expr
+      (identifier))))
 
 ================================================================================
 types_paren_generic
@@ -439,14 +448,15 @@ helper1 = |x| x.to_str()
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (function_call_pnc_expr
-          caller: (field_access_expr
-            target: (variable_expr
-              (identifier))
-            (identifier)))))))
+        body: (expr_body
+          (function_call_pnc_expr
+            caller: (field_access_expr
+              target: (variable_expr
+                (identifier))
+              (identifier))))))))
 
 ===
 types_static_complex
@@ -497,18 +507,19 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (function_call_pnc_expr
-          caller: (field_access_expr
-            target: (variable_expr
+        body: (expr_body
+          (function_call_pnc_expr
+            caller: (field_access_expr
+              target: (variable_expr
+                (identifier))
               (identifier))
-            (identifier))
-          args: (variable_expr
-            (identifier))))))
+            args: (variable_expr
+              (identifier)))))))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))
@@ -592,14 +603,15 @@ helper1 = |x| x.to_str()
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (function_call_pnc_expr
-          caller: (field_access_expr
-            target: (variable_expr
-              (identifier))
-            (identifier)))))))
+        body: (expr_body
+          (function_call_pnc_expr
+            caller: (field_access_expr
+              target: (variable_expr
+                (identifier))
+              (identifier))))))))
 
 ===
 types_static_complex
@@ -649,18 +661,19 @@ multi_fun: b -> c where [b.b_thing : b, d -> c, b.str_thing : b, Str -> d]
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (function_call_pnc_expr
-          caller: (field_access_expr
-            target: (variable_expr
+        body: (expr_body
+          (function_call_pnc_expr
+            caller: (field_access_expr
+              target: (variable_expr
+                (identifier))
               (identifier))
-            (identifier))
-          args: (variable_expr
-            (identifier))))))
+            args: (variable_expr
+              (identifier)))))))
   (annotation_type_def
     (annotation_pre_colon
       (identifier))

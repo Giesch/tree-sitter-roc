@@ -11,11 +11,12 @@ a = |x| x
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (variable_expr
-          (identifier))))))
+        body: (expr_body
+          (variable_expr
+            (identifier)))))))
 
 ================================================================================
 lambda_multiple_args
@@ -30,17 +31,18 @@ add = |a, b| a + b
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier))
           (identifier_pattern
             (identifier)))
-        (bin_op_expr
-          part: (variable_expr
-            (identifier))
-          part: (operator)
-          part: (variable_expr
-            (identifier)))))))
+        body: (expr_body
+          (bin_op_expr
+            part: (variable_expr
+              (identifier))
+            part: (operator)
+            part: (variable_expr
+              (identifier))))))))
 
 ================================================================================
 lambda_with_block
@@ -58,23 +60,24 @@ foo = |x| {
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (body_expression
-          (value_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
-            body: (expr_body
-              (bin_op_expr
-                part: (variable_expr
-                  (identifier))
-                part: (operator)
-                part: (const
-                  (int)))))
-          (variable_expr
-            (identifier)))))))
+        body: (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              body: (expr_body
+                (bin_op_expr
+                  part: (variable_expr
+                    (identifier))
+                  part: (operator)
+                  part: (const
+                    (int)))))
+            (variable_expr
+              (identifier))))))))
 
 ================================================================================
 lambda_no_args
@@ -89,8 +92,9 @@ thunk = || 42
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (const
-          (int))))))
+        body: (expr_body
+          (const
+            (int)))))))
 
 ================================================================================
 lambda_effectful
@@ -107,12 +111,13 @@ main! = || {
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (body_expression
-          (function_call_pnc_expr
-            caller: (variable_expr
-              (identifier))
-            args: (const
-              (string))))))))
+        body: (expr_body
+          (body_expression
+            (function_call_pnc_expr
+              caller: (variable_expr
+                (identifier))
+              args: (const
+                (string)))))))))
 
 ================================================================================
 lambda_with_pattern
@@ -127,14 +132,15 @@ getX = |{x, y}| x
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (record_pattern
             (record_field_pattern
               (field_name))
             (record_field_pattern
               (field_name))))
-        (variable_expr
-          (identifier))))))
+        body: (expr_body
+          (variable_expr
+            (identifier)))))))
 
 ================================================================================
 lambda_nested
@@ -149,16 +155,18 @@ curry = |a| |b| a + b
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (anon_fun_expr
-          (argument_patterns
-            (identifier_pattern
-              (identifier)))
-          (bin_op_expr
-            part: (variable_expr
-              (identifier))
-            part: (operator)
-            part: (variable_expr
-              (identifier))))))))
+        body: (expr_body
+          (anon_fun_expr
+            args: (argument_patterns
+              (identifier_pattern
+                (identifier)))
+            body: (expr_body
+              (bin_op_expr
+                part: (variable_expr
+                  (identifier))
+                part: (operator)
+                part: (variable_expr
+                  (identifier))))))))))

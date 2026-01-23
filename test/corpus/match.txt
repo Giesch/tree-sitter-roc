@@ -23,22 +23,25 @@ result = match color {
             (tag
               (identifier)))
           (fat_arrow)
-          expr: (const
-            (string)))
+          expr: (expr_body
+            (const
+              (string))))
         branch: (match_branch
           pattern: (tag_pattern
             (tag
               (identifier)))
           (fat_arrow)
-          expr: (const
-            (string)))
+          expr: (expr_body
+            (const
+              (string))))
         branch: (match_branch
           pattern: (tag_pattern
             (tag
               (identifier)))
           (fat_arrow)
-          expr: (const
-            (string)))))))
+          expr: (expr_body
+            (const
+              (string))))))))
 
 ================================================================================
 match_with_wildcard
@@ -66,13 +69,15 @@ x = match val {
             (identifier_pattern
               (identifier)))
           (fat_arrow)
-          expr: (variable_expr
-            (identifier)))
+          expr: (expr_body
+            (variable_expr
+              (identifier))))
         branch: (match_branch
           pattern: (wildcard_pattern)
           (fat_arrow)
-          expr: (const
-            (int)))))))
+          expr: (expr_body
+            (const
+              (int))))))))
 
 ================================================================================
 match_list_patterns
@@ -98,27 +103,31 @@ len = match lst {
         (match_branch
           pattern: (list_pattern)
           (fat_arrow)
-          expr: (const
-            (int)))
+          expr: (expr_body
+            (const
+              (int))))
         branch: (match_branch
           pattern: (list_pattern
             (identifier_pattern
               (identifier)))
           (fat_arrow)
-          expr: (const
-            (int)))
+          expr: (expr_body
+            (const
+              (int))))
         branch: (match_branch
           pattern: (list_pattern
             (wildcard_pattern)
             (wildcard_pattern))
           (fat_arrow)
-          expr: (const
-            (int)))
+          expr: (expr_body
+            (const
+              (int))))
         branch: (match_branch
           pattern: (wildcard_pattern)
           (fat_arrow)
-          expr: (const
-            (int)))))))
+          expr: (expr_body
+            (const
+              (int))))))))
 
 ================================================================================
 match_string_literal
@@ -144,19 +153,22 @@ greet = match name {
           pattern: (const_pattern
             (string))
           (fat_arrow)
-          expr: (const
-            (string)))
+          expr: (expr_body
+            (const
+              (string))))
         branch: (match_branch
           pattern: (const_pattern
             (string))
           (fat_arrow)
-          expr: (const
-            (string)))
+          expr: (expr_body
+            (const
+              (string))))
         branch: (match_branch
           pattern: (wildcard_pattern)
           (fat_arrow)
-          expr: (const
-            (string)))))))
+          expr: (expr_body
+            (const
+              (string))))))))
 
 ================================================================================
 match_complex
@@ -179,40 +191,43 @@ a
         (identifier)))
     body: (expr_body
       (anon_fun_expr
-        (argument_patterns
+        args: (argument_patterns
           (identifier_pattern
             (identifier)))
-        (match_expr
-          (match)
-          (body_expression
-            (value_declaration
-              (decl_left
-                (identifier_pattern
-                  (identifier)))
-              body: (expr_body
-                (tag_expr
-                  (tag
-                    (identifier)))))
-            (variable_expr
-              (identifier)))
-          (match_branch
-            pattern: (tag_pattern
-              (tag
-                (identifier)))
-            (fat_arrow)
-            expr: (body_expression
-              (const
-                (int))))
-          branch: (match_branch
-            pattern: (wildcard_pattern)
-            (fat_arrow)
-            expr: (body_expression
+        body: (expr_body
+          (match_expr
+            (match)
+            (body_expression
               (value_declaration
                 (decl_left
                   (identifier_pattern
                     (identifier)))
                 body: (expr_body
-                  (const
-                    (int))))
+                  (tag_expr
+                    (tag
+                      (identifier)))))
               (variable_expr
-                (identifier)))))))))
+                (identifier)))
+            (match_branch
+              pattern: (tag_pattern
+                (tag
+                  (identifier)))
+              (fat_arrow)
+              expr: (expr_body
+                (body_expression
+                  (const
+                    (int)))))
+            branch: (match_branch
+              pattern: (wildcard_pattern)
+              (fat_arrow)
+              expr: (expr_body
+                (body_expression
+                  (value_declaration
+                    (decl_left
+                      (identifier_pattern
+                        (identifier)))
+                    body: (expr_body
+                      (const
+                        (int))))
+                  (variable_expr
+                    (identifier)))))))))))

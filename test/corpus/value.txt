@@ -183,9 +183,10 @@ a= a.field.b.c.d
     body: (expr_body
       (field_access_expr
         target: (parenthesized_expr
-          expression: (body_expression
-            (variable_expr
-              (identifier))))
+          expression: (expr_body
+            (body_expression
+              (variable_expr
+                (identifier)))))
         (identifier))))
   (value_declaration
     (decl_left

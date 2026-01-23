@@ -6,8 +6,10 @@
 (function_call_pnc_expr
   caller: (field_access_expr (identifier)@name .))@reference.call
 
-; Function definitions
-(value_declaration(decl_left 
-  (identifier_pattern 
-   (identifier)@name))(expr_body(anon_fun_expr)))@definition.function
-
+;function definition:
+ (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)@name
+        ))
+    body: (expr_body(anon_fun_expr)))@definition.function
