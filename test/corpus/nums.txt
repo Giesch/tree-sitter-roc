@@ -1,0 +1,214 @@
+===
+Dot-suffix unsigned integers
+===
+{
+  u8:   123.U8,
+  u16:  123.U16,
+  u32:  123.U32,
+  u64:  123.U64,
+  u128: 123.U128,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint_dot)))))
+
+===
+Dot-suffix signed integers
+===
+{
+  i8:   123.I8,
+  i16:  123.I16,
+  i32:  123.I32,
+  i64:  123.I64,
+  i128: 123.I128,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint_dot)))))
+
+===
+Dot-suffix decimal
+===
+{
+  dec:  123.Dec,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (decimal_dot)))))
+
+===
+Dot-suffix negative numbers
+===
+{
+  u8Neg:   -123.U8,
+  u16Neg:  -123.U16,
+  u32Neg:  -123.U32,
+  u64Neg:  -123.U64,
+  u128Neg: -123.U128,
+  i8Neg:   -123.I8,
+  i16Neg:  -123.I16,
+  i32Neg:  -123.I32,
+  i64Neg:  -123.I64,
+  i128Neg: -123.I128,
+  decNeg:  -123.Dec,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (uint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (uint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (uint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (uint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (uint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (iint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (iint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (iint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (iint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (iint_dot))))
+    (record_field_expr
+      (field_name (identifier))
+      (prefixed_expression (const (decimal_dot))))))
+
+===
+Dot-suffix binary numbers
+===
+{
+  u8Bin:   0b101.U8,
+  u16Bin:  0b101.U16,
+  u32Bin:  0b101.U32,
+  u64Bin:  0b101.U64,
+  u128Bin: 0b101.U128,
+  i8Bin:   0b101.I8,
+  i16Bin:  0b101.I16,
+  i32Bin:  0b101.I32,
+  i64Bin:  0b101.I64,
+  i128Bin: 0b101.I128,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))))
+
+===
+Dot-suffix hex numbers
+===
+{
+  u8Hex:   0xFF.U8,
+  i32Hex:  0xDEADBEEF.I32,
+  u64Hex:  0x123ABC.U64,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (xint_dot)))))
+
+===
+Old immediate suffix format still works
+===
+{
+  oldU8: 123u8,
+  oldI32: 456i32,
+  oldDec: 789dec,
+}
+---
+(file
+  (record_expr
+    (record_field_expr
+      (field_name (identifier))
+      (const (uint)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (iint)))
+    (record_field_expr
+      (field_name (identifier))
+      (const (decimal)))))

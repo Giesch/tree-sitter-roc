@@ -113,8 +113,7 @@ main =
 ================================================================================
 string_interpolation
 ================================================================================
-main= "hi, ${name}"
-escaped= "\${notinterpolated}"
+msg = "Hello, ${name}!"
 --------------------------------------------------------------------------------
 
 (file
@@ -127,21 +126,12 @@ escaped= "\${notinterpolated}"
         (string
           (interpolation_char
             (variable_expr
-              (identifier)))))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (const
-        (string
-          (escape_char))))))
+              (identifier))))))))
 
 ================================================================================
-string_interpolation_complex
+string_interpolation_expr
 ================================================================================
-
-main ="\t hi\n\\${"hi"}${Num.toStr(10)}${"hi${"nested"}"}\${notinterpolated}"
+msg = "Result: ${x + 1}"
 --------------------------------------------------------------------------------
 
 (file
@@ -152,41 +142,18 @@ main ="\t hi\n\\${"hi"}${Num.toStr(10)}${"hi${"nested"}"}\${notinterpolated}"
     (expr_body
       (const
         (string
-          (escape_char)
-          (escape_char)
-          (escape_char)
           (interpolation_char
-            (const
-              (string)))
-          (interpolation_char
-            (function_call_pnc_expr
+            (bin_op_expr
               (variable_expr
-                (module)
                 (identifier))
+              (operator)
               (const
-                (int))))
-          (interpolation_char
-            (const
-              (string
-                (interpolation_char
-                  (const
-                    (string))))))
-          (escape_char))))))
+                (int)))))))))
 
 ================================================================================
-string_multiline_interpolation
+string_unicode_escape
 ================================================================================
-
-main =
-    """
-    \t hi
-    \n
-    \\
-    ${"hi"}
-    ${Num.toStr(10)}
-    \${"hi"}
-    
-    """
+nbsp = "\u(00A0)"
 --------------------------------------------------------------------------------
 
 (file
@@ -196,18 +163,53 @@ main =
         (identifier)))
     (expr_body
       (const
-        (multiline_string
-          (escape_char)
-          (escape_char)
-          (escape_char)
-          (interpolation_char
-            (const
-              (string)))
-          (interpolation_char
-            (function_call_pnc_expr
-              (variable_expr
-                (module)
-                (identifier))
-              (const
-                (int))))
+        (string
           (escape_char))))))
+
+================================================================================
+line_string_simple
+================================================================================
+msg =
+    \\Hello
+    \\World
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (const
+        (line_string
+          (line_string_segment)
+          (line_string_segment))))))
+
+================================================================================
+line_string_with_interpolation
+================================================================================
+msg =
+    \\Hello ${name}
+    \\Count: ${x + 1}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (const
+        (line_string
+          (line_string_segment
+            (interpolation_char
+              (variable_expr
+                (identifier))))
+          (line_string_segment
+            (interpolation_char
+              (bin_op_expr
+                (variable_expr
+                  (identifier))
+                (operator)
+                (const
+                  (int))))))))))

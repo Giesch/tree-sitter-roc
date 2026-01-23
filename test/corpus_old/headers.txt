@@ -6,8 +6,7 @@ app [main!] { pf: platform "https://basic-cli" }
 
 import pf.Stdout
 
-main! = \_args ->
-    Stdout.line!("Hello world")
+main! = |_args| Stdout.line!("Hello world")
 ---
 
 (file
@@ -27,11 +26,9 @@ main! = \_args ->
         (identifier)))
     (expr_body
       (anon_fun_expr
-        (backslash)
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (arrow)
         (expr_body
           (function_call_expr
             (variable_expr
@@ -41,60 +38,6 @@ main! = \_args ->
               (expr_body
                 (const
                   (string))))))))))
-
-================================================================================
-header_platform
-================================================================================
-
-platform "ruby-interop"
-    requires {} { main : arg -> ret where arg implements Decode.Decoding, ret implements Encoding }
-    exposes []
-    packages {}
-    imports [TotallyNotJson]
-    provides [mainForHost]
-
-main = 1
---------------------------------------------------------------------------------
-
-(file
-  (platform_header
-    (name)
-    (platform_header_body
-      (requires
-        (requires_rigids)
-        (typed_ident
-          (identifier)
-          (function_type
-            (bound_variable)
-            (arrow)
-            (where_implements
-              (bound_variable)
-              (where)
-              (identifier)
-              (implements)
-              (ability_chain
-                (module)
-                (ability))
-              (identifier)
-              (implements)
-              (ability_chain
-                (ability))))))
-      (exposes
-        (exposes_list))
-      (packages
-        (record_pattern))
-      (imports
-        (imports_entry
-          (module)))
-      (provides
-        (ident))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (const
-        (int)))))
 
 ================================================================================
 header_module
@@ -114,8 +57,7 @@ CC : AA.BB
 
 ## com
 a : A -> TASK (List Path) [DirReadErr Path ReadErr]
-a = \path ->
-  a
+a = |path| path
 
 --------------------------------------------------------------------------------
 
@@ -206,11 +148,9 @@ a = \path ->
         (identifier)))
     (expr_body
       (anon_fun_expr
-        (backslash)
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (arrow)
         (expr_body
           (variable_expr
             (identifier)))))))

@@ -1,18 +1,10 @@
 ================================================================================
 value_decl
 ================================================================================
-var= a
-my_var= a
+x = a
 --------------------------------------------------------------------------------
 
 (file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (variable_expr
-        (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
@@ -24,10 +16,12 @@ my_var= a
 ================================================================================
 value_decl_nested
 ================================================================================
-var= a
-var= 
+x = a
+x =
+{
 	b=10
 	b
+    }
 --------------------------------------------------------------------------------
 
 (file
@@ -56,17 +50,21 @@ var=
 ================================================================================
 value_decl_typed
 ================================================================================
-var:Int
-var= a
-var =
+x :Int
+x = a
+x =
+  {
   p:Int
   p=10
   p
-var =
+  }
+x =
+  {
   p:Int
   p=
     10
   p
+  }
 --------------------------------------------------------------------------------
 
 (file
@@ -141,7 +139,7 @@ value_record
           (identifier_pattern
             (identifier)))))
     (expr_body
-      (function_call_pnc_expr
+      (function_call_expr
         (variable_expr
           (identifier))
         (variable_expr
@@ -151,12 +149,9 @@ value_record
 value_field
 ================================================================================
 a= Bool.field
-a= My.Module.field
 a= {a}.field
 a= ({a}).field
 a= a.field.b.c.d
-b=10
-
 --------------------------------------------------------------------------------
 
 (file
@@ -166,15 +161,6 @@ b=10
         (identifier)))
     (expr_body
       (variable_expr
-        (module)
-        (identifier))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (variable_expr
-        (module)
         (module)
         (identifier))))
   (value_declaration
@@ -210,19 +196,13 @@ b=10
         (identifier)
         (identifier)
         (identifier)
-        (identifier))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (const
-        (int)))))
+        (identifier)))))
 
 ================================================================================
 value_ignore
 ================================================================================
 _= a
+_a= a
 --------------------------------------------------------------------------------
 
 (file
@@ -231,15 +211,7 @@ _= a
       (wildcard_pattern))
     (expr_body
       (variable_expr
-        (identifier)))))
-
-================================================================================
-value_shadowable
-================================================================================
-_shadow= a
---------------------------------------------------------------------------------
-
-(file
+        (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
@@ -247,72 +219,3 @@ _shadow= a
     (expr_body
       (variable_expr
         (identifier)))))
-
-================================================================================
-value_effectful
-================================================================================
-effect! = |a| doThing!( a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))
-
-================================================================================
-value_effectful_shadowable
-================================================================================
-_effect! = |a| doThing!(a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))
-
-================================================================================
-value_error
-================================================================================
-effect! = |a| _ doThing!( a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))

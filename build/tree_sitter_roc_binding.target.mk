@@ -8,8 +8,8 @@ DEFS_Debug := \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_GLIBCXX_USE_CXX11_ABI=1' \
-	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-D_LARGEFILE_SOURCE' \
 	'-D__STDC_FORMAT_MACROS' \
 	'-DNAPI_CPP_EXCEPTIONS' \
 	'-DBUILDING_NODE_EXTENSION' \
@@ -37,13 +37,13 @@ CFLAGS_CC_Debug := \
 	-std=gnu++17
 
 INCS_Debug := \
-	-I/home/eli/.cache/node-gyp/20.18.2/include/node \
-	-I/home/eli/.cache/node-gyp/20.18.2/src \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/openssl/config \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/openssl/openssl/include \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/uv/include \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/zlib \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/v8/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/include/node \
+	-I/home/eli/.cache/node-gyp/20.20.0/src \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/openssl/config \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/openssl/openssl/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/uv/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/zlib \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/v8/include \
 	-I$(srcdir)/src \
 	-I$(srcdir)/node_modules/node-addon-api
 
@@ -53,8 +53,8 @@ DEFS_Release := \
 	'-DUSING_V8_SHARED=1' \
 	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_GLIBCXX_USE_CXX11_ABI=1' \
-	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
+	'-D_LARGEFILE_SOURCE' \
 	'-D__STDC_FORMAT_MACROS' \
 	'-DNAPI_CPP_EXCEPTIONS' \
 	'-DBUILDING_NODE_EXTENSION'
@@ -80,13 +80,13 @@ CFLAGS_CC_Release := \
 	-std=gnu++17
 
 INCS_Release := \
-	-I/home/eli/.cache/node-gyp/20.18.2/include/node \
-	-I/home/eli/.cache/node-gyp/20.18.2/src \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/openssl/config \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/openssl/openssl/include \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/uv/include \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/zlib \
-	-I/home/eli/.cache/node-gyp/20.18.2/deps/v8/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/include/node \
+	-I/home/eli/.cache/node-gyp/20.20.0/src \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/openssl/config \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/openssl/openssl/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/uv/include \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/zlib \
+	-I/home/eli/.cache/node-gyp/20.20.0/deps/v8/include \
 	-I$(srcdir)/src \
 	-I$(srcdir)/node_modules/node-addon-api
 

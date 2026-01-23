@@ -1,0 +1,227 @@
+================================================================================
+match_simple
+================================================================================
+result = match color {
+    Red => "red"
+    Green => "green"
+    Blue => "blue"
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        (match_branch
+          (tag_pattern
+            (tag))
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))
+        (match_branch
+          (tag_pattern
+            (tag))
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))
+        (match_branch
+          (tag_pattern
+            (tag))
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))))))
+
+================================================================================
+match_with_wildcard
+================================================================================
+x = match val {
+    Some v => v
+    _ => 0
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        (match_branch
+          (tag_pattern
+            (tag)
+            (identifier_pattern
+              (identifier)))
+          (fat_arrow)
+          (expr_body
+            (variable_expr
+              (identifier))))
+        (match_branch
+          (wildcard_pattern)
+          (fat_arrow)
+          (expr_body
+            (const
+              (int))))))))
+
+================================================================================
+match_list_patterns
+================================================================================
+len = match lst {
+    [] => 0
+    [x] => 1
+    [_, _] => 2
+    _ => 99
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        (match_branch
+          (list_pattern)
+          (fat_arrow)
+          (expr_body
+            (const
+              (int))))
+        (match_branch
+          (list_pattern
+            (identifier_pattern
+              (identifier)))
+          (fat_arrow)
+          (expr_body
+            (const
+              (int))))
+        (match_branch
+          (list_pattern
+            (wildcard_pattern)
+            (wildcard_pattern))
+          (fat_arrow)
+          (expr_body
+            (const
+              (int))))
+        (match_branch
+          (wildcard_pattern)
+          (fat_arrow)
+          (expr_body
+            (const
+              (int))))))))
+
+================================================================================
+match_string_literal
+================================================================================
+greet = match name {
+    "Alice" => "Hello Alice!"
+    "Bob" => "Hey Bob!"
+    _ => "Hello stranger!"
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        (match_branch
+          (const_pattern
+            (string))
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))
+        (match_branch
+          (const_pattern
+            (string))
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))
+        (match_branch
+          (wildcard_pattern)
+          (fat_arrow)
+          (expr_body
+            (const
+              (string))))))))
+
+================================================================================
+match_complex
+================================================================================
+foo = |x| match {a=Red
+a
+} {
+    Red => {1}
+    _ => {
+      a=10
+      a
+    }
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (match_expr
+            (match)
+            (body_expression
+              (value_declaration
+                (decl_left
+                  (identifier_pattern
+                    (identifier)))
+                (expr_body
+                  (tag_expr
+                    (tag))))
+              (variable_expr
+                (identifier)))
+            (match_branch
+              (tag_pattern
+                (tag))
+              (fat_arrow)
+              (expr_body
+                (body_expression
+                  (const
+                    (int)))))
+            (match_branch
+              (wildcard_pattern)
+              (fat_arrow)
+              (expr_body
+                (body_expression
+                  (value_declaration
+                    (decl_left
+                      (identifier_pattern
+                        (identifier)))
+                    (expr_body
+                      (const
+                        (int))))
+                  (variable_expr
+                    (identifier)))))))))))
