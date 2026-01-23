@@ -103,26 +103,27 @@ Color := [Red, Green, Blue].{
       (apply_type
         (concrete_type)))
     (nominal_methods
-      (method_annotation
-        (annotation_pre_colon
-          (identifier))
-        (method_function_type
-          (method_apply_type
-            (concrete_type))
-          (arrow)
-          (method_apply_type
-            (concrete_type))))
-      (method_declaration
+      (value_declaration
+        (annotation_type_def
+          (annotation_pre_colon
+            (identifier))
+          (function_type
+            (apply_type
+              (concrete_type))
+            (arrow)
+            (apply_type
+              (concrete_type))))
         (decl_left
           (identifier_pattern
             (identifier)))
-        (anon_fun_expr
-          (argument_patterns
-            (identifier_pattern
-              (identifier)))
-          (expr_body
-            (variable_expr
-              (identifier))))))))
+        (expr_body
+          (anon_fun_expr
+            (argument_patterns
+              (identifier_pattern
+                (identifier)))
+            (expr_body
+              (variable_expr
+                (identifier)))))))))
 
 ================================================================================
 types_nominal_empty_methods

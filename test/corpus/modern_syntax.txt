@@ -11,14 +11,15 @@ main! = || Stdout.line!("Hello")
 (file
   (app_header
     (provides_list
-      (ident))
+      (identifier))
     (packages_list
       (platform_ref
         (identifier)
         (package_uri))))
   (import_expr
-    (identifier)
-    (module))
+    (import_ident
+      (identifier)
+      (module)))
   (value_declaration
     (decl_left
       (identifier_pattern
@@ -26,14 +27,12 @@ main! = || Stdout.line!("Hello")
     (expr_body
       (anon_fun_expr
         (expr_body
-          (function_call_expr
+          (function_call_pnc_expr
             (variable_expr
               (module)
               (identifier))
-            (parenthesized_expr
-              (expr_body
-                (const
-                  (string))))))))))
+            (const
+              (string))))))))
 
 ================================================================================
 modern_match_expression
@@ -146,33 +145,31 @@ Color := [Red, Green, Blue].{
       (concrete_type))
     (colon_equals)
     (tags_type
-      (apply_type
-        (concrete_type))
-      (apply_type
-        (concrete_type))
-      (apply_type
-        (concrete_type)))
+      (tag_type)
+      (tag_type)
+      (tag_type))
     (nominal_methods
-      (method_annotation
-        (annotation_pre_colon
-          (identifier))
-        (method_function_type
-          (method_apply_type
-            (concrete_type))
-          (arrow)
-          (method_apply_type
-            (concrete_type))))
-      (method_declaration
+      (value_declaration
+        (annotation_type_def
+          (annotation_pre_colon
+            (identifier))
+          (function_type
+            (apply_type
+              (concrete_type))
+            (arrow)
+            (apply_type
+              (concrete_type))))
         (decl_left
           (identifier_pattern
             (identifier)))
-        (anon_fun_expr
-          (argument_patterns
-            (identifier_pattern
-              (identifier)))
-          (expr_body
-            (const
-              (string))))))))
+        (expr_body
+          (anon_fun_expr
+            (argument_patterns
+              (identifier_pattern
+                (identifier)))
+            (expr_body
+              (const
+                (string)))))))))
 
 ================================================================================
 modern_type_alias
@@ -182,13 +179,13 @@ Point :: { x: I64, y: I64 }
 --------------------------------------------------------------------------------
 
 (file
-  (nominal_type_def
+  (opaque_type_def
     (apply_type
       (concrete_type))
     (double_colon)
     (apply_type
       (concrete_type)))
-  (nominal_type_def
+  (opaque_type_def
     (apply_type
       (concrete_type))
     (double_colon)
@@ -215,7 +212,7 @@ print! : Str => {}
     (function_type
       (apply_type
         (concrete_type))
-      (effect_arrow)
+      (fat_arrow)
       (record_type))))
 
 ================================================================================
@@ -230,10 +227,9 @@ numbers : List(I64)
       (identifier))
     (apply_type
       (concrete_type)
-      (apply_type_args
-        (paren_type_args
-          (apply_type
-            (concrete_type)))))))
+      (apply_type_arg
+        (apply_type
+          (concrete_type))))))
 
 ================================================================================
 modern_block_body
@@ -255,33 +251,36 @@ compute = |x| {
         (argument_patterns
           (identifier_pattern
             (identifier)))
-        (block_body
-          (block_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (const
+                    (int)))))
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (const
+                    (int)))))
             (bin_op_expr
               (variable_expr
                 (identifier))
               (operator)
-              (const
-                (int))))
-          (block_declaration
-            (decl_left
-              (identifier_pattern
-                (identifier)))
-            (bin_op_expr
               (variable_expr
-                (identifier))
-              (operator)
-              (const
-                (int))))
-          (bin_op_expr
-            (variable_expr
-              (identifier))
-            (operator)
-            (variable_expr
-              (identifier))))))))
+                (identifier)))))))))
 
 ================================================================================
 modern_match_with_payload
@@ -342,7 +341,7 @@ update_name = |person| { ..person, name: "New" }
             (identifier)))
         (expr_body
           (record_expr
-            (record_update_ext
+            (spread_expr
               (variable_expr
                 (identifier)))
             (record_field_expr

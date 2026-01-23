@@ -1,43 +1,5 @@
 [
   {
-    "type": "ability_chain",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ability",
-          "named": true
-        },
-        {
-          "type": "module",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "ability_implementation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ability_name",
-          "named": true
-        },
-        {
-          "type": "record_expr",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "alias_type_def",
     "named": true,
     "fields": {
@@ -62,10 +24,6 @@
             "named": true
           },
           {
-            "type": "implements_implementation",
-            "named": true
-          },
-          {
             "type": "inferred",
             "named": true
           },
@@ -83,10 +41,6 @@
           },
           {
             "type": "tuple_type",
-            "named": true
-          },
-          {
-            "type": "where_implements",
             "named": true
           }
         ]
@@ -143,10 +97,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -164,10 +114,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -266,10 +212,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -287,10 +229,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -1289,10 +1227,6 @@
           "named": true
         },
         {
-          "type": "implements_definition",
-          "named": true
-        },
-        {
           "type": "import_expr",
           "named": true
         },
@@ -1302,6 +1236,10 @@
         },
         {
           "type": "module_header",
+          "named": true
+        },
+        {
+          "type": "nominal_type_def",
           "named": true
         },
         {
@@ -1514,10 +1452,6 @@
             "named": true
           },
           {
-            "type": "implements_implementation",
-            "named": true
-          },
-          {
             "type": "inferred",
             "named": true
           },
@@ -1539,10 +1473,6 @@
           },
           {
             "type": "type_annotation_paren",
-            "named": true
-          },
-          {
-            "type": "where_implements",
             "named": true
           }
         ]
@@ -1569,10 +1499,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -1594,10 +1520,6 @@
         },
         {
           "type": "type_annotation_paren",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -1838,80 +1760,6 @@
         },
         {
           "type": "then",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "implements_definition",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "implements",
-          "named": true
-        },
-        {
-          "type": "record_type",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "implements_implementation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ability_implementation",
-          "named": true
-        },
-        {
-          "type": "apply_type",
-          "named": true
-        },
-        {
-          "type": "bound_variable",
-          "named": true
-        },
-        {
-          "type": "implements",
-          "named": true
-        },
-        {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
-          "type": "inferred",
-          "named": true
-        },
-        {
-          "type": "parenthesized_type",
-          "named": true
-        },
-        {
-          "type": "record_type",
-          "named": true
-        },
-        {
-          "type": "tags_type",
-          "named": true
-        },
-        {
-          "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -2488,7 +2336,54 @@
     }
   },
   {
-    "type": "opaque_type_def",
+    "type": "nominal_methods",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "alias_type_def",
+          "named": true
+        },
+        {
+          "type": "annotation_type_def",
+          "named": true
+        },
+        {
+          "type": "expect",
+          "named": true
+        },
+        {
+          "type": "expr_body",
+          "named": true
+        },
+        {
+          "type": "import_expr",
+          "named": true
+        },
+        {
+          "type": "import_file_expr",
+          "named": true
+        },
+        {
+          "type": "nominal_type_def",
+          "named": true
+        },
+        {
+          "type": "opaque_type_def",
+          "named": true
+        },
+        {
+          "type": "value_declaration",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_type_def",
     "named": true,
     "fields": {},
     "children": {
@@ -2512,11 +2407,11 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
+          "type": "inferred",
           "named": true
         },
         {
-          "type": "inferred",
+          "type": "nominal_methods",
           "named": true
         },
         {
@@ -2534,9 +2429,56 @@
         {
           "type": "tuple_type",
           "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "opaque_type_def",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "apply_type",
+          "named": true
         },
         {
-          "type": "where_implements",
+          "type": "bound_variable",
+          "named": true
+        },
+        {
+          "type": "double_colon",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "inferred",
+          "named": true
+        },
+        {
+          "type": "nominal_methods",
+          "named": true
+        },
+        {
+          "type": "parenthesized_type",
+          "named": true
+        },
+        {
+          "type": "record_type",
+          "named": true
+        },
+        {
+          "type": "tags_type",
+          "named": true
+        },
+        {
+          "type": "tuple_type",
           "named": true
         }
       ]
@@ -2755,10 +2697,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -2776,10 +2714,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -3076,10 +3010,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -3097,10 +3027,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -3823,10 +3749,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -3844,10 +3766,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -3874,10 +3792,6 @@
             "named": true
           },
           {
-            "type": "implements_implementation",
-            "named": true
-          },
-          {
             "type": "inferred",
             "named": true
           },
@@ -3899,10 +3813,6 @@
           },
           {
             "type": "type_annotation_paren",
-            "named": true
-          },
-          {
-            "type": "where_implements",
             "named": true
           }
         ]
@@ -3929,10 +3839,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -3954,10 +3860,6 @@
         },
         {
           "type": "type_annotation_paren",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -4003,10 +3905,6 @@
           "named": true
         },
         {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
           "type": "inferred",
           "named": true
         },
@@ -4024,10 +3922,6 @@
         },
         {
           "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -4077,69 +3971,6 @@
         },
         {
           "type": "module",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "where_implements",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ability_chain",
-          "named": true
-        },
-        {
-          "type": "apply_type",
-          "named": true
-        },
-        {
-          "type": "bound_variable",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "implements",
-          "named": true
-        },
-        {
-          "type": "implements_implementation",
-          "named": true
-        },
-        {
-          "type": "inferred",
-          "named": true
-        },
-        {
-          "type": "parenthesized_type",
-          "named": true
-        },
-        {
-          "type": "record_type",
-          "named": true
-        },
-        {
-          "type": "tags_type",
-          "named": true
-        },
-        {
-          "type": "tuple_type",
-          "named": true
-        },
-        {
-          "type": "where",
-          "named": true
-        },
-        {
-          "type": "where_implements",
           "named": true
         }
       ]
@@ -4212,6 +4043,10 @@
   },
   {
     "type": "..",
+    "named": false
+  },
+  {
+    "type": ".{",
     "named": false
   },
   {
@@ -4295,14 +4130,6 @@
     "named": false
   },
   {
-    "type": "ability",
-    "named": true
-  },
-  {
-    "type": "ability_name",
-    "named": true
-  },
-  {
     "type": "and",
     "named": false
   },
@@ -4316,11 +4143,11 @@
   },
   {
     "type": "as",
-    "named": true
+    "named": false
   },
   {
     "type": "as",
-    "named": false
+    "named": true
   },
   {
     "type": "bound_variable",
@@ -4342,6 +4169,10 @@
     "type": "doc_comment",
     "named": true,
     "extra": true
+  },
+  {
+    "type": "double_colon",
+    "named": true
   },
   {
     "type": "effects",
@@ -4388,10 +4219,6 @@
     "named": true
   },
   {
-    "type": "implements",
-    "named": true
-  },
-  {
     "type": "import",
     "named": false
   },
@@ -4414,11 +4241,11 @@
   },
   {
     "type": "module",
-    "named": false
+    "named": true
   },
   {
     "type": "module",
-    "named": true
+    "named": false
   },
   {
     "type": "natural",
@@ -4482,10 +4309,6 @@
   },
   {
     "type": "uint_dot",
-    "named": true
-  },
-  {
-    "type": "where",
     "named": true
   },
   {

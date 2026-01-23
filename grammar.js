@@ -115,7 +115,6 @@ module.exports = grammar({
         $.opaque_type_def,
         $.nominal_type_def,
         $.expect,
-        $.implements_definition,
         $.value_declaration,
         $.expr_body,
         $.import_expr,
@@ -146,6 +145,7 @@ module.exports = grammar({
         repeat(choice($.value_declaration, $._expr_inner, $.body_expression)),
         "}"
       ),
+
     _expr_body_actual: ($) =>
 
       choice($.body_expression, $._expr_inner),
@@ -330,7 +330,7 @@ module.exports = grammar({
       ),
     anon_fun_expr: ($) =>
       prec.left(
-        seq("|", $.argument_patterns, "|", $.expr_body,),
+        seq("|", optional($.argument_patterns), "|", $.expr_body,),
       ),
 
     //RECORDS
@@ -357,7 +357,7 @@ module.exports = grammar({
         ",",
         sep1_tail(field("expr", $._expr_inner), ","),
       ),
-    tuple_expr: ($) => seq("(", optional_indent($._tuple_body, $), ")"),
+    tuple_expr: ($) => seq("(", $._tuple_body, ")"),
     todo_expr: ($) => "...",
 
     //####---------###
@@ -480,9 +480,7 @@ module.exports = grammar({
       seq(
         "platform",
         alias($.string, $.name),
-        $._indent,
         $.platform_header_body,
-        $._dedent,
       ),
     platform_header_body: ($) =>
       sep1(
@@ -497,6 +495,7 @@ module.exports = grammar({
 
     packages_list: ($) =>
       seq("{", sep_tail(choice($.package_ref, $.platform_ref), ","), "}"),
+
     package_ref: ($) => seq($.identifier, ":", $.string),
     platform_ref: ($) =>
       seq($.identifier, ":", "platform", alias($.string, $.package_uri)),
@@ -575,12 +574,64 @@ module.exports = grammar({
       seq($.annotation_pre_colon, ":", $._type_annotation),
     alias_type_def: ($) =>
       seq($.apply_type, ":", field("body", $._type_annotation)),
+
     opaque_type_def: ($) =>
-      seq($.apply_type, alias("::", $.double_colon), $._type_annotation, $.method_type_annotation),
+      seq(
+        $.apply_type,
+        alias("::", $.double_colon),
+        $._type_annotation,
+        optional($.nominal_methods),
+      ),
 
 
+    // Nominal types: `Name := Type.{ methods }`
+    // Use a tight ".{" token so this doesn't conflict with `Type.Module` paths.
     nominal_type_def: ($) =>
-      seq($.apply_type, alias(":=", $.colon_equals), $._type_annotation, $.method_type_annotation),
+      seq(
+        $.apply_type,
+        alias(":=", $.colon_equals),
+        $._type_annotation,
+        optional($.nominal_methods),
+      ),
+
+    // Nominal method blocks: `.{ ... }`
+    // Allow any top-level items (defs, types, expects, expressions) inside.
+    // Keep the grammar tight to avoid conflicts with module paths like `Type.Module`.
+    nominal_methods: ($) =>
+      seq(
+        token.immediate(".{"),
+        optional(
+         
+            repeat1($._module_elem),
+            $,
+        ),
+        "}",
+      ),
+
+    // Nominal method annotations use a specialized function type node to match the corpus.
+    method_annotation: ($) =>
+      seq(
+        $.annotation_pre_colon,
+        ":",
+        $.method_function_type,
+      ),
+
+    // Nominal method declarations mirror value declarations but require an anonymous function body.
+    method_declaration: ($) =>
+      seq(
+        alias($._assignment_pattern, $.decl_left),
+        "=",
+        $.anon_fun_expr,
+      ),
+
+    method_function_type: ($) =>
+      seq(
+        sep1(field("param", $.method_apply_type), ","),
+        $.arrow,
+        sep1($.method_apply_type, $.arrow),
+      ),
+
+    method_apply_type: ($) => alias($.apply_type, $.method_apply_type),
 
     _type_annotation: ($) =>
       prec.left(
@@ -591,11 +642,9 @@ module.exports = grammar({
           choice($._type_annotation_no_fun, $.function_type),
         ),
       ),
-    method_type_annotation: $ =>
-      seq(".",
-
-        $.body_expression)
-    ,
+    // method_type_annotation: $ =>
+    // seq(".", $.body_expression)
+    // ,
 
     //TODO i can probably get rid of this, because type_annotation_no_fun can eventually laev to (functio_type)
     _type_annotation_paren_fun: ($) =>
@@ -618,8 +667,8 @@ module.exports = grammar({
         $.parenthesized_type,
         $.record_type,
         $.apply_type,
-        $.where_implements,
-        $.implements_implementation,
+        // $.where_implements,
+        // $.implements_implementation,
         $.tags_type,
         $.bound_variable,
         $.inferred,
@@ -635,44 +684,16 @@ module.exports = grammar({
         ")",
       ),
 
-    implements: ($) => "implements",
 
-    where_implements: ($) =>
-      prec.right(
-        seq(
-          $._type_annotation_no_fun,
-          alias("where", $.where),
-          sep1($._implements_body, ","),
-        ),
-      ),
-    _implements_body: ($) => seq($.identifier, $.implements, $.ability_chain),
+    // where_implements: ($) =>
+    //   prec.right(
+    //     seq(
+    //       $._type_annotation_no_fun,
+    //       alias("where", $.where),
+    //       sep1($._implements_body, ","),
+    //     ),
+    //   ),
 
-    ability_implementation: ($) =>
-      seq(alias($._upper_identifier, $.ability_name), optional($.record_expr)),
-    implements_implementation: ($) =>
-      seq(
-        $._type_annotation_no_fun,
-        $.implements,
-        "[",
-        sep1_tail($.ability_implementation, ","),
-        "]",
-      ),
-
-    implements_definition: ($) =>
-      seq(
-        $._upper_identifier,
-        $.implements,
-        $.record_type,
-        // "{",
-        //   $._indent,
-        //   sep1($.alias, $._newline),
-        //   $._dedent,
-        // "}"
-      ),
-    //    init : {} -> f where f implements InspectFormatter
-    _ability: ($) =>
-      sep1end($.module, ".", alias($._upper_identifier, $.ability)),
-    ability_chain: ($) => prec.right(sep1($._ability, "&")),
 
     tags_type: ($) =>
       seq("[", optional($._tags_only), optional(","), optional(seq("..", $.type_variable)), optional(","), "]"),
@@ -786,7 +807,7 @@ module.exports = grammar({
         ),
       ),
 
-    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))/),
+    escape_char: ($) => imm(/\\([\\"\'ntbrafv]|(\$\{))|(\\u([0-9A-F]{4}))/),
     interpolation_char: ($) =>
       seq(
         imm("${"), //This is the new interpolation syntax
@@ -896,9 +917,7 @@ function sep1_tail(rule, separator) {
 function sep_tail(rule, separator) {
   return optional(sep1_tail(rule, separator));
 }
-function optional_indent(rule, $) {
-  return choice(seq($._indent, rule, $._dedent), rule);
-}
+
 function imm(x) {
   return token.immediate(x);
 }
