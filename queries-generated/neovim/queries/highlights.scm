@@ -6,7 +6,7 @@
 
 
 
-(module) @namespace
+(module) @module @module
 
 
 
@@ -28,12 +28,12 @@
 ; N/A
 ; @variable.other.member.private
 
-(field_name)                         @variable.other.member
+(field_name)                         @variable.member
 ; Note: This query matches the second identifier and all subsequent ones.
-(field_access_expr      (identifier) @variable.other.member)
+(field_access_expr      (identifier) @variable.member)
 ; Note: This query highlights module members as records instead of free variables,
 ;       which avoids highlighting them as out-of-scope vars.
-(variable_expr (module) (identifier) @variable.other.member)
+(variable_expr (module) (identifier) @variable.member)
 
 ; N/A
 ; @variable.other
@@ -47,25 +47,25 @@
 
 
 
-(inferred) @type.roc-special.inferred
+(inferred) @type
 
-(bound_variable)                                        @type.parameter
+(bound_variable)                                        @type
 
-(tag_type) @type.enum.variant
+(tag_type) @constructor
 
 ; N/A
 ; @type.enum
 
 ; Opinion: Type defs cross into documentation
 ;          and should be highlighted differently from normal code.
-(opaque_type_def (_ (concrete_type) @type.definition))
+(opaque_type_def (_ (concrete_type) @type))
 
-((concrete_type) @type.builtin
-  (#match? @type.builtin "^(Dec|F(32|64))"))
-((concrete_type) @type.builtin
-  (#match? @type.builtin "^[IU](8|16|32|64|128)"))
-((concrete_type) @type.builtin
-  (#match? @type.builtin "^(Bool|Box|Dec|Decode|Dict|Encode|Hash|Inspect|Int|List|Num|Result|Set|Str)"))
+((concrete_type) @type
+  (#match? @type "^(Dec|F(32|64))"))
+((concrete_type) @type
+  (#match? @type "^[IU](8|16|32|64|128)"))
+((concrete_type) @type
+  (#match? @type "^(Bool|Box|Dec|Decode|Dict|Encode|Hash|Inspect|Int|List|Num|Result|Set|Str)"))
 
 ; Note: See the lower-priority queries below for a `@type` query.
 
@@ -79,12 +79,12 @@
 
 
 
-(app_header (packages_list (platform_ref ((package_uri) @string.special.url))))
+(app_header (packages_list (platform_ref ((package_uri) @string))))
 
 
 
 
-(app_header (packages_list (platform_ref ((package_uri) @string.special.url))))
+(app_header (packages_list (platform_ref ((package_uri) @string))))
 
 ; N/A
 ; @string.special.symbol
@@ -104,12 +104,12 @@
 
 
 ; TODO: Differentiate between values, functions, and types.
-(import_expr (exposing ((ident) @special.roc-special.exposed)))
+(import_expr (exposing ((ident) )))
 
-(app_header (packages_list ((platform_ref) @special.roc-special.package)))
+(app_header (packages_list ((platform_ref) )))
 
 ; TODO: Differentiate between values, functions, and types.
-(app_header (provides_list ((identifier) @special.roc-special.provided)))
+(app_header (provides_list ((identifier) )))
 
 ; N/A
 ; @special
@@ -118,7 +118,7 @@
 
 [
   (interpolation_char)
-] @punctuation.special
+] 
 
 [
   ","
@@ -176,14 +176,14 @@
 ; @keyword.directive
 
 ; TODO: Also implement this for `return`.
-(suffix_operator "?" @keyword.control.return)
+(suffix_operator "?" )
 
 ; TODO: Implement this for `for` and `while`.
 ; @keyword.control.repeat
 
 [
   "import"
-] @keyword.control.import
+] @keyword.import
 
 ; N/A
 ; @keyword.control.exception
@@ -193,7 +193,7 @@
   "if"
 
   (match)
-] @keyword.control.conditional
+] @keyword.conditional
 
 [
   "app"
@@ -205,7 +205,7 @@
   "package"
   "platform"
   (to)
-] @keyword.control
+] @keyword
 
 ; N/A
 ; @keyword
@@ -214,7 +214,7 @@
 
 [
   "dbg"
-] @function.builtin
+] @keyword.debug
 
 (value_declaration (decl_left (identifier_pattern  (identifier) @function))
   (expr_body (anon_fun_expr)))
@@ -235,7 +235,7 @@
 [
   (decimal)
   (float)
-] @constant.numeric.float
+] @number.float
 
 [
   (iint)
@@ -243,19 +243,19 @@
   (natural)
   (uint)
   (xint)
-] @constant.numeric.integer
+] @number
 
 ; N/A
 ; @constant.numeric
 
-(escape_char) @constant.character.escape
+(escape_char) 
 
-(char) @constant.character
+(char) @character
 
-(variable_expr (module) @ignoreme.module "." (identifier) @constant.builtin.boolean
-  (#eq? @constant.builtin.boolean "true") (#eq? @ignoreme.module "Bool"))
-(variable_expr (module) @ignoreme.module "." (identifier) @constant.builtin.boolean
-  (#eq? @constant.builtin.boolean "false") (#eq? @ignoreme.module "Bool"))
+(variable_expr (module) @module "." (identifier) @boolean
+  (#eq? @boolean "true") (#eq? @module "Bool"))
+(variable_expr (module) @module "." (identifier) @boolean
+  (#eq? @boolean "false") (#eq? @module "Bool"))
 
 ; N/A
 ; @constant.builtin
@@ -265,9 +265,9 @@
 
 
 
-(line_comment) @comment.line
+(line_comment) @comment
 
-(doc_comment) @comment.block.documentation
+(doc_comment) @comment.documentation
 
 ; N/A
 ; @comment.block
@@ -282,22 +282,22 @@
 
 
 
-(record_field_type (field_name) @variable.other.member.roc-special.in-typedef)
+(record_field_type (field_name) @variable.member)
 
 
-(function_type "," @punctuation.delimiter.roc-special.in-typedef)
-(record_type   "," @punctuation.delimiter.roc-special.in-typedef)
-(tuple_type    "," @punctuation.delimiter.roc-special.in-typedef)
+(function_type "," @punctuation.delimiter)
+(record_type   "," @punctuation.delimiter)
+(tuple_type    "," @punctuation.delimiter)
 
-(parenthesized_type ["(" ")"] @punctuation.bracket.roc-special.in-typedef)
-(record_type        ["{" "}"] @punctuation.bracket.roc-special.in-typedef)
-(tags_type          ["[" "]"] @punctuation.bracket.roc-special.in-typedef)
-(tuple_type         ["(" ")"] @punctuation.bracket.roc-special.in-typedef)
+(parenthesized_type ["(" ")"] @punctuation.bracket)
+(record_type        ["{" "}"] @punctuation.bracket)
+(tags_type          ["[" "]"] @punctuation.bracket)
+(tuple_type         ["(" ")"] @punctuation.bracket)
 
 
 
-((module) @namespace.roc-special.builtin
-  (#match? @namespace.roc-special.builtin "^(Bool|Box|Decode|Dict|Encode|Hash|Inspect|List|Num|Result|Set|Str)"))
+((module) @module
+  (#match? @module "^(Bool|Box|Decode|Dict|Encode|Hash|Inspect|List|Num|Result|Set|Str)"))
 ; TODO(bugfix): `Set` yields an ERROR in `expect Set.from_list(paths_as_str) == Set.from_list(["nested-dir/a", "nested-dir/child"])`
 
 

@@ -6,7 +6,7 @@
 
 
 
-(module) @namespace
+(module) @namespace @module
 
 
 
