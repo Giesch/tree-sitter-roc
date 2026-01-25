@@ -71,6 +71,17 @@ You will need:
 1. The tree-sitter cli, which will be installed when you run `npm install`
 2. A c compiler like gcc or clang
 
+### Query templating
+This repo keeps a single set of base queries in the [queries](queries) folder and generates
+editor-specific query files via JSON mappings in [query-maps](query-maps). Each mapping
+contains per-file sections (highlights, indents, injections, locals, textobjects, tags) and
+must include every capture used in the base queries. Set a value to null or an empty string
+to drop a capture for a given editor.
+
+To generate query outputs, run:
+`npm run queries:generate`
+This writes output to queries-generated/<editor>/...
+
 ### Running
 Once you've made a change, to test it, run:
 ```bash
@@ -84,3 +95,22 @@ once you are happy with you changes run
 tree-sitter test --update
 ```
 and it will update the test files with your new parsed tree
+
+### Justfile
+Common tasks are available via [justfile](justfile):
+- `just test-gen` runs tree-sitter generate and tests.
+- `just test-gen-filter TEST=...` runs generate and filters tests.
+- `just test` runs tests only.
+- `just test-update` updates test corpus outputs.
+- `just build-all` builds WASM.
+- `just generate-check` ensures generated parser files are up-to-date.
+- `just queries-generate` generates editor query outputs.
+- `just queries-check` verifies generated queries are clean.
+- `just ci` runs generate-check, tests, and queries-check.
+
+### CI helpers
+The following npm scripts are designed for CI:
+- `npm run ts:generate-check` ensures parser generation is clean.
+- `npm run ts:test` runs parser tests.
+- `npm run queries:check` validates query templating output.
+- `npm run ci` runs all checks.

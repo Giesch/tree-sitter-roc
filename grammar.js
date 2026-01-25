@@ -74,6 +74,8 @@ module.exports = grammar({
     [$._module_elem, $.value_declaration],
     [$._module_elem, $.var_declaration],
     [$.operator_identifier, $.suffix_operator_identifier],
+
+    [$.long_upper_identifier, $.module]
     // [$.record_type],
   ],
   words: ($) => /\s+/,
@@ -86,7 +88,7 @@ module.exports = grammar({
 
     $._non_atomic_type,
     $._field_access_start,
-    $.module,
+    // $.module,
     $.tag,
     $.field_name,
     $.bound_variable,

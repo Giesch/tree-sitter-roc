@@ -1,0 +1,13 @@
+===
+module_long
+===
+a=Mod.Sub.func
+a=Mod.Sub.func(a)
+a=Mod.Sub.Tag(a)
+---
+===
+module_long_type
+===
+a:Mod.List(a)
+a:Mod.Sub.List(a)
+---

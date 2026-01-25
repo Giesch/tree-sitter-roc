@@ -4513,6 +4513,10 @@
     [
       "operator_identifier",
       "suffix_operator_identifier"
+    ],
+    [
+      "long_upper_identifier",
+      "module"
     ]
   ],
   "precedences": [],
@@ -4558,7 +4562,6 @@
     "expr_body_terminal",
     "_non_atomic_type",
     "_field_access_start",
-    "module",
     "tag",
     "field_name",
     "bound_variable",

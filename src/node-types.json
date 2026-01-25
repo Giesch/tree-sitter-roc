@@ -2770,6 +2770,21 @@
     }
   },
   {
+    "type": "module",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "module",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "module_header",
     "named": true,
     "fields": {},
@@ -4930,10 +4945,6 @@
   },
   {
     "type": "match",
-    "named": true
-  },
-  {
-    "type": "module",
     "named": true
   },
   {
