@@ -59,7 +59,6 @@ module.exports = grammar({
     [$.tag_pattern, $.tag_expr],
     //records are ambiguous with expresion bodies with parens this all makes sense:
     [$.record_field_pattern, $.record_field_expr],
-    [$.record_field_pattern, $.record_field_expr, $.long_identifier],
     [$.record_field_pattern, $.record_field_expr, $.annotation_pre_colon],
 
     [$.record_field_expr, $.long_identifier],
@@ -75,7 +74,6 @@ module.exports = grammar({
     [$._module_elem, $.var_declaration],
     [$.operator_identifier, $.suffix_operator_identifier],
 
-    [$.long_upper_identifier, $.module]
     // [$.record_type],
   ],
   words: ($) => /\s+/,
@@ -84,17 +82,16 @@ module.exports = grammar({
   inline: ($) => [
     //ELI: temporary while we work out if these two can just go
     // $.expr_body,
-    $.expr_body_terminal,
+    // $.expr_body_terminal,
 
     $._non_atomic_type,
-    $._field_access_start,
     // $.module,
-    $.tag,
+    // $.tag,
     $.field_name,
     $.bound_variable,
     $.operator,
     $.suffix_operator,
-    $.variable_expr,
+    // $.variable_expr,
     $.inferred,
   ],
 
@@ -119,31 +116,25 @@ module.exports = grammar({
 
     expect: ($) => prec(1, seq("expect", field("body", $.expr_body))),
     value_declaration: ($) =>
-      prec(
-        0,
-        seq(
-          //TODO i should be able to find a better solution that this silly /n
-          optional(seq($.annotation_type_def)),
+      seq(
+        //TODO i should be able to find a better solution that this silly /n
+        optional(seq($.annotation_type_def)),
 
-          // $._newline,
-          alias($._assignment_pattern, $.decl_left),
-          "=",
-          field("body", alias($.expr_body_terminal, $.expr_body)),
-        ),
+        // $._newline,
+        alias($._assignment_pattern, $.decl_left),
+        "=",
+        field("body", alias($.expr_body_terminal, $.expr_body)),
       ),
 
     // Mutable variable binding: `var $name = expr`
     // Supports optional type annotations for parity with value declarations.
     var_declaration: ($) =>
-      prec(
-        0,
-        seq(
-          optional(seq($.annotation_type_def)),
-          "var",
-          field("name", $.identifier),
-          "=",
-          field("body", alias($.expr_body_terminal, $.expr_body)),
-        ),
+      seq(
+        optional(seq($.annotation_type_def)),
+        "var",
+        field("name", $.identifier),
+        "=",
+        field("body", alias($.expr_body_terminal, $.expr_body)),
       ),
 
     /**
@@ -224,7 +215,9 @@ module.exports = grammar({
       ),
     early_return_expr: ($) => seq("return", field("body", $.expr_body)),
 
-    variable_expr: ($) => alias($.long_identifier, $.variable_expr),
+    variable_expr: ($) => prec(
+      3
+      , alias($.long_identifier, '')),
     parenthesized_expr: ($) => seq("(", field("expression", $.expr_body), ")"),
 
     if_expr: ($) =>
@@ -241,24 +234,12 @@ module.exports = grammar({
     else_if: ($) =>
       prec.left(seq("else", "if", field("guard", $._expr_inner), $.then)),
 
-    //Some things, like tags cannot be the start of a field access so we can't just use any expression
-    _field_access_start: ($) =>
-      // prec(
-      // 	PREC.FIELD_ACCESS_START,
-      choice(
-        $.variable_expr,
-        $.parenthesized_expr,
-        $.record_expr,
-        $.record_builder_expr,
-        $.function_call_pnc_expr,
-      ),
-    // ),
     field_access_expr: ($) =>
       prec.right(
         PREC.FIELD_ACCESS_START,
         seq(
           field("target", $._atom_expr),
-          repeat1(prec(1, seq(".", $.identifier))),
+          repeat1(seq(".", $.identifier)),
         ),
       ),
 
@@ -379,7 +360,9 @@ module.exports = grammar({
         $.spread_pattern,
       ),
 
-    identifier_pattern: ($) => $.identifier,
+    identifier_pattern: ($) => prec(
+      PREC.FIELD_ACCESS_START + 1
+      , $.identifier),
     cons_pattern: ($) => prec.left(0, seq($._pattern, "::", $._pattern)),
     disjunct_pattern: ($) => prec.left(0, seq($._pattern, "|", $._pattern)),
     conjunct_pattern: ($) => prec.left(0, seq($._pattern, "&", $._pattern)),
@@ -392,6 +375,7 @@ module.exports = grammar({
       prec.left(PREC.TAG, seq($.tag, repeat($._atomic_pattern))),
     tuple_pattern: ($) =>
       prec.right(
+        1,
         seq(
           "(",
           $._atomic_pattern,
@@ -824,11 +808,13 @@ module.exports = grammar({
     fat_arrow: ($) => "=>",
     field_name: ($) => alias($.identifier, $.field_name),
 
-    long_identifier: ($) => seq(repeat(seq($.module, ".")), $.identifier),
-    long_upper_identifier: ($) =>
+    long_identifier: ($) => prec.right(
+      PREC.FIELD_ACCESS_START + 1
+      , seq(repeat(seq($.module, imm("."))), $.identifier)),
+    _long_upper_identifier: ($) =>
       prec.right(
         seq(
-          repeat(seq($.module, ".")),
+          repeat(seq($.module, imm("."))),
           alias($._upper_identifier, $.identifier),
         ),
       ),
@@ -848,8 +834,8 @@ module.exports = grammar({
     _lower_identifier: ($) => /[\p{Ll}][\p{XID_Continue}]*/,
 
     _upper_identifier: ($) => /[\p{Lu}][\p{XID_Continue}]*/,
-    tag: ($) => alias($.long_upper_identifier, $.tag),
-    module: ($) => alias($._upper_identifier, $.module),
+    tag: ($) => $._long_upper_identifier,
+    module: ($) => $._upper_identifier,
     backslash: ($) => "\\",
 
     doc_comment: ($) => token(prec(-1, /##[^\n]*/)),
