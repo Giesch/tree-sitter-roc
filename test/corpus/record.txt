@@ -142,7 +142,7 @@ main= match a {
         (match)
         (variable_expr
           (identifier))
-        (match_branch
+        branch: (match_branch
           pattern: (tag_pattern
             (tag
               (identifier))

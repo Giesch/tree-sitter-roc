@@ -106,7 +106,7 @@ main=
                 (match)
                 (variable_expr
                   (identifier))
-                (match_branch
+                branch: (match_branch
                   pattern: (const_pattern
                     (int))
                   (fat_arrow)

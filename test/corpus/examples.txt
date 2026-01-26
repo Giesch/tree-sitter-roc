@@ -460,7 +460,7 @@ record_update_2 = |person| {
               (match)
               (variable_expr
                 (identifier))
-              (match_branch
+              branch: (match_branch
                 pattern: (tag_pattern
                   (tag
                     (identifier)))
@@ -511,7 +511,7 @@ record_update_2 = |person| {
               (match)
               (variable_expr
                 (identifier))
-              (match_branch
+              branch: (match_branch
                 pattern: (list_pattern)
                 (fat_arrow)
                 expr: (expr_body
@@ -629,7 +629,7 @@ record_update_2 = |person| {
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier))
@@ -1247,7 +1247,7 @@ stringify = |value| value.to_str()
                     (identifier))
                   expr: (variable_expr
                     (identifier)))
-                (match_branch
+                branch: (match_branch
                   pattern: (tuple_pattern
                     (tag_pattern
                       (tag
@@ -1371,7 +1371,7 @@ stringify = |value| value.to_str()
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier))
@@ -1427,7 +1427,7 @@ stringify = |value| value.to_str()
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier)))
@@ -1490,7 +1490,7 @@ stringify = |value| value.to_str()
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier)))

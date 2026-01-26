@@ -18,7 +18,7 @@ result = match color {
         (match)
         (variable_expr
           (identifier))
-        (match_branch
+        branch: (match_branch
           pattern: (tag_pattern
             (tag
               (identifier)))
@@ -62,7 +62,7 @@ x = match val {
         (match)
         (variable_expr
           (identifier))
-        (match_branch
+        branch: (match_branch
           pattern: (tag_pattern
             (tag
               (identifier))
@@ -100,7 +100,7 @@ len = match lst {
         (match)
         (variable_expr
           (identifier))
-        (match_branch
+        branch: (match_branch
           pattern: (list_pattern)
           (fat_arrow)
           expr: (expr_body
@@ -149,7 +149,7 @@ greet = match name {
         (match)
         (variable_expr
           (identifier))
-        (match_branch
+        branch: (match_branch
           pattern: (const_pattern
             (string))
           (fat_arrow)
@@ -208,7 +208,7 @@ a
                       (identifier)))))
               (variable_expr
                 (identifier)))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier)))
@@ -231,3 +231,50 @@ a
                         (int))))
                   (variable_expr
                     (identifier)))))))))))
+
+===
+match_with_comma
+===
+#technically wrong but common
+result = match color {
+    Red => "red",
+    Green => "green",
+    Blue => "blue",
+}
+---
+
+(file
+  (line_comment)
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        branch: (match_branch
+          pattern: (tag_pattern
+            (tag
+              (identifier)))
+          (fat_arrow)
+          expr: (expr_body
+            (const
+              (string))))
+        branch: (match_branch
+          pattern: (tag_pattern
+            (tag
+              (identifier)))
+          (fat_arrow)
+          expr: (expr_body
+            (const
+              (string))))
+        branch: (match_branch
+          pattern: (tag_pattern
+            (tag
+              (identifier)))
+          (fat_arrow)
+          expr: (expr_body
+            (const
+              (string))))))))

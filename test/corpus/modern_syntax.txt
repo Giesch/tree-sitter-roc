@@ -59,7 +59,7 @@ color_name = |color| match color {
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier)))
@@ -309,7 +309,7 @@ unwrap = |opt| match opt {
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (tag_pattern
                 (tag
                   (identifier))

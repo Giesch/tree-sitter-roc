@@ -148,7 +148,12 @@
   "&"
   ; "|" ; TODO: This conflicts with the `"|" @punctuation.bracket` query, so improve both.
   "<-"
+  "->"
   ".."
+  "!"
+  "*"
+  "-"
+  "^"
   (wildcard_pattern)
   (operator)
 ] @operator
@@ -167,7 +172,9 @@
 ; @keyword.storage.modifier
 
 ; TODO: Implement this for `and`, `or`, and any others.
-; @keyword.operator
+[
+   (suffix_operator)
+  ] @keyword.operator
 
 ; N/A
 ; @keyword.function
@@ -176,7 +183,7 @@
 ; @keyword.directive
 
 ; TODO: Also implement this for `return`.
-(suffix_operator )@keyword.control.return
+[(suffix_operator ) "return"]@keyword.control.return
 
 ; TODO: Implement this for `for` and `while`.
 ; @keyword.control.repeat
@@ -226,9 +233,8 @@
 
 
 
-[
-  (tag)
-] @constructor
+  (tag (identifier)@constructor)
+
 
 
 
@@ -252,10 +258,10 @@
 
 (char) @constant.character
 
-(variable_expr (module) @ignoreme.module "." (identifier) @constant.builtin.boolean
-  (#eq? @constant.builtin.boolean "true") (#eq? @ignoreme.module "Bool"))
-(variable_expr (module) @ignoreme.module "." (identifier) @constant.builtin.boolean
-  (#eq? @constant.builtin.boolean "false") (#eq? @ignoreme.module "Bool"))
+(tag_expr(tag (module) @ignoreme.module "." (identifier)@constant.builtin.boolean)
+  (#eq? @constant.builtin.boolean "True") (#eq? @ignoreme.module "Bool"))
+(tag_expr (tag(module) @module "." (identifier)@constant.builtin.boolean)
+  (#eq? @constant.builtin.boolean "False") (#eq? @module "Bool"))
 
 ; N/A
 ; @constant.builtin

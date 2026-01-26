@@ -286,13 +286,9 @@ module.exports = grammar({
       seq(
         $._match_start,
         "{",
-        $.match_branch,
-
-        optional($._more_match_branches),
+        repeat1(field("branch", $.match_branch)),
         "}",
       ),
-
-    _more_match_branches: ($) => repeat1(field("branch", $.match_branch)),
 
     match_branch: ($) =>
       seq(
@@ -301,6 +297,7 @@ module.exports = grammar({
         $.fat_arrow,
         //TODO: evaluate what options can got here
         field("expr", $.expr_body),
+        optional(",")
       ),
     tag_expr: ($) =>
       prec.left(seq($.tag, repeat(seq("(", $._atom_expr, ")")))),
@@ -844,34 +841,24 @@ module.exports = grammar({
     operator: ($) => alias($.operator_identifier, $.operator),
     operator_identifier: ($) =>
       choice(
-        // "?",
-        "??",
-        "+",
-        "-",
-        "*",
-        "/",
-        "//",
-        "%",
-        "^",
-        "==",
-        "!=",
-        "/=",
-        "<",
-        ">",
-        "<=",
-        ">=",
-        "or",
         "and",
-        // "++",
-        // "<|",
+        "or",
+        "&&",
+        "||",
+        "+",
+        "*",
+        "-",
+        "//",
+        "/",
+        "<=",
+        "<",
+        ">=",
+        ">",
+        "^",
+        "%",
         "->",
-        // "<<",
-        // ">>",
-        // "::",
-        // "</>",
-        // "<?>",
-        // "|.",
-        // "|=",
+        "==",
+        "!="
       ),
   },
 });

@@ -2657,7 +2657,7 @@
     "fields": {
       "branch": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "match_branch",
@@ -2716,10 +2716,6 @@
         },
         {
           "type": "match",
-          "named": true
-        },
-        {
-          "type": "match_branch",
           "named": true
         },
         {
@@ -4714,6 +4710,10 @@
     "named": false
   },
   {
+    "type": "&&",
+    "named": false
+  },
+  {
     "type": "'",
     "named": false
   },
@@ -4766,10 +4766,6 @@
     "named": false
   },
   {
-    "type": "/=",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
@@ -4807,10 +4803,6 @@
   },
   {
     "type": ">=",
-    "named": false
-  },
-  {
-    "type": "??",
     "named": false
   },
   {
@@ -5037,6 +5029,10 @@
   },
   {
     "type": "|",
+    "named": false
+  },
+  {
+    "type": "||",
     "named": false
   },
   {

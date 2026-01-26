@@ -79,7 +79,7 @@ record = |bytes, dict| match bytes {
             (match)
             (variable_expr
               (identifier))
-            (match_branch
+            branch: (match_branch
               pattern: (list_pattern
                 (const
                   (char)))
