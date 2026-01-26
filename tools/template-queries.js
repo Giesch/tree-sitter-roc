@@ -194,7 +194,15 @@ async function main() {
 
   let queriesDirs = args.queriesDirs.map((dir) => (path.isAbsolute(dir) ? dir : path.join(rootDir, dir)));
   if (queriesDirs.length === 0) {
-    queriesDirs = await findQueriesDirs(rootDir);
+    const defaultQueriesDir = path.join(rootDir, "queries");
+    try {
+      const stat = await fs.promises.stat(defaultQueriesDir);
+      if (stat.isDirectory()) {
+        queriesDirs = [defaultQueriesDir];
+      }
+    } catch (error) {
+      queriesDirs = await findQueriesDirs(rootDir);
+    }
   }
 
   if (queriesDirs.length === 0) {

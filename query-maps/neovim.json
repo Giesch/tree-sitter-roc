@@ -15,6 +15,7 @@
     "keyword.control.conditional": "keyword.conditional",
     "keyword.control.import": "keyword.import",
     "keyword.control.return": "",
+    "keyword.operator": "",
     "module": "module",
     "namespace": "module",
     "namespace.roc-special.builtin": "module",
@@ -67,5 +68,9 @@
     "definition.function": "",
     "name": "",
     "reference.call": ""
+  },
+  "rainbows": {
+    "rainbow.scope": "rainbow.scope",
+    "rainbow.bracket": "rainbow.bracket"
   }
 }

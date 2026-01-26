@@ -4,7 +4,7 @@ Reference it from your editor somehow.
 //TODO
 ### Helix
 
-My full config for roc is below: 
+My full config for roc is below:
 ```toml
 [language-server.roc-ls]
 command = "roc_language_server"
@@ -34,8 +34,13 @@ name = "roc"
 source = { git = "https://github.com/faldor20/tree-sitter-roc.git", rev = "whateverTheLatestCommitIs" }
 ```
 1. After adding the above to your `languages.toml`, run `hx --grammar fetch` and then `hx --grammar build`
-2. Add `~/.config/helix/runtime/queries/roc/` and put the files from this repository's `queries` directory in there.
-3. Run `hx --health roc` in a new shell and verify that your changes have been picked up correctly. If things are green, you're good to go. 
+2. Copy the queries into your helix config using:
+```bash
+mkdir -p '~/.config/helix/runtime/queries/roc/'
+cp ./queries-generated/helix/queries/* '~/.config/helix/runtime/queries/roc/'
+
+```
+3. Run `hx --health roc` in a new shell and verify that your changes have been picked up correctly. If things are green, you're good to go.
 
 ### Neovim
 
@@ -50,14 +55,14 @@ Install the [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter
 #### Manually
 
 Add the code in `neovim/roc.lua` to your config somewhere.
-Copy the folder `neovim/queries` to your neovim config at `after/` or in a custom neovim plugin at its root directory `./`
+Copy the folder `queries-generated/neovim/queries` to your neovim config at `after/` or in a custom neovim plugin at its root directory `./`
 eg: `after/queries/roc/highlights.lua`or `my_roc_plugin/queries/roc/highlights.lua`
 ### Emacs
 A [package providing a major mode for Roc](https://gitlab.com/tad-lispy/roc-mode "Emacs Roc mode") is under development.
 ## contributing
 ### Setup
 #### Nix
-Currently i use nix for development so to start the dev environment in nix run 
+Currently i use nix for development so to start the dev environment in nix run
 ```bash
 nix develop
 ```
@@ -86,10 +91,10 @@ This writes output to queries-generated/<editor>/...
 Once you've made a change, to test it, run:
 ```bash
 tree-sitter generate
-tree-sitter test 
+tree-sitter test
 ```
 if you add a new feature you should add a test to one of the test files in `test/corpus/*.txt`
-once you are happy with you changes run 
+once you are happy with you changes run
 
 ```bash
 tree-sitter test --update

@@ -2,7 +2,9 @@
 
 
 
-(concrete_type) @type
+[
+  (concrete_type)
+  (tag_type)] @type
 
 
 
@@ -212,9 +214,11 @@
   "package"
   "platform"
   (to)
+  "var"
 ] @keyword.control
 
 ; N/A
+;
 ; @keyword
 
 

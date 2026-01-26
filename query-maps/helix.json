@@ -95,5 +95,9 @@
     "definition.function": "definition.function",
     "name": "name",
     "reference.call": "reference.call"
+  },
+  "rainbows": {
+    "rainbow.scope": "rainbow.scope",
+    "rainbow.bracket": "rainbow.bracket"
   }
 }
