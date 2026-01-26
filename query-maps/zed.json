@@ -10,6 +10,7 @@
     "constant.numeric.integer": "number",
     "constructor": "constructor",
     "function": "function",
+    "function.method": "function",
     "function.builtin": "function",
     "ignoreme.module": "variable.special",
     "keyword.control": "keyword",

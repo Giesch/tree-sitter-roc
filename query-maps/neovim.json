@@ -10,6 +10,7 @@
     "constructor": "constructor",
     "function": "function",
     "function.builtin": "keyword.debug",
+    "function.method": "function.method.call",
     "ignoreme.module": "module",
     "keyword.control": "keyword",
     "keyword.control.conditional": "keyword.conditional",

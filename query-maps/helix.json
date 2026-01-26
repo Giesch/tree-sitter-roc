@@ -65,7 +65,8 @@
     "variable.other.member": "variable.other.member",
     "variable.other.member.private": "variable.other.member.private",
     "variable.other.member.roc-special.in-typedef": "variable.other.member.roc-special.in-typedef",
-    "variable.parameter": "variable.parameter"
+    "variable.parameter": "variable.parameter",
+    "function.method": "function.method"
   },
   "indents": {
     "indent": "indent"

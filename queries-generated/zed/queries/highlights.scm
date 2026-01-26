@@ -51,7 +51,7 @@
 
 (inferred) @type
 
-(bound_variable)                                        @type
+(bound_variable) @type
 
 (tag_type) @variant
 
@@ -215,6 +215,7 @@
   "platform"
   (to)
   "var"
+  (where)
 ] @keyword
 
 ; N/A
@@ -304,6 +305,8 @@
 (tags_type          ["[" "]"] @punctuation.bracket)
 (tuple_type         ["(" ")"] @punctuation.bracket)
 
+(static_dispatch_target
+(identifier)@function)
 
 
 ((module) @type

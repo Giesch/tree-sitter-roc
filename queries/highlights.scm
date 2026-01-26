@@ -51,7 +51,7 @@
 
 (inferred) @type.roc-special.inferred
 
-(bound_variable)                                        @type.parameter
+(bound_variable) @type.parameter
 
 (tag_type) @type.enum.variant
 
@@ -215,6 +215,7 @@
   "platform"
   (to)
   "var"
+  (where)
 ] @keyword.control
 
 ; N/A
@@ -304,6 +305,8 @@
 (tags_type          ["[" "]"] @punctuation.bracket.roc-special.in-typedef)
 (tuple_type         ["(" ")"] @punctuation.bracket.roc-special.in-typedef)
 
+(static_dispatch_target
+(identifier)@function.method)
 
 
 ((module) @namespace.roc-special.builtin
