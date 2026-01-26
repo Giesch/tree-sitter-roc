@@ -3,4 +3,4 @@
 ; ;;think about the structures that indicate the end of an indent and mark them with extend.prevent-once
 ; ;;find partially complete structures and create speciall rules for them.
 ; ;;eg: (ERROR (is))  
-(expr_body)@indent
+(expr_body)@indent.begin

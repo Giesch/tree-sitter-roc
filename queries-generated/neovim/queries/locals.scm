@@ -12,12 +12,12 @@
 ;             (identifier)@local.definition))
 
 (argument_patterns(identifier_pattern
-                (identifier)@local.definition.variable.parameter))
-(argument_patterns(_(identifier_pattern(identifier)@local.definition.variable.parameter)))
-(argument_patterns(_(_(identifier_pattern(identifier)@local.definition.variable.parameter))))
-(argument_patterns(_(_(_(identifier_pattern(identifier)@local.definition.variable.parameter)))))
-(argument_patterns(_(_(_(_(identifier_pattern(identifier)@local.definition.variable.parameter))))))
-(argument_patterns(_(_(_(_(_(identifier_pattern(identifier)@local.definition.variable.parameter)))))))
+                (identifier)@local.definition))
+(argument_patterns(_(identifier_pattern(identifier)@local.definition)))
+(argument_patterns(_(_(identifier_pattern(identifier)@local.definition))))
+(argument_patterns(_(_(_(identifier_pattern(identifier)@local.definition)))))
+(argument_patterns(_(_(_(_(identifier_pattern(identifier)@local.definition))))))
+(argument_patterns(_(_(_(_(_(identifier_pattern(identifier)@local.definition)))))))
 
 ; (exposes_list(ident)@local.reference)
 ; (import_expr(as)(module)@local.definition)

@@ -1,8 +1,7 @@
 ================================================================================
 value_decl
 ================================================================================
-var= a
-my_var= a
+x = a
 --------------------------------------------------------------------------------
 
 (file
@@ -10,24 +9,19 @@ my_var= a
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (variable_expr
-        (identifier))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier)))))
 
 ================================================================================
 value_decl_nested
 ================================================================================
-var= a
-var= 
+x = a
+x =
+{
 	b=10
 	b
+    }
 --------------------------------------------------------------------------------
 
 (file
@@ -35,38 +29,43 @@ var=
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (value_declaration
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier)))))
+    body: (expr_body
+      (body_expression
+        (value_declaration
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          body: (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 value_decl_typed
 ================================================================================
-var:Int
-var= a
-var =
+x :Int
+x = a
+x =
+  {
   p:Int
   p=10
   p
-var =
+  }
+x =
+  {
   p:Int
   p=
     10
   p
+  }
 --------------------------------------------------------------------------------
 
 (file
@@ -79,47 +78,49 @@ var =
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (value_declaration
-        (annotation_type_def
-          (annotation_pre_colon
-            (identifier))
-          (apply_type
-            (concrete_type)))
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier))))
+    body: (expr_body
+      (body_expression
+        (value_declaration
+          (annotation_type_def
+            (annotation_pre_colon
+              (identifier))
+            (apply_type
+              (concrete_type)))
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          body: (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier)))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (value_declaration
-        (annotation_type_def
-          (annotation_pre_colon
-            (identifier))
-          (apply_type
-            (concrete_type)))
-        (decl_left
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (const
-            (int))))
-      (variable_expr
-        (identifier)))))
+    body: (expr_body
+      (body_expression
+        (value_declaration
+          (annotation_type_def
+            (annotation_pre_colon
+              (identifier))
+            (apply_type
+              (concrete_type)))
+          (decl_left
+            (identifier_pattern
+              (identifier)))
+          body: (expr_body
+            (const
+              (int))))
+        (variable_expr
+          (identifier))))))
 
 ================================================================================
 value_record
@@ -140,23 +141,20 @@ value_record
           (field_name)
           (identifier_pattern
             (identifier)))))
-    (expr_body
+    body: (expr_body
       (function_call_pnc_expr
-        (variable_expr
+        caller: (variable_expr
           (identifier))
-        (variable_expr
+        args: (variable_expr
           (identifier))))))
 
 ================================================================================
 value_field
 ================================================================================
 a= Bool.field
-a= My.Module.field
 a= {a}.field
 a= ({a}).field
 a= a.field.b.c.d
-b=10
-
 --------------------------------------------------------------------------------
 
 (file
@@ -164,7 +162,7 @@ b=10
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (variable_expr
         (module)
         (identifier))))
@@ -172,147 +170,114 @@ b=10
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (variable_expr
-        (module)
-        (module)
+    body: (expr_body
+      (field_access_expr
+        target: (body_expression
+          (variable_expr
+            (identifier)))
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (field_access_expr
-        (record_expr
-          (record_field_expr
-            (field_name)))
+        target: (parenthesized_expr
+          expression: (expr_body
+            (body_expression
+              (variable_expr
+                (identifier)))))
         (identifier))))
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
+    body: (expr_body
       (field_access_expr
-        (parenthesized_expr
-          (expr_body
-            (record_expr
-              (record_field_expr
-                (field_name)))))
-        (identifier))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (field_access_expr
-        (variable_expr
+        target: (field_access_expr
+          target: (field_access_expr
+            target: (field_access_expr
+              target: (variable_expr
+                (identifier))
+              (identifier))
+            (identifier))
           (identifier))
-        (identifier)
-        (identifier)
-        (identifier)
-        (identifier))))
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (const
-        (int)))))
+        (identifier)))))
 
 ================================================================================
 value_ignore
 ================================================================================
 _= a
+_a= a
 --------------------------------------------------------------------------------
 
 (file
   (value_declaration
     (decl_left
       (wildcard_pattern))
-    (expr_body
+    body: (expr_body
+      (variable_expr
+        (identifier))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
       (variable_expr
         (identifier)))))
 
 ================================================================================
-value_shadowable
+value_var
 ================================================================================
-_shadow= a
+a:Str
+var a= ""
 --------------------------------------------------------------------------------
+
+(file
+  (var_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (apply_type
+        (concrete_type)))
+    name: (identifier)
+    body: (expr_body
+      (const
+        (string)))))
+
+================================================================================
+value_var_$
+================================================================================
+$a:Str
+var $a= ""
+--------------------------------------------------------------------------------
+
+(file
+  (var_declaration
+    (annotation_type_def
+      (annotation_pre_colon
+        (identifier))
+      (apply_type
+        (concrete_type)))
+    name: (identifier)
+    body: (expr_body
+      (const
+        (string)))))
+
+====
+value_tuple
+====
+tup = ("Roc", 1)
+----
 
 (file
   (value_declaration
     (decl_left
       (identifier_pattern
         (identifier)))
-    (expr_body
-      (variable_expr
-        (identifier)))))
-
-================================================================================
-value_effectful
-================================================================================
-effect! = |a| doThing!( a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))
-
-================================================================================
-value_effectful_shadowable
-================================================================================
-_effect! = |a| doThing!(a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))
-
-================================================================================
-value_error
-================================================================================
-effect! = |a| _ doThing!( a)
---------------------------------------------------------------------------------
-
-(file
-  (value_declaration
-    (decl_left
-      (identifier_pattern
-        (identifier)))
-    (expr_body
-      (anon_fun_expr
-        (argument_patterns
-          (identifier_pattern
-            (identifier)))
-        (expr_body
-          (function_call_pnc_expr
-            (variable_expr
-              (identifier))
-            (variable_expr
-              (identifier))))))))
+    body: (expr_body
+      (tuple_expr
+        expr: (const
+          (string))
+        expr: (const
+          (int))))))

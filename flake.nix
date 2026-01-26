@@ -11,7 +11,7 @@
       packages.default =
         pkgs:
         pkgs.callPackage
-          (flakelight.inputs.nixpkgs + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix")
+          (flakelight.inputs.nixpkgs + "/pkgs/development/tools/parsing/tree-sitter/build-grammar.nix")
           { }
           {
             language = "roc";
