@@ -254,7 +254,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "variable_expr"
+          "name": "_variable_expr"
         },
         {
           "type": "SYMBOL",
@@ -379,7 +379,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "variable_expr"
+                "name": "_variable_expr"
               },
               {
                 "type": "SYMBOL",
@@ -462,14 +462,14 @@
         }
       ]
     },
-    "variable_expr": {
+    "_variable_expr": {
       "type": "ALIAS",
       "content": {
         "type": "SYMBOL",
         "name": "long_identifier"
       },
-      "named": false,
-      "value": ""
+      "named": true,
+      "value": "variable_expr"
     },
     "parenthesized_expr": {
       "type": "SEQ",

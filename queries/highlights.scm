@@ -176,7 +176,7 @@
 ; @keyword.directive
 
 ; TODO: Also implement this for `return`.
-(suffix_operator "?" @keyword.control.return)
+(suffix_operator )@keyword.control.return
 
 ; TODO: Implement this for `for` and `while`.
 ; @keyword.control.repeat

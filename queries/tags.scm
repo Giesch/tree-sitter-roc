@@ -1,7 +1,6 @@
 ; Function calls
 (function_call_pnc_expr
-  caller:  (variable_expr
-      (identifier)@name ))@reference.call
+    caller: (variable_expr (identifier)@name ))@reference.call
 
 (function_call_pnc_expr
   caller: (field_access_expr (identifier)@name .))@reference.call

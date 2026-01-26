@@ -1,24 +1,5 @@
 [
   {
-    "type": "",
-    "named": false,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "module",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "alias_type_def",
     "named": true,
     "fields": {
@@ -4611,7 +4592,21 @@
   {
     "type": "variable_expr",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "module",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "where_implements",
@@ -4848,11 +4843,11 @@
   },
   {
     "type": "as",
-    "named": true
+    "named": false
   },
   {
     "type": "as",
-    "named": false
+    "named": true
   },
   {
     "type": "bound_variable",

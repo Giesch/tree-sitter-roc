@@ -158,7 +158,7 @@ module.exports = grammar({
         $.const,
         $.record_expr,
         $.record_builder_expr,
-        $.variable_expr,
+        $._variable_expr,
         $.parenthesized_expr,
         $.body_expression,
         $.operator_as_function_expr,
@@ -194,7 +194,7 @@ module.exports = grammar({
             $.const,
             $.parenthesized_expr,
             $.field_access_expr,
-            $.variable_expr,
+            $._variable_expr,
             $.function_call_pnc_expr,
           ),
         ),
@@ -212,8 +212,8 @@ module.exports = grammar({
       ),
     early_return_expr: ($) => seq("return", field("body", $.expr_body)),
 
-    variable_expr: ($) =>
-      alias($.long_identifier, ''),
+    _variable_expr: ($) =>
+      alias($.long_identifier, $.variable_expr),
     parenthesized_expr: ($) => seq("(", field("expression", $.expr_body), ")"),
 
     if_expr: ($) =>
