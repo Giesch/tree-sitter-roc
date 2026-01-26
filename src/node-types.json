@@ -3932,11 +3932,6 @@
     }
   },
   {
-    "type": "suffix_operator",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "tag",
     "named": true,
     "fields": {},
@@ -4820,10 +4815,6 @@
     "named": false
   },
   {
-    "type": "?",
-    "named": false
-  },
-  {
     "type": "??",
     "named": false
   },
@@ -5004,6 +4995,10 @@
   {
     "type": "return",
     "named": false
+  },
+  {
+    "type": "suffix_operator",
+    "named": true
   },
   {
     "type": "to",

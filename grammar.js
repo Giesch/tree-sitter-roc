@@ -275,7 +275,8 @@ module.exports = grammar({
     suffix_op_expr: ($) =>
       field(
         "part",
-        prec.left(PREC.PART + 1, seq($._atom_expr, $.suffix_operator)),
+        prec.left(PREC.PART + 1,
+          seq($._atom_expr, $.suffix_operator)),
       ),
 
     //PATTERN MATCHING
@@ -838,11 +839,12 @@ module.exports = grammar({
 
     suffix_operator: ($) =>
       alias($.suffix_operator_identifier, $.suffix_operator),
-    suffix_operator_identifier: ($) => "?",
+    suffix_operator_identifier: ($) => imm("?"),
+
     operator: ($) => alias($.operator_identifier, $.operator),
     operator_identifier: ($) =>
       choice(
-        "?",
+        // "?",
         "??",
         "+",
         "-",

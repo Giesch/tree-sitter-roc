@@ -4365,8 +4365,11 @@
       "value": "suffix_operator"
     },
     "suffix_operator_identifier": {
-      "type": "STRING",
-      "value": "?"
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "?"
+      }
     },
     "operator": {
       "type": "ALIAS",
@@ -4380,10 +4383,6 @@
     "operator_identifier": {
       "type": "CHOICE",
       "members": [
-        {
-          "type": "STRING",
-          "value": "?"
-        },
         {
           "type": "STRING",
           "value": "??"

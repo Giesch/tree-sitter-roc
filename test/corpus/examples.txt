@@ -721,13 +721,70 @@ record_update_2 = |person| {
             args: (variable_expr
               (identifier)))))))
   (line_comment)
-  (line_comment)
-  (line_comment)
-  (line_comment)
-  (line_comment)
-  (line_comment)
-  (line_comment)
-  (line_comment)
+  (annotation_type_def
+    (annotation_pre_colon
+      (identifier))
+    (function_type
+      param: (apply_type
+        (concrete_type)
+        type_args: (apply_type_arg
+          (apply_type
+            (concrete_type))))
+      (arrow)
+      (apply_type
+        (concrete_type)
+        type_args: (apply_type_arg
+          (apply_type
+            (concrete_type)))
+        type_args: (apply_type_arg
+          (inferred)))))
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
+      (anon_fun_expr
+        args: (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        body: (expr_body
+          (body_expression
+            (line_comment)
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              body: (expr_body
+                (suffix_op_expr
+                  part: (function_call_pnc_expr
+                    caller: (field_access_expr
+                      target: (variable_expr
+                        (identifier))
+                      (identifier)))
+                  part: (suffix_operator))))
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              body: (expr_body
+                (suffix_op_expr
+                  part: (function_call_pnc_expr
+                    caller: (variable_expr
+                      (module)
+                      (identifier))
+                    args: (variable_expr
+                      (identifier)))
+                  part: (suffix_operator))))
+            (function_call_pnc_expr
+              caller: (tag_expr
+                (tag
+                  (identifier)))
+              args: (bin_op_expr
+                part: (variable_expr
+                  (identifier))
+                part: (operator)
+                part: (const
+                  (int)))))))))
   (line_comment)
   (value_declaration
     (decl_left
