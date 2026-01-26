@@ -47,7 +47,7 @@ result = match color {
 match_with_wildcard
 ================================================================================
 x = match val {
-    Some v => v
+    Some(v) => v
     _ => 0
 }
 --------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ x = match val {
           pattern: (tag_pattern
             (tag
               (identifier))
-            (identifier_pattern
+            args: (identifier_pattern
               (identifier)))
           (fat_arrow)
           expr: (expr_body

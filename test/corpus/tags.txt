@@ -41,3 +41,33 @@ a= boolean_operators(Bool.True, Bool.False)
           (tag
             (module)
             (identifier)))))))
+
+===
+tag_pattern
+===
+a=
+  match a {
+  Test(hi) => hi
+  }
+---
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    body: (expr_body
+      (match_expr
+        (match)
+        (variable_expr
+          (identifier))
+        (match_branch
+          pattern: (tag_pattern
+            (tag
+              (identifier))
+            args: (identifier_pattern
+              (identifier)))
+          (fat_arrow)
+          expr: (expr_body
+            (variable_expr
+              (identifier))))))))

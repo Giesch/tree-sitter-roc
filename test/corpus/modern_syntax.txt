@@ -313,7 +313,7 @@ unwrap = |opt| match opt {
               pattern: (tag_pattern
                 (tag
                   (identifier))
-                (identifier_pattern
+                args: (identifier_pattern
                   (identifier)))
               (fat_arrow)
               expr: (expr_body

@@ -103,14 +103,14 @@ effect_demo! = |msg|
 	Stdout.line!(msg)
 
 # TODO issue #8646
-# question_postfix : List(Str) -> Try(I64, _)
-# question_postfix = |strings| {
-#     # `?` to immediately return the error if there is one
-#     first_str = strings.first()?
-#     first_num = I64.from_str(first_str)?
+question_postfix : List(Str) -> Try(I64, _)
+question_postfix = |strings| {
+    # `?` to immediately return the error if there is one
+    first_str = strings.first()?
+    first_num = I64.from_str(first_str)?
 
-#     Ok(first_num + 1)
-# }
+    Ok(first_num + 1)
+}
 
 # three dots for things you want to fill in later, will crash if implement_me_later(arg) is called
 implement_me_later = |_str| ...
@@ -633,7 +633,7 @@ record_update_2 = |person| {
               pattern: (tag_pattern
                 (tag
                   (identifier))
-                (wildcard_pattern))
+                args: (wildcard_pattern))
               (fat_arrow)
               expr: (expr_body
                 (const
@@ -642,10 +642,10 @@ record_update_2 = |person| {
               pattern: (tag_pattern
                 (tag
                   (identifier))
-                (tag_pattern
+                args: (tag_pattern
                   (tag
                     (identifier))
-                  (identifier_pattern
+                  args: (identifier_pattern
                     (identifier))))
               (fat_arrow)
               expr: (expr_body
@@ -662,7 +662,7 @@ record_update_2 = |person| {
               pattern: (tag_pattern
                 (tag
                   (identifier))
-                (wildcard_pattern))
+                args: (wildcard_pattern))
               (fat_arrow)
               expr: (expr_body
                 (const
@@ -1195,12 +1195,12 @@ stringify = |value| value.to_str()
                     (tag_pattern
                       (tag
                         (identifier))
-                      (identifier_pattern
+                      args: (identifier_pattern
                         (identifier)))
                     (tag_pattern
                       (tag
                         (identifier))
-                      (identifier_pattern
+                      args: (identifier_pattern
                         (identifier))))
                   (fat_arrow)
                   expr: (expr_body
@@ -1215,12 +1215,12 @@ stringify = |value| value.to_str()
                     (tag_pattern
                       (tag
                         (identifier))
-                      (identifier_pattern
+                      args: (identifier_pattern
                         (identifier)))
                     (tag_pattern
                       (tag
                         (identifier))
-                      (identifier_pattern
+                      args: (identifier_pattern
                         (identifier))))
                   (fat_arrow)
                   expr: (expr_body
@@ -1318,11 +1318,10 @@ stringify = |value| value.to_str()
               pattern: (tag_pattern
                 (tag
                   (identifier))
-                (tuple_pattern
-                  (identifier_pattern
-                    (identifier))
-                  (identifier_pattern
-                    (identifier))))
+                args: (identifier_pattern
+                  (identifier))
+                args: (identifier_pattern
+                  (identifier)))
               (fat_arrow)
               expr: (expr_body
                 (const

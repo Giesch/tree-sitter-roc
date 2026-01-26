@@ -1,12 +1,13 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 const PREC = {
+  PATTERN: 0,
   FIELD_ACCESS_START: 1,
   WHERE_IMPLEMENTS: 1,
-  PATTERN: 0,
   TAG: 1,
   FUNCTION_START: 1,
   PART: 1,
+  PREFIX_EXPR: 1,
   TYPEALIAS: 2,
   CASE_OF_BRANCH: 6,
   FUNC: 10,
@@ -61,7 +62,6 @@ module.exports = grammar({
     [$.record_field_pattern, $.record_field_expr],
     [$.record_field_pattern, $.record_field_expr, $.annotation_pre_colon],
 
-    [$.record_field_expr, $.long_identifier],
     [$.record_field_expr, $.annotation_pre_colon],
     [$.record_expr, $.body_expression, $.record_pattern],
 
@@ -72,7 +72,6 @@ module.exports = grammar({
     [$.list_pattern, $.list_expr],
     [$._module_elem, $.value_declaration],
     [$._module_elem, $.var_declaration],
-    [$.operator_identifier, $.suffix_operator_identifier],
 
     // [$.record_type],
   ],
@@ -154,25 +153,23 @@ module.exports = grammar({
     atomic expressions can be used as function args without being wrapped in parens
     */
     _atom_expr: ($) =>
-      prec.left(
-        choice(
-          $.anon_fun_expr,
-          $.const,
-          $.record_expr,
-          $.record_builder_expr,
-          $.variable_expr,
-          $.parenthesized_expr,
-          $.body_expression,
-          $.operator_as_function_expr,
-          $.tag_expr,
-          $.tuple_expr,
-          $.list_expr,
-          $.field_access_expr,
-          $.todo_expr,
-          $.function_call_pnc_expr,
-          $.suffix_op_expr,
-          $.prefixed_expression,
-        ),
+      choice(
+        $.anon_fun_expr,
+        $.const,
+        $.record_expr,
+        $.record_builder_expr,
+        $.variable_expr,
+        $.parenthesized_expr,
+        $.body_expression,
+        $.operator_as_function_expr,
+        $.tag_expr,
+        $.tuple_expr,
+        $.list_expr,
+        $.field_access_expr,
+        $.todo_expr,
+        $.function_call_pnc_expr,
+        $.suffix_op_expr,
+        $.prefixed_expression,
       ),
 
     _expr_inner: ($) =>
@@ -190,7 +187,7 @@ module.exports = grammar({
     //orginally this had all operators, but it was making the parser almost twice as large so I cut the list down
     prefixed_expression: ($) =>
       prec(
-        10,
+        PREC.PREFIX_EXPR,
         seq(
           choice("!", "*", "-", "^"),
           choice(
@@ -215,9 +212,8 @@ module.exports = grammar({
       ),
     early_return_expr: ($) => seq("return", field("body", $.expr_body)),
 
-    variable_expr: ($) => prec(
-      3
-      , alias($.long_identifier, '')),
+    variable_expr: ($) =>
+      alias($.long_identifier, ''),
     parenthesized_expr: ($) => seq("(", field("expression", $.expr_body), ")"),
 
     if_expr: ($) =>
@@ -254,7 +250,7 @@ module.exports = grammar({
 
     function_call_pnc_expr: ($) =>
       prec.right(
-        PREC.FUNC + 1,
+        PREC.FUNC,
         seq(
           field("caller", $._atom_expr),
           seq(imm("("), field("args", sep_tail($._expr_inner, ",")), ")"),
@@ -306,7 +302,7 @@ module.exports = grammar({
         field("expr", $.expr_body),
       ),
     tag_expr: ($) =>
-      prec.left(PREC.TAG, seq($.tag, repeat(seq("(", $._atom_expr, ")")))),
+      prec.left(seq($.tag, repeat(seq("(", $._atom_expr, ")")))),
     anon_fun_expr: ($) =>
       prec.left(seq("|",
         field("args", optional($.argument_patterns)), "|",
@@ -369,13 +365,12 @@ module.exports = grammar({
 
     paren_pattern: ($) => seq("(", $._pattern, ")"),
     spread_pattern: ($) =>
-      prec.left(0, seq("..", optional(seq("as", $.identifier)))),
+      prec.left(seq("..", optional(seq("as", $.identifier)))),
 
     tag_pattern: ($) =>
-      prec.left(PREC.TAG, seq($.tag, repeat($._atomic_pattern))),
+      prec.left(seq($.tag, optional(seq('(', field("args", sep_tail($._atomic_pattern, ",")), ')')))),
     tuple_pattern: ($) =>
       prec.right(
-        1,
         seq(
           "(",
           $._atomic_pattern,

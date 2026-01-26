@@ -128,7 +128,7 @@ main=
 record pattern
 ================================================================================
 main= match a {
-    Some { state: InCond, body, cond } => b
+    Some({ state: InCond(body, cond) }) => b
 }
 --------------------------------------------------------------------------------
 
@@ -146,16 +146,16 @@ main= match a {
           pattern: (tag_pattern
             (tag
               (identifier))
-            (record_pattern
+            args: (record_pattern
               (record_field_pattern
                 (field_name)
                 (tag_pattern
                   (tag
-                    (identifier))))
-              (record_field_pattern
-                (field_name))
-              (record_field_pattern
-                (field_name))))
+                    (identifier))
+                  args: (identifier_pattern
+                    (identifier))
+                  args: (identifier_pattern
+                    (identifier))))))
           (fat_arrow)
           expr: (expr_body
             (variable_expr

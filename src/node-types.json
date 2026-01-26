@@ -4037,65 +4037,88 @@
   {
     "type": "tag_pattern",
     "named": true,
-    "fields": {},
+    "fields": {
+      "args": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "conjunct_pattern",
+            "named": true
+          },
+          {
+            "type": "cons_pattern",
+            "named": true
+          },
+          {
+            "type": "const",
+            "named": true
+          },
+          {
+            "type": "const_pattern",
+            "named": true
+          },
+          {
+            "type": "disjunct_pattern",
+            "named": true
+          },
+          {
+            "type": "identifier_pattern",
+            "named": true
+          },
+          {
+            "type": "list_pattern",
+            "named": true
+          },
+          {
+            "type": "null",
+            "named": false
+          },
+          {
+            "type": "paren_pattern",
+            "named": true
+          },
+          {
+            "type": "record_pattern",
+            "named": true
+          },
+          {
+            "type": "spread_pattern",
+            "named": true
+          },
+          {
+            "type": "tag_pattern",
+            "named": true
+          },
+          {
+            "type": "tuple_pattern",
+            "named": true
+          },
+          {
+            "type": "wildcard_pattern",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "conjunct_pattern",
-          "named": true
-        },
-        {
-          "type": "cons_pattern",
-          "named": true
-        },
-        {
-          "type": "const",
-          "named": true
-        },
-        {
-          "type": "const_pattern",
-          "named": true
-        },
-        {
-          "type": "disjunct_pattern",
-          "named": true
-        },
-        {
-          "type": "identifier_pattern",
-          "named": true
-        },
-        {
-          "type": "list_pattern",
-          "named": true
-        },
-        {
-          "type": "paren_pattern",
-          "named": true
-        },
-        {
-          "type": "record_pattern",
-          "named": true
-        },
-        {
-          "type": "spread_pattern",
-          "named": true
-        },
-        {
           "type": "tag",
-          "named": true
-        },
-        {
-          "type": "tag_pattern",
-          "named": true
-        },
-        {
-          "type": "tuple_pattern",
-          "named": true
-        },
-        {
-          "type": "wildcard_pattern",
           "named": true
         }
       ]
