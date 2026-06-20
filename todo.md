@@ -16,7 +16,7 @@
 	- [ ] i believe tags is getting matched incorrectly
 
 
-- [x] Make a record pattern seperate from a record expression
+- [x] Make a record pattern separate from a record expression
 ##big
 make the whole system use nested expressions instead of a list of expressions
 there are a bunch of cases where we currently don't use expression list swhere we should becasue it causese issues
