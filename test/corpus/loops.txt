@@ -1,0 +1,178 @@
+================================================================================
+while_loop
+================================================================================
+while_loop = |limit| {
+	var $count = 0
+	var $sum = 0
+
+	while $count < limit {
+		$sum = $sum + $count
+		$count = $count + 1
+	}
+
+	$sum
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (var_declaration
+              (identifier)
+              (expr_body
+                (const
+                  (int))))
+            (var_declaration
+              (identifier)
+              (expr_body
+                (const
+                  (int))))
+            (while_expr
+              (bin_op_expr
+                (variable_expr
+                  (identifier))
+                (operator)
+                (variable_expr
+                  (identifier)))
+              (body_expression
+                (value_declaration
+                  (decl_left
+                    (identifier_pattern
+                      (identifier)))
+                  (expr_body
+                    (bin_op_expr
+                      (variable_expr
+                        (identifier))
+                      (operator)
+                      (variable_expr
+                        (identifier)))))
+                (value_declaration
+                  (decl_left
+                    (identifier_pattern
+                      (identifier)))
+                  (expr_body
+                    (bin_op_expr
+                      (variable_expr
+                        (identifier))
+                      (operator)
+                      (const
+                        (int)))))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+break_in_for_loop
+================================================================================
+break_in_for_loop = |bool_list| {
+	var $allTrue = True
+	for b in bool_list {
+		if b == False {
+			$allTrue = False
+			break
+		} else {
+			{}
+		}
+	}
+	$allTrue
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (var_declaration
+              (identifier)
+              (expr_body
+                (tag_expr
+                  (tag
+                    (identifier)))))
+            (for_expr
+              (identifier_pattern
+                (identifier))
+              (variable_expr
+                (identifier))
+              (body_expression
+                (if_expr
+                  (bin_op_expr
+                    (variable_expr
+                      (identifier))
+                    (operator)
+                    (tag_expr
+                      (tag
+                        (identifier))))
+                  (then
+                    (body_expression
+                      (value_declaration
+                        (decl_left
+                          (identifier_pattern
+                            (identifier)))
+                        (expr_body
+                          (tag_expr
+                            (tag
+                              (identifier)))))
+                      (break_expr)))
+                  (else
+                    (body_expression
+                      (body_expression))))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+crash_with_message
+================================================================================
+implement_me_later = |str| {
+	if str == "" {
+		str
+	} else {
+		crash "not implemented"
+	}
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (if_expr
+              (bin_op_expr
+                (variable_expr
+                  (identifier))
+                (operator)
+                (const
+                  (string)))
+              (then
+                (body_expression
+                  (variable_expr
+                    (identifier))))
+              (else
+                (body_expression
+                  (crash_expr
+                    (expr_body
+                      (const
+                        (string)))))))))))))

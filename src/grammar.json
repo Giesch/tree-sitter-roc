@@ -319,6 +319,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "while_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "break_expr"
+        },
+        {
+          "type": "SYMBOL",
           "name": "if_expr"
         },
         {
@@ -332,6 +340,10 @@
         {
           "type": "SYMBOL",
           "name": "dbg_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "crash_expr"
         }
       ]
     },
@@ -458,6 +470,57 @@
           "content": {
             "type": "SYMBOL",
             "name": "expr_body"
+          }
+        }
+      ]
+    },
+    "while_expr": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "while"
+        },
+        {
+          "type": "FIELD",
+          "name": "guard",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr_inner"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr_inner"
+          }
+        }
+      ]
+    },
+    "break_expr": {
+      "type": "STRING",
+      "value": "break"
+    },
+    "crash_expr": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "crash"
+        },
+        {
+          "type": "FIELD",
+          "name": "message",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expr_body_terminal"
+            },
+            "named": true,
+            "value": "expr_body"
           }
         }
       ]

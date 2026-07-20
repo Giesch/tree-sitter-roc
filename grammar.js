@@ -177,10 +177,13 @@ module.exports = grammar({
         $.bin_op_expr,
         $._atom_expr,
         $.for_expr,
+        $.while_expr,
+        $.break_expr,
         $.if_expr,
         $.match_expr,
         $.early_return_expr,
         $.dbg_expr,
+        $.crash_expr,
         // $.chain_expr,
       ),
 
@@ -211,6 +214,21 @@ module.exports = grammar({
         field("body", $._expr_inner),
       ),
     early_return_expr: ($) => seq("return", field("body", $.expr_body)),
+
+    // `while` loop expression: `while guard { ... }`
+    while_expr: ($) =>
+      seq(
+        "while",
+        field("guard", $._expr_inner),
+        field("body", $._expr_inner),
+      ),
+
+    // `break` exits a `for` or `while` loop early
+    break_expr: ($) => "break",
+
+    // `crash "message"` halts the program with a message
+    crash_expr: ($) =>
+      seq("crash", field("message", alias($.expr_body_terminal, $.expr_body))),
 
     _variable_expr: ($) =>
       alias($.long_identifier, $.variable_expr),
