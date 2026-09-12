@@ -405,3 +405,103 @@ check = |sum| {
                     (int)))))
             (variable_expr
               (identifier))))))))
+
+================================================================================
+modern_if_statement
+================================================================================
+f = |x| {
+	if x == 150 {
+		$count = $count + 1
+	}
+	x
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (if_expr
+              (bin_op_expr
+                (variable_expr
+                  (identifier))
+                (operator)
+                (const
+                  (int)))
+              (then
+                (body_expression
+                  (value_declaration
+                    (decl_left
+                      (identifier_pattern
+                        (identifier)))
+                    (expr_body
+                      (bin_op_expr
+                        (variable_expr
+                          (identifier))
+                        (operator)
+                        (const
+                          (int))))))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+modern_if_else_if_no_else
+================================================================================
+f = |x| {
+	if x == 1 {
+		dbg x
+	} else if x == 2 {
+		dbg x
+	}
+	x
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (if_expr
+              (bin_op_expr
+                (variable_expr
+                  (identifier))
+                (operator)
+                (const
+                  (int)))
+              (then
+                (body_expression
+                  (dbg_expr
+                    (expr_body
+                      (variable_expr
+                        (identifier))))))
+              (else_if
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (const
+                    (int)))
+                (then
+                  (body_expression
+                    (dbg_expr
+                      (expr_body
+                        (variable_expr
+                          (identifier))))))))
+            (variable_expr
+              (identifier))))))))

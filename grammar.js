@@ -240,18 +240,20 @@ module.exports = grammar({
     parenthesized_expr: ($) => seq("(", field("expression", $.expr_body), ")"),
 
     if_expr: ($) =>
-      seq(
-        "if",
-        field("guard", $._expr_inner),
-        $.then,
-        repeat($.else_if),
-        $.else,
+      prec.right(
+        seq(
+          "if",
+          field("guard", $._expr_inner),
+          $.then,
+          repeat($.else_if),
+          optional($.else),
+        ),
       ),
     else: ($) => seq("else", $._expr_inner),
     // biome-ignore lint/suspicious/noThenProperty: <explanation>
     then: ($) => seq(field("then", $._expr_inner)),
     else_if: ($) =>
-      prec.left(seq("else", "if", field("guard", $._expr_inner), $.then)),
+      prec.right(1, seq("else", "if", field("guard", $._expr_inner), $.then)),
 
     field_access_expr: ($) =>
       prec.right(
