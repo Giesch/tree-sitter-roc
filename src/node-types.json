@@ -439,6 +439,10 @@
             "named": true
           },
           {
+            "type": "expect_expr",
+            "named": true
+          },
+          {
             "type": "field_access_expr",
             "named": true
           },
@@ -1001,6 +1005,10 @@
             "named": true
           },
           {
+            "type": "expect_expr",
+            "named": true
+          },
+          {
             "type": "field_access_expr",
             "named": true
           },
@@ -1112,6 +1120,10 @@
               "named": true
             },
             {
+              "type": "expect_expr",
+              "named": true
+            },
+            {
               "type": "field_access_expr",
               "named": true
             },
@@ -1210,6 +1222,22 @@
       }
     },
     {
+      "type": "expect_expr",
+      "named": true,
+      "fields": {
+        "body": {
+          "multiple": false,
+          "required": true,
+          "types": [
+            {
+              "type": "expr_body",
+              "named": true
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": "exposes",
       "named": true,
       "fields": {},
@@ -1292,6 +1320,10 @@
           },
           {
             "type": "early_return_expr",
+            "named": true
+          },
+          {
+            "type": "expect_expr",
             "named": true
           },
           {
@@ -1570,6 +1602,10 @@
               "named": true
             },
             {
+              "type": "expect_expr",
+              "named": true
+            },
+            {
               "type": "field_access_expr",
               "named": true
             },
@@ -1673,6 +1709,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -1843,6 +1883,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -2153,6 +2197,10 @@
             "named": true
           },
           {
+            "type": "expect_expr",
+            "named": true
+          },
+          {
             "type": "field_access_expr",
             "named": true
           },
@@ -2261,6 +2309,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -2467,6 +2519,10 @@
             "named": true
           },
           {
+            "type": "expect_expr",
+            "named": true
+          },
+          {
             "type": "field_access_expr",
             "named": true
           },
@@ -2575,6 +2631,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -2849,6 +2909,10 @@
           },
           {
             "type": "early_return_expr",
+            "named": true
+          },
+          {
+            "type": "expect_expr",
             "named": true
           },
           {
@@ -3829,6 +3893,10 @@
             "named": true
           },
           {
+            "type": "expect_expr",
+            "named": true
+          },
+          {
             "type": "field_access_expr",
             "named": true
           },
@@ -4357,6 +4425,10 @@
               "named": true
             },
             {
+              "type": "expect_expr",
+              "named": true
+            },
+            {
               "type": "field_access_expr",
               "named": true
             },
@@ -4466,6 +4538,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -4910,6 +4986,10 @@
               "named": true
             },
             {
+              "type": "expect_expr",
+              "named": true
+            },
+            {
               "type": "field_access_expr",
               "named": true
             },
@@ -5013,6 +5093,10 @@
             },
             {
               "type": "early_return_expr",
+              "named": true
+            },
+            {
+              "type": "expect_expr",
               "named": true
             },
             {
@@ -5250,11 +5334,11 @@
     },
     {
       "type": "as",
-      "named": true
+      "named": false
     },
     {
       "type": "as",
-      "named": false
+      "named": true
     },
     {
       "type": "bound_variable",

@@ -373,3 +373,35 @@ expect 1 + 1 == 2
         part: (operator)
         part: (const
           (int))))))
+
+================================================================================
+modern_expect_statement
+================================================================================
+check = |sum| {
+	expect sum == 15
+	sum
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (expect_expr
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (const
+                    (int)))))
+            (variable_expr
+              (identifier))))))))

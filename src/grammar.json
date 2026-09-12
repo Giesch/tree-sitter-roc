@@ -344,6 +344,10 @@
         {
           "type": "SYMBOL",
           "name": "crash_expr"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expect_expr"
         }
       ]
     },
@@ -521,6 +525,23 @@
             },
             "named": true,
             "value": "expr_body"
+          }
+        }
+      ]
+    },
+    "expect_expr": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "expect"
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "SYMBOL",
+            "name": "expr_body"
           }
         }
       ]

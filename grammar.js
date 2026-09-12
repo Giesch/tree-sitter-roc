@@ -184,6 +184,7 @@ module.exports = grammar({
         $.early_return_expr,
         $.dbg_expr,
         $.crash_expr,
+        $.expect_expr,
         // $.chain_expr,
       ),
 
@@ -229,6 +230,10 @@ module.exports = grammar({
     // `crash "message"` halts the program with a message
     crash_expr: ($) =>
       seq("crash", field("message", alias($.expr_body_terminal, $.expr_body))),
+
+    // `expect condition` in statement position inside a function body
+    expect_expr: ($) =>
+      seq("expect", field("body", $.expr_body)),
 
     _variable_expr: ($) =>
       alias($.long_identifier, $.variable_expr),
