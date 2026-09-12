@@ -65,6 +65,11 @@ module.exports = grammar({
     [$.record_field_expr, $.annotation_pre_colon],
     [$.record_expr, $.body_expression, $.record_pattern],
 
+    // `NominalType.{ ... }` and a module-qualified name both start with
+    // an upper identifier followed by a dot
+    [$._long_upper_identifier, $.module],
+    [$.record_expr, $.record_pattern],
+
     // ===== conflicts that maybe don't need to exist ====
     [$._tags_only],
     [$.identifier_pattern, $.long_identifier],
@@ -157,6 +162,7 @@ module.exports = grammar({
         $.anon_fun_expr,
         $.const,
         $.record_expr,
+        $.nominal_expr,
         $.record_builder_expr,
         $._variable_expr,
         $.parenthesized_expr,
@@ -260,7 +266,15 @@ module.exports = grammar({
         PREC.FIELD_ACCESS_START,
         seq(
           field("target", $._atom_expr),
-          repeat1(seq(".", $.identifier)),
+          repeat1(
+            choice(
+              seq(".", $.identifier),
+              // `tuple.0` accesses a tuple element by position
+              seq(".", alias($.int, $.tuple_index)),
+              // `record.?field` yields the optional field as a Try
+              seq(".", imm("?"), $.identifier),
+            ),
+          ),
         ),
       ),
 
@@ -326,6 +340,10 @@ module.exports = grammar({
       ),
     tag_expr: ($) =>
       prec.left(seq($.tag, repeat(seq("(", $._atom_expr, ")")))),
+
+    // `NominalType.{ field: value }` builds a nominal type from its backing
+    // record
+    nominal_expr: ($) => prec.right(seq($.tag, imm("."), $.record_expr)),
     anon_fun_expr: ($) =>
       prec.left(seq("|",
         field("args", optional($.argument_patterns)), "|",
@@ -374,6 +392,7 @@ module.exports = grammar({
         $.paren_pattern,
         $.list_pattern,
         $.tag_pattern,
+        $.nominal_pattern,
         $.record_pattern,
         $.tuple_pattern,
         $.spread_pattern,
@@ -388,7 +407,16 @@ module.exports = grammar({
 
     paren_pattern: ($) => seq("(", $._pattern, ")"),
     spread_pattern: ($) =>
-      prec.left(seq("..", optional(seq("as", $.identifier)))),
+      prec.left(
+        seq(
+          "..",
+          optional(choice(seq("as", $.identifier), $.identifier)),
+        ),
+      ),
+
+    // `NominalType.{ field }` destructures a nominal type's backing record
+    nominal_pattern: ($) =>
+      prec.right(seq($.tag, imm("."), $.record_pattern)),
 
     tag_pattern: ($) =>
       prec.left(seq($.tag, optional(seq('(', field("args", sep_tail($._atomic_pattern, ",")), ')')))),
@@ -416,6 +444,7 @@ module.exports = grammar({
         $.tuple_pattern,
         $.record_pattern,
         $.tag_pattern,
+        $.nominal_pattern,
         //TODO: this shhouldn't realy be here
         $.spread_pattern,
         seq("(", $._pattern, ")"),
@@ -429,6 +458,11 @@ module.exports = grammar({
         $.list_pattern,
         $.tuple_pattern,
         $.record_pattern,
+        $.nominal_pattern,
+        // `Ok(x) = expr` destructures a tag. The tag call is ambiguous with a
+        // call expression until the `=`, and the expression form is the one
+        // the parser keeps, so accept it here.
+        alias($.function_call_pnc_expr, $.tag_pattern),
       ),
 
     list_pattern: ($) =>
@@ -702,7 +736,15 @@ module.exports = grammar({
         "}",
       ),
 
-    record_field_type: ($) => seq($.field_name, ":", $._type_annotation),
+    // `name ?: Type` marks the field optional; `name : Type ?? expr` gives it
+    // a default value
+    record_field_type: ($) =>
+      seq(
+        $.field_name,
+        choice(":", seq("?", ":")),
+        $._type_annotation,
+        optional(seq("??", field("default", $._expr_inner))),
+      ),
     /** can be used to make tag unions or records open*/
 
     annotation_pre_colon: ($) =>
@@ -814,7 +856,7 @@ module.exports = grammar({
     decimal: ($) => token(/[0-9]+(\.)?[0-9]*(dec)/),
     natural: ($) => token(/[0-9]+(nat)/),
 
-    float: ($) => token(/[0-9]+(\.)?[0-9]*(e-?[0-9]*)?((f32)|(f64))?/),
+    float: ($) => token(/[0-9]+(\.[0-9]+)?(e-?[0-9]*)?((f32)|(f64))?/),
     _hex_int: ($) => token(/0[x][0-9abcdefABCDEF]*/),
     _ocal_int: ($) => token(/0[o][0-7]*/),
     _binary_int: ($) => token(seq(/0[b]/, /[01][01_]*/)),
@@ -883,7 +925,12 @@ module.exports = grammar({
         "%",
         "->",
         "==",
-        "!="
+        "!=",
+        "|>",
+        "??",
+        "?",
+        "..<",
+        "..="
       ),
   },
 });

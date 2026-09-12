@@ -505,3 +505,435 @@ f = |x| {
                           (identifier))))))))
             (variable_expr
               (identifier))))))))
+
+================================================================================
+modern_pipe_operator
+================================================================================
+f = |parts| parts |> Str.join_with(", ")
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (bin_op_expr
+            (variable_expr
+              (identifier))
+            (operator)
+            (function_call_pnc_expr
+              (variable_expr
+                (module)
+                (identifier))
+              (const
+                (string)))))))))
+
+================================================================================
+modern_default_operator
+================================================================================
+f = |s| I64.from_str(s) ?? 0
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (bin_op_expr
+            (function_call_pnc_expr
+              (variable_expr
+                (module)
+                (identifier))
+              (variable_expr
+                (identifier)))
+            (operator)
+            (const
+              (int))))))))
+
+================================================================================
+modern_question_error_map_tag
+================================================================================
+f = |strings| {
+	first_str = strings.first() ? NoFirstError
+	Ok(first_str)
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (bin_op_expr
+                  (function_call_pnc_expr
+                    (field_access_expr
+                      (variable_expr
+                        (identifier))
+                      (identifier)))
+                  (operator)
+                  (tag_expr
+                    (tag
+                      (identifier))))))
+            (function_call_pnc_expr
+              (tag_expr
+                (tag
+                  (identifier)))
+              (variable_expr
+                (identifier)))))))))
+
+================================================================================
+modern_question_error_map_lambda
+================================================================================
+f = |strings| {
+	first_str = strings.first() ? |e| NoFirstError(e)
+	Ok(first_str)
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (bin_op_expr
+                  (function_call_pnc_expr
+                    (field_access_expr
+                      (variable_expr
+                        (identifier))
+                      (identifier)))
+                  (operator)
+                  (anon_fun_expr
+                    (argument_patterns
+                      (identifier_pattern
+                        (identifier)))
+                    (expr_body
+                      (function_call_pnc_expr
+                        (tag_expr
+                          (tag
+                            (identifier)))
+                        (variable_expr
+                          (identifier))))))))
+            (function_call_pnc_expr
+              (tag_expr
+                (tag
+                  (identifier)))
+              (variable_expr
+                (identifier)))))))))
+
+================================================================================
+modern_range_exclusive
+================================================================================
+f = |alphabet_size| {
+	for i in 0..<alphabet_size {
+		dbg i
+	}
+	alphabet_size
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (for_expr
+              (identifier_pattern
+                (identifier))
+              (bin_op_expr
+                (const
+                  (int))
+                (operator)
+                (variable_expr
+                  (identifier)))
+              (body_expression
+                (dbg_expr
+                  (expr_body
+                    (variable_expr
+                      (identifier))))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+modern_range_inclusive
+================================================================================
+f = |length_diff| {
+	for i in 0..=length_diff {
+		dbg i
+	}
+	length_diff
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (for_expr
+              (identifier_pattern
+                (identifier))
+              (bin_op_expr
+                (const
+                  (int))
+                (operator)
+                (variable_expr
+                  (identifier)))
+              (body_expression
+                (dbg_expr
+                  (expr_body
+                    (variable_expr
+                      (identifier))))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+modern_tag_destructure
+================================================================================
+f = |input| {
+	Ok(parsed_nums) = parse_lines(input)
+	parsed_nums
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (tag_pattern
+                  (tag_expr
+                    (tag
+                      (identifier)))
+                  (variable_expr
+                    (identifier))))
+              (expr_body
+                (function_call_pnc_expr
+                  (variable_expr
+                    (identifier))
+                  (variable_expr
+                    (identifier)))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+modern_nominal_destructure_pattern
+================================================================================
+destructure_nominal_type = |NominalTypeRecord.{ x }| x
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (nominal_pattern
+            (tag
+              (identifier))
+            (record_pattern
+              (record_field_pattern
+                (field_name)))))
+        (expr_body
+          (variable_expr
+            (identifier)))))))
+
+================================================================================
+modern_nominal_expr
+================================================================================
+f = destructure_nominal_type(NominalTypeRecord.{ x: 42 })
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (function_call_pnc_expr
+        (variable_expr
+          (identifier))
+        (nominal_expr
+          (tag
+            (identifier))
+          (record_expr
+            (record_field_expr
+              (field_name)
+              (expr_body
+                (const
+                  (int))))))))))
+
+================================================================================
+modern_record_rest_pattern
+================================================================================
+f = |person| {
+	{ email: _, ..rest } = person
+	rest
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (record_pattern
+                  (record_field_pattern
+                    (field_name)
+                    (wildcard_pattern))
+                  (spread_pattern
+                    (identifier))))
+              (expr_body
+                (variable_expr
+                  (identifier))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+modern_tuple_index_access
+================================================================================
+f = |tup| { x: 1.0, y: tup.1 }
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (record_expr
+            (record_field_expr
+              (field_name)
+              (expr_body
+                (const
+                  (float))))
+            (record_field_expr
+              (field_name)
+              (expr_body
+                (field_access_expr
+                  (variable_expr
+                    (identifier))
+                  (tuple_index))))))))))
+
+================================================================================
+modern_optional_field_access
+================================================================================
+f = |config| config.?timeout_ms
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (field_access_expr
+            (variable_expr
+              (identifier))
+            (identifier)))))))
+
+================================================================================
+modern_optional_and_default_field_types
+================================================================================
+ServerConfig := { host : Str, port : U16 ?? 8080, timeout_ms ?: U64 }
+--------------------------------------------------------------------------------
+
+(file
+  (nominal_type_def
+    (apply_type
+      (concrete_type))
+    (colon_equals)
+    (record_type
+      (record_field_type
+        (field_name)
+        (apply_type
+          (concrete_type)))
+      (record_field_type
+        (field_name)
+        (apply_type
+          (concrete_type))
+        (const
+          (int)))
+      (record_field_type
+        (field_name)
+        (apply_type
+          (concrete_type))))))
