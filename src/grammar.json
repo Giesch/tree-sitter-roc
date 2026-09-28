@@ -155,6 +155,79 @@
         }
       ]
     },
+    "_block_tag_declaration": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "decl_left_tag"
+          },
+          "named": true,
+          "value": "decl_left"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expr_body_terminal"
+            },
+            "named": true,
+            "value": "expr_body"
+          }
+        }
+      ]
+    },
+    "decl_left_tag": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_tag_assignment_pattern"
+      },
+      "named": true,
+      "value": "tag_pattern"
+    },
+    "_tag_assignment_pattern": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "tag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_assignment_open"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "args",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_pattern_args"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
     "_module_var_declaration": {
       "type": "SEQ",
       "members": [
@@ -227,12 +300,25 @@
                 "name": "value_declaration"
               },
               {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_block_tag_declaration"
+                },
+                "named": true,
+                "value": "value_declaration"
+              },
+              {
                 "type": "SYMBOL",
                 "name": "var_declaration"
               },
               {
                 "type": "SYMBOL",
                 "name": "local_type_binding"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expect"
               },
               {
                 "type": "SYMBOL",
@@ -2259,14 +2345,6 @@
         {
           "type": "SYMBOL",
           "name": "record_pattern"
-        },
-        {
-          "type": "PREC",
-          "value": 3,
-          "content": {
-            "type": "SYMBOL",
-            "name": "tag_pattern"
-          }
         },
         {
           "type": "SYMBOL",
@@ -6297,6 +6375,10 @@
     {
       "type": "SYMBOL",
       "name": "_tight_binary_minus"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_tag_assignment_open"
     }
   ],
   "inline": [

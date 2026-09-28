@@ -51,6 +51,7 @@ module.exports = grammar({
     $._else_if_start,
     $._record_function_param_comma,
     $._tight_binary_minus,
+    $._tag_assignment_open,
   ],
 
   extras: ($) => [$.line_comment, $.doc_comment, /[ \s\f\uFEFF\u2060\u200B]|\\\r?n/],
@@ -129,6 +130,20 @@ module.exports = grammar({
 
     value_declaration: ($) => seq(optional($.annotation_type_def), $._module_value_declaration),
 
+    // Only block declarations accept plain tag destructuring. The opener is
+    // emitted only when the matching closing parenthesis precedes assignment.
+    _block_tag_declaration: ($) =>
+      seq(
+        alias($.decl_left_tag, $.decl_left),
+        "=",
+        field("body", alias($.expr_body_terminal, $.expr_body)),
+      ),
+
+    decl_left_tag: ($) => alias($._tag_assignment_pattern, $.tag_pattern),
+
+    _tag_assignment_pattern: ($) =>
+      seq($.tag, $._tag_assignment_open, optional(field("args", $._pattern_args)), ")"),
+
     _module_var_declaration: ($) =>
       seq(
         "var",
@@ -147,7 +162,14 @@ module.exports = grammar({
       seq(
         "{",
         repeat1(
-          choice($.value_declaration, $.var_declaration, $.local_type_binding, $._expr_inner),
+          choice(
+            $.value_declaration,
+            alias($._block_tag_declaration, $.value_declaration),
+            $.var_declaration,
+            $.local_type_binding,
+            $.expect,
+            $._expr_inner,
+          ),
         ),
         "}",
       ),
@@ -472,7 +494,6 @@ module.exports = grammar({
         $.list_pattern,
         $.tuple_pattern,
         $.record_pattern,
-        prec(3, $.tag_pattern),
         $.nominal_constructor_pattern,
         $.nominal_record_pattern,
       ),

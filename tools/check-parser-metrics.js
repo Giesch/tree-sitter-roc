@@ -13,10 +13,13 @@ const path = require("path");
 const parserPath = path.join(__dirname, "..", "src", "parser.c");
 const source = fs.readFileSync(parserPath, "utf8");
 
+// Block-only tag destructuring adds a dedicated declaration path and external
+// opener. The pinned generator produces 3349 states, 947 large states, and
+// 5518076 bytes; retain small headroom without masking a state explosion.
 const limits = {
-  states: readLimit("ROC_MAX_PARSER_STATES", 3336),
-  largeStates: readLimit("ROC_MAX_LARGE_STATES", 943),
-  bytes: readLimit("ROC_MAX_PARSER_BYTES", 5488228),
+  states: readLimit("ROC_MAX_PARSER_STATES", 3360),
+  largeStates: readLimit("ROC_MAX_LARGE_STATES", 955),
+  bytes: readLimit("ROC_MAX_PARSER_BYTES", 5550000),
 };
 
 const metrics = {
