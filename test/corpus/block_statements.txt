@@ -185,6 +185,70 @@ check = |input| {
               (identifier))))))))
 
 ================================================================================
+block_tag_interpolated_string_and_call
+================================================================================
+check = |input| {
+    Pair("${Some(")")}", inner) = input
+    called = Pair("${Some(")")}", inner)
+    inner
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (tag_pattern
+                  (tag
+                    (identifier))
+                  (const
+                    (string
+                      (interpolation_char
+                        (function_call_pnc_expr
+                          (tag_expr
+                            (tag
+                              (identifier)))
+                          (const
+                            (string))))))
+                  (identifier_pattern
+                    (identifier))))
+              (expr_body
+                (variable_expr
+                  (identifier))))
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (function_call_pnc_expr
+                  (tag_expr
+                    (tag
+                      (identifier)))
+                  (const
+                    (string
+                      (interpolation_char
+                        (function_call_pnc_expr
+                          (tag_expr
+                            (tag
+                              (identifier)))
+                          (const
+                            (string))))))
+                  (variable_expr
+                    (identifier)))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
 block_break_inside_for
 ================================================================================
 check = |items| {

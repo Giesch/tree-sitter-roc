@@ -167,7 +167,8 @@ static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 
 // The opening parenthesis is the whole token; the grammar parses the payload.
-// Count every advancement, including quotes and comments, to cap lookahead.
+// Deliberately limit lookahead to 16384 characters, including quotes and comments,
+// so a distant closing parenthesis cannot make scanning unbounded.
 #define TAG_MAX_LOOKAHEAD 16384
 static bool tag_advance(TSLexer *lexer, unsigned *seen) {
   if (*seen >= TAG_MAX_LOOKAHEAD || lexer->eof(lexer)) return false;
@@ -176,9 +177,15 @@ static bool tag_advance(TSLexer *lexer, unsigned *seen) {
   return true;
 }
 
+typedef struct {
+  int32_t closing;
+  bool triple;
+  unsigned consecutive;
+} TagLookaheadFrame;
+
 static bool tag_assignment_open(TSLexer *lexer) {
   enum { MAX_DEPTH = 256 };
-  char closing[MAX_DEPTH] = {')'};
+  TagLookaheadFrame frames[MAX_DEPTH] = {{.closing = ')'}};
   unsigned depth = 1;
   unsigned seen = 0;
   advance(lexer);
@@ -186,6 +193,34 @@ static bool tag_assignment_open(TSLexer *lexer) {
 
   while (!lexer->eof(lexer)) {
     int32_t ch = lexer->lookahead;
+    TagLookaheadFrame *frame = &frames[depth - 1];
+    if (frame->closing == '"' || frame->closing == '\'' ||
+        frame->closing == '`') {
+      if (ch == '\\') {
+        if (!tag_advance(lexer, &seen) || !tag_advance(lexer, &seen)) return false;
+        frame->consecutive = 0;
+        continue;
+      }
+      if (ch == '$') {
+        if (!tag_advance(lexer, &seen)) return false;
+        frame->consecutive = 0;
+        if (lexer->lookahead == '{') {
+          if (depth == MAX_DEPTH) return false;
+          frames[depth++] = (TagLookaheadFrame){.closing = '}'};
+          if (!tag_advance(lexer, &seen)) return false;
+        }
+        continue;
+      }
+      if (ch == frame->closing) {
+        ++frame->consecutive;
+        if (!tag_advance(lexer, &seen)) return false;
+        if (!frame->triple || frame->consecutive == 3) --depth;
+      } else {
+        frame->consecutive = 0;
+        if (!tag_advance(lexer, &seen)) return false;
+      }
+      continue;
+    }
     if (ch == '#') {
       do {
         if (!tag_advance(lexer, &seen)) return false;
@@ -193,47 +228,23 @@ static bool tag_assignment_open(TSLexer *lexer) {
       continue;
     }
     if (ch == '"' || ch == '\'' || ch == '`') {
-      int32_t quote = ch;
-      if (!tag_advance(lexer, &seen)) return false;
-      bool triple = false;
-      if (quote == '"' && lexer->lookahead == '"') {
+      if (depth == MAX_DEPTH || !tag_advance(lexer, &seen)) return false;
+      if (ch == '"' && lexer->lookahead == '"') {
         if (!tag_advance(lexer, &seen)) return false;
-        if (lexer->lookahead == '"') {
-          if (!tag_advance(lexer, &seen)) return false;
-          triple = true;
-        } else {
-          // Empty string: both quotes have already been consumed.
-          continue;
-        }
+        if (lexer->lookahead != '"') continue; // Empty string.
+        if (!tag_advance(lexer, &seen)) return false;
+        frames[depth++] = (TagLookaheadFrame){.closing = ch, .triple = true};
+      } else {
+        frames[depth++] = (TagLookaheadFrame){.closing = ch};
       }
-      unsigned consecutive = 0;
-      bool closed = false;
-      while (!lexer->eof(lexer)) {
-        if (lexer->lookahead == '\\') {
-          if (!tag_advance(lexer, &seen) || !tag_advance(lexer, &seen)) return false;
-          consecutive = 0;
-          continue;
-        }
-        if (lexer->lookahead == quote) {
-          ++consecutive;
-          if (!tag_advance(lexer, &seen)) return false;
-          if (!triple || consecutive == 3) {
-            closed = true;
-            break;
-          }
-        } else {
-          consecutive = 0;
-          if (!tag_advance(lexer, &seen)) return false;
-        }
-      }
-      if (!closed) return false;
       continue;
     }
     if (ch == '(' || ch == '[' || ch == '{') {
       if (depth == MAX_DEPTH) return false;
-      closing[depth++] = ch == '(' ? ')' : ch == '[' ? ']' : '}';
+      frames[depth++] = (TagLookaheadFrame){
+          .closing = ch == '(' ? ')' : ch == '[' ? ']' : '}'};
     } else if (ch == ')' || ch == ']' || ch == '}') {
-      if (ch != closing[depth - 1]) return false;
+      if (ch != frame->closing) return false;
       if (--depth == 0) {
         if (!tag_advance(lexer, &seen)) return false;
         while (!lexer->eof(lexer)) {
