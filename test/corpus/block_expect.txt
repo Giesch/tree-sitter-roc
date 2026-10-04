@@ -136,3 +136,100 @@ expect 1 == 1
         (operator)
         (const
           (int))))))
+
+================================================================================
+block_identifier_with_expect_prefix
+================================================================================
+check = |sum| {
+    expected = sum
+    expected
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (value_declaration
+              (decl_left
+                (identifier_pattern
+                  (identifier)))
+              (expr_body
+                (variable_expr
+                  (identifier))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+block_expect_condition_on_next_line
+================================================================================
+check = |sum| {
+    expect
+        sum == 15
+    sum
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (expect
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (const
+                    (int)))))
+            (variable_expr
+              (identifier))))))))
+
+================================================================================
+block_expect_condition_continues_with_pipe
+================================================================================
+check = |sum| {
+    expect sum
+        |> is_valid
+    sum
+}
+--------------------------------------------------------------------------------
+
+(file
+  (value_declaration
+    (decl_left
+      (identifier_pattern
+        (identifier)))
+    (expr_body
+      (anon_fun_expr
+        (argument_patterns
+          (identifier_pattern
+            (identifier)))
+        (expr_body
+          (body_expression
+            (expect
+              (expr_body
+                (bin_op_expr
+                  (variable_expr
+                    (identifier))
+                  (operator)
+                  (variable_expr
+                    (identifier)))))
+            (variable_expr
+              (identifier))))))))
