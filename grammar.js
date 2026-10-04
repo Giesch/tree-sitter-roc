@@ -147,7 +147,7 @@ module.exports = grammar({
       seq(
         "{",
         repeat1(
-          choice($.value_declaration, $.var_declaration, $.local_type_binding, $._expr_inner),
+          choice($.value_declaration, $.var_declaration, $.local_type_binding, $.expect, $._expr_inner),
         ),
         "}",
       ),
