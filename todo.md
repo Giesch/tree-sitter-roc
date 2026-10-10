@@ -54,10 +54,12 @@ I need to fundimentally rework things to support inline if statements
       `basic-webserver/platform/Sqlite.roc` uses match branches such as
       `-1 => ...`; a contextual pattern rule currently steals negative values in
       record expressions because expressions and patterns intentionally conflict.
-- [ ] Disambiguate plain tag destructuring assignments from tag calls.
-      `basic-webserver/platform/Server.roc` uses
-      `FileRoot(root) = route.files`; nominal `Prepared.(value) = source` is
-      supported, but the plain tag form still reduces as an expression before `=`.
+- [x] Disambiguate plain tag destructuring assignments from tag calls inside
+      blocks. The scanner recognizes `FileRoot(root) = route.files` only when
+      the matching `)` precedes assignment; its arguments remain pattern nodes.
+      Module-level plain tag assignments are not supported. Scanner lookahead
+      is capped at 16,384 code points and 256 nested delimiters, so larger
+      assignment-pattern payloads are not recognized as tag assignments.
 - [x] Move spaced `?` and `??` into the binary operator chain and unify signed
       numeric parsing. This reduced the generated parser from about 12.7 MB / 7,467
       states to about 6.5 MB / 3,799 states without reducing real-source coverage.

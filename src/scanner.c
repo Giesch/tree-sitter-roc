@@ -52,6 +52,7 @@ enum TokenType {
   ELSE_IF_START,
   RECORD_FUNCTION_PARAM_COMMA,
   TIGHT_BINARY_MINUS,
+  TAG_ASSIGNMENT_OPEN,
 };
 
 typedef enum {
@@ -165,6 +166,109 @@ static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
 static inline void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
 
+// The opening parenthesis is the whole token; the grammar parses the payload.
+// Deliberately limit lookahead to 16384 characters, including quotes and comments,
+// so a distant closing parenthesis cannot make scanning unbounded.
+#define TAG_MAX_LOOKAHEAD 16384
+static bool tag_advance(TSLexer *lexer, unsigned *seen) {
+  if (*seen >= TAG_MAX_LOOKAHEAD || lexer->eof(lexer)) return false;
+  skip(lexer);
+  ++*seen;
+  return true;
+}
+
+typedef struct {
+  int32_t closing;
+  bool triple;
+  unsigned consecutive;
+} TagLookaheadFrame;
+
+static bool tag_assignment_open(TSLexer *lexer) {
+  enum { MAX_DEPTH = 256 };
+  TagLookaheadFrame frames[MAX_DEPTH] = {{.closing = ')'}};
+  unsigned depth = 1;
+  unsigned seen = 0;
+  advance(lexer);
+  lexer->mark_end(lexer);
+
+  while (!lexer->eof(lexer)) {
+    int32_t ch = lexer->lookahead;
+    TagLookaheadFrame *frame = &frames[depth - 1];
+    if (frame->closing == '"' || frame->closing == '\'' ||
+        frame->closing == '`') {
+      if (ch == '\\') {
+        if (!tag_advance(lexer, &seen) || !tag_advance(lexer, &seen)) return false;
+        frame->consecutive = 0;
+        continue;
+      }
+      if (ch == '$') {
+        if (!tag_advance(lexer, &seen)) return false;
+        frame->consecutive = 0;
+        if (lexer->lookahead == '{') {
+          if (depth == MAX_DEPTH) return false;
+          frames[depth++] = (TagLookaheadFrame){.closing = '}'};
+          if (!tag_advance(lexer, &seen)) return false;
+        }
+        continue;
+      }
+      if (ch == frame->closing) {
+        ++frame->consecutive;
+        if (!tag_advance(lexer, &seen)) return false;
+        if (!frame->triple || frame->consecutive == 3) --depth;
+      } else {
+        frame->consecutive = 0;
+        if (!tag_advance(lexer, &seen)) return false;
+      }
+      continue;
+    }
+    if (ch == '#') {
+      do {
+        if (!tag_advance(lexer, &seen)) return false;
+      } while (!lexer->eof(lexer) && lexer->lookahead != '\n');
+      continue;
+    }
+    if (ch == '"' || ch == '\'' || ch == '`') {
+      if (depth == MAX_DEPTH || !tag_advance(lexer, &seen)) return false;
+      if (ch == '"' && lexer->lookahead == '"') {
+        if (!tag_advance(lexer, &seen)) return false;
+        if (lexer->lookahead != '"') continue; // Empty string.
+        if (!tag_advance(lexer, &seen)) return false;
+        frames[depth++] = (TagLookaheadFrame){.closing = ch, .triple = true};
+      } else {
+        frames[depth++] = (TagLookaheadFrame){.closing = ch};
+      }
+      continue;
+    }
+    if (ch == '(' || ch == '[' || ch == '{') {
+      if (depth == MAX_DEPTH) return false;
+      frames[depth++] = (TagLookaheadFrame){
+          .closing = ch == '(' ? ')' : ch == '[' ? ']' : '}'};
+    } else if (ch == ')' || ch == ']' || ch == '}') {
+      if (ch != frame->closing) return false;
+      if (--depth == 0) {
+        if (!tag_advance(lexer, &seen)) return false;
+        while (!lexer->eof(lexer)) {
+          if (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
+              lexer->lookahead == '\r' || lexer->lookahead == '\n' ||
+              lexer->lookahead == '\f') {
+            if (!tag_advance(lexer, &seen)) return false;
+          } else if (lexer->lookahead == '#') {
+            do {
+              if (!tag_advance(lexer, &seen)) return false;
+            } while (!lexer->eof(lexer) && lexer->lookahead != '\n');
+          } else {
+            break;
+          }
+        }
+        if (lexer->lookahead != '=' || !tag_advance(lexer, &seen)) return false;
+        return lexer->lookahead != '=' && lexer->lookahead != '>';
+      }
+    }
+    if (!tag_advance(lexer, &seen)) return false;
+  }
+  return false;
+}
+
 bool tree_sitter_roc_external_scanner_scan(void *payload, TSLexer *lexer,
                                            const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
@@ -173,6 +277,13 @@ bool tree_sitter_roc_external_scanner_scan(void *payload, TSLexer *lexer,
        valid_symbols[INDENT];
 
   lexer->mark_end(lexer);
+
+  if (!error_recovery_mode && valid_symbols[TAG_ASSIGNMENT_OPEN] &&
+      lexer->lookahead == '(') {
+    if (!tag_assignment_open(lexer)) return false;
+    lexer->result_symbol = TAG_ASSIGNMENT_OPEN;
+    return true;
+  }
 
   if (valid_symbols[ELSE_IF_START] && lexer->lookahead == 'e') {
     advance(lexer);
@@ -260,7 +371,7 @@ bool tree_sitter_roc_external_scanner_scan(void *payload, TSLexer *lexer,
   // Avoid running the indentation scanner when this narrow token is the only
   // external symbol that is valid in the current parse state.
   if ((valid_symbols[TIGHT_BINARY_MINUS] || valid_symbols[ELSE_IF_START] ||
-       valid_symbols[RECORD_FUNCTION_PARAM_COMMA]) &&
+       valid_symbols[RECORD_FUNCTION_PARAM_COMMA] || valid_symbols[TAG_ASSIGNMENT_OPEN]) &&
       !valid_symbols[NEWLINE] &&
       !valid_symbols[END_NEWLINE] && !valid_symbols[INDENT] &&
       !valid_symbols[DEDENT] && !valid_symbols[EXCEPT]) {
