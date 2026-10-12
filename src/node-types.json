@@ -6326,11 +6326,11 @@
   },
   {
     "type": "as",
-    "named": true
+    "named": false
   },
   {
     "type": "as",
-    "named": false
+    "named": true
   },
   {
     "type": "bound_variable",
