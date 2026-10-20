@@ -1,0 +1,28 @@
+# tree-sitter-roc
+
+Last verified: 2026-10-19
+
+## Workflow
+- JavaScript grammar with a Tree-sitter external scanner; `grammar.js` is the grammar source, `src/scanner.c` handles scanner behavior.
+- Use the project-local Tree-sitter CLI pinned in `package.json` (currently 0.25.10). npm scripts resolve it automatically; direct commands use `./node_modules/.bin/tree-sitter`.
+- `npm run ci` checks generated artifacts, parser-size budgets, corpus inventory, parser/highlight tests, generated queries, and expression-body capture regressions.
+- `npm run ts:generate-check` regenerates `src/parser.c`, `src/grammar.json`, and `src/node-types.json`, checks their format/version, and requires a clean generated diff. Commit generated artifacts with grammar changes.
+- `npm run ts:test` runs the corpus inventory guard and the test wrapper that verifies every highlight fixture completed. A bare CLI success can miss later highlight assertions; use the wrapper for verification.
+- `npm run queries:generate` regenerates editor queries. See `queries/AGENTS.md` for query contracts.
+- Parser growth is bounded by `tools/check-parser-metrics.js`: 3133 states, 903 large states, and 5213834 parser bytes. Treat ceiling changes as a reviewed decision, not an automatic baseline refresh.
+
+## Structure
+- `grammar.js`, `src/scanner.c`: editable language implementation; `src/grammar.json`, `src/node-types.json`, and `src/parser.c`: generated outputs.
+- `test/corpus/`, `test/highlight/`, `test/fixtures/`: syntax trees, highlight assertions, and query-regression inputs.
+- `queries/`, `query-maps/`, `queries-generated/`: base queries, editor capture mappings, and generated editor outputs.
+- `tools/`: generation and regression guards; `bindings/`: language bindings.
+
+## Syntax-tree contracts
+- `src/node-types.json` is a standard top-level array; the parser generator banner must match the pinned CLI version.
+- `_expr_inner`, `_pattern`, `_atomic_type`, and `_module_elem` are supertypes. Consumers should use fields and concrete children rather than assume hidden wrapper nodes exist.
+- `value_declaration` exposes `pattern: (decl_left)` and a direct expression `body`; `var_declaration` exposes `name: (identifier)` and a direct expression `body`.
+- `annotation_type_def` and `inferred_associated_annotation` expose `name: (annotation_pre_colon)`; alias, opaque, and nominal type definitions expose `name: (apply_type)`.
+- Block annotations are sibling `annotation_type_def` statements, not children of the following declaration. Match an annotation/definition pair by sibling position and name where appropriate.
+- `match_branch` exposes `pattern`, optional `guard`, and direct expression `expr`. Fielded expression bodies no longer introduce `expr_body` wrappers; wrappers still exist in other contexts.
+- Both postfix and infix `?` expose `try_operator`; postfix `?` is immediate. Keywords such as `as`, `where`, and `to` are anonymous tokens, not named keyword nodes.
+- `tag_type` exposes `name: (tag_name)`; import exposing lists use `exposing: (exposes_list)` rather than an `exposing` node alias.
