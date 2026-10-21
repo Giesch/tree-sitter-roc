@@ -1,6 +1,16 @@
 # E04: Publish the mode
 
-Status: pending; E01–E03 are locally committed through roc-ts-mode `7558c81f94e3dcd959d7ddce95892e8b5019a15c` on `emacs-grammar-2026-10-20`, pinning grammar `2026-10-20.02`. No mode push or daily-editor update has been performed. Re-run isolated ERT before requesting publication approval.
+Status: done (roc-ts-mode `7558c81f94e3dcd959d7ddce95892e8b5019a15c`, published fork `main` and mode tag `2026-10-21.01`; daily installation verified 2026-10-21).
+
+## Execution evidence (2026-10-21)
+
+- Fresh plain-Emacs disposable daemon installed remote grammar tag `2026-10-20.02` privately and loaded exact mode source. Full ERT: **31 total/completed, zero unexpected, zero skipped**. Test PID 1222112, socket `/tmp/emacs-test.4KkDg90N/server`; daemon stopped, socket refusal verified, test root removed.
+- Operator approved fast-forwarding fork `main`, date/version tagging, and daily installation/activation. Remote `main` and new mode tag `2026-10-21.01` both verified at `7558c81f94e3dcd959d7ddce95892e8b5019a15c`. Grammar tag remains `2026-10-20.02`.
+- Updated Doom `packages.el` Roc commit pin and `+roc.el` grammar-tag override. Both passed the Lisp checker in the private daemon. Unrelated staged/unstaged dotfiles edits were preserved; no dotfiles commit or broad sync was performed.
+- Updated only Roc via daily Doom's straight.el fetch, public commit-checkout wrapper, and package rebuild. Installed checkout verified at the pinned commit, with no local changes. An initial direct Git-backend helper call failed; the public wrapper resolved it.
+- Initial daily installation selected the old in-memory grammar source. Corrected that source and installed `.02`. The process retained the old native grammar and query activation failed; the operator restarted Doom and ran `server-start`.
+- Fresh daily process PID 1226080 loaded installed `roc-ts-mode.elc`. In `*Roc E04 acceptance*`, `module [main]` plus `main = |x| x?` parsed without `ERROR`; `?` exposed `try_operator` and `roc-ts-question-mark-face`, with 47 font-lock settings. No pre-existing Roc buffers required refreshing. The persistent Doom override and live source entry now both select `.02`.
+- No new graphical screenshot/navigation acceptance was claimed; daily face/node checks were programmatic.
 
 ## Goal
 
@@ -33,5 +43,5 @@ The `roc-ts-mode-maintenance` skill defines every step: verify the fork branch w
 
 ## Done when
 
-- [ ] Mode pushed and Doom pin updated.
-- [ ] Daily editor uses the new grammar and queries.
+- [x] Mode pushed and Doom pin updated.
+- [x] Daily editor uses the new grammar and queries.

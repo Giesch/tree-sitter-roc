@@ -1,6 +1,6 @@
 # E03: Structural Elisp uses fields and sibling annotations
 
-Status: done (roc-ts-mode `7558c81f94e3dcd959d7ddce95892e8b5019a15c`); locally committed, not published.
+Status: done (roc-ts-mode `7558c81f94e3dcd959d7ddce95892e8b5019a15c`); published on fork `main` and mode tag `2026-10-21.01`, installed and verified through [E04](04-publish.md#execution-evidence-2026-10-21). Local-only execution notes below describe the earlier E03 checkpoint.
 
 ## Goal
 

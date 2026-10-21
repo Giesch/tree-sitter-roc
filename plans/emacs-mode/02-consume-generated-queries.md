@@ -1,6 +1,6 @@
 # E02: Font-lock from generated queries with one mode-local refinement
 
-Status: locally implemented and committed in roc-ts-mode at `f258f2f674541271f998641686441d0c1b0cf803`; not published or installed in the daily editor. The face-only query contract is tree-sitter-roc commit `6d85644f993edc543be0214bfffe60905d8e66d1`, approved and published on fork `master` and immutable tag `2026-10-20.02` (both remote refs verified at that commit). E01's earlier tag `2026-10-20.01` at `e13e92b3ee585a00ac34c00372b9f8233e933cad` remains historical and unchanged. The published mode/daily editor still use grammar tag `2026-10-13.01`; E03 structural migration and E04 publication remain separate pending work. The private screenshot comparison is complete for highlighting and layout, but its optional navigation subcheck did not execute; see execution record below.
+Status: done (roc-ts-mode `f258f2f674541271f998641686441d0c1b0cf803`), published and installed through E04 mode `7558c81`. The face-only query contract is tree-sitter-roc `6d85644f993edc543be0214bfffe60905d8e66d1`, published on fork `master` and immutable tag `2026-10-20.02`; the mode and daily editor use that tag. Earlier `.01` remains unchanged. E03 and E04 are complete; see [E04 evidence](04-publish.md#execution-evidence-2026-10-21). Historical E02 verification below includes graphical highlighting/layout, not the navigation subcheck that did not execute.
 
 ## Goal
 

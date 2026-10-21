@@ -1,5 +1,9 @@
 # Query plans
 
+## Current state — 2026-10-21
+
+Q01 and Q02 are complete and published, with the final face-only Emacs query contract in grammar tag `2026-10-20.02`. E04 delivered their mode integration to the daily editor. Q03 is complete: five topic fixtures cover the base captures, the deliberate wrong-capture check failed as expected, and `just ci` passed. Leaf plans record the approved Q02 output adjustment and historical contract changes.
+
 ## Goal
 
 `queries/*.scm` is the one source of highlighting rules for every editor, including Emacs. Each editor keeps its own capture names through its own map, and an editor can still ship hand-written queries.

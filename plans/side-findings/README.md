@@ -1,6 +1,10 @@
 # Side findings
 
-Changes found during the grammar review. Do these plans first, before the grammar plans. They do not depend on any other plan.
+## Current state — 2026-10-21
+
+S01–S03 are complete. S06 is complete and shipped in mode `7558c81` through E04; its full-suite and daily-installation gates are closed. S05 and S04 remain planned: prefer S05's plain-import highlight investigation before S04's additional syntax forms.
+
+The original prerequisite changes below were completed before the numbered grammar plans.
 
 | Plan | Repository | Change |
 |---|---|---|
@@ -22,4 +26,4 @@ These are separate from the three prerequisite side findings above. They do not 
 | [import-exposure-highlights.md](import-exposure-highlights.md) | tree-sitter-roc | Test and, if needed, fix plain import-exposure capture precedence |
 | [module-header-indentation.md](module-header-indentation.md) | roc-ts-mode | Update module-header indentation together with the later grammar pin |
 
-Prefer the plain-import highlight follow-up before the richer exposure forms; reuse its tests rather than duplicating them. Run grammar changes separately because they regenerate the same parser files. The indentation follow-up is part of E01's mode pin update, not a change to make against the current old pin.
+Prefer the plain-import highlight follow-up before the richer exposure forms; reuse its tests rather than duplicating them. Run grammar changes separately because they regenerate the same parser files. The completed indentation follow-up shipped with E01's pin update and the final E04 release; do not reimplement it.

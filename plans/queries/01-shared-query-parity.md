@@ -1,5 +1,7 @@
 # Q01: Base queries cover the Emacs highlighting
 
+Status: done (tree-sitter-roc `e13e92b3ee585a00ac34c00372b9f8233e933cad`), published with grammar/query releases. Shared-capture regression guard covers 17 assertions; CI passed. Q03 remains independent follow-up coverage.
+
 ## Goal
 
 For every rule in roc-ts-mode's hand-written font-lock list, `queries/highlights.scm` has a pattern with an equivalent capture. Emacs can then use generated queries without losing highlighting.
@@ -60,6 +62,6 @@ The mode rules are in `~/Projects/roc-ts-mode/roc-ts-mode.el:207-417`, grouped b
 
 ## Done when
 
-- [ ] Each table row has a matching base pattern.
-- [ ] All three existing maps have entries for the new captures.
-- [ ] `just ci` passes.
+- [x] Each table row has a matching base pattern.
+- [x] All three existing maps have entries for the new captures.
+- [x] `just ci` passes.

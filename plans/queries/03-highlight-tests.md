@@ -1,5 +1,7 @@
 # Q03: Highlight tests for base captures
 
+Status: complete (2026-10-21). All five topic fixtures pass; no grammar or query changes were needed.
+
 ## Goal
 
 `test/highlight/` asserts the captures that editors depend on most. A grammar change that breaks one of these captures fails `tree-sitter test`.
@@ -36,5 +38,13 @@
 
 ## Done when
 
-- [ ] Five topic files exist and pass.
-- [ ] `just ci` passes.
+- [x] Five topic files exist and pass.
+- [x] `just ci` passes.
+
+## Implementation and verification
+
+- Added `try_operator.roc` (4 assertions), `crash.roc` (1), `keywords.roc` (14), and `definitions.roc` (13). Extended `tag_types.roc` to 6 assertions, including a user-defined payload type. Tag names assert the current full base capture, `type.enum.variant.roc-special.builtin`.
+- Inspected standalone HTML highlighting and query captures before adding assertions. Standalone highlighting used a temporary CLI parser-directory configuration; no global settings changed.
+- `npm run ts:test` passed: 198 corpus parses and all seven highlight fixtures completed.
+- Temporarily changed the `crash` assertion to `keyword.control.return`. The local `tree-sitter test` exited 1 and reported actual capture `keyword.control.exception`; restored the correct assertion.
+- Final `just ci` passed, including all seven highlight fixtures, generated-artifact checks, parser budgets, generated-query checks, exact-capture regressions, and 17 shared-capture checks. This verifies CLI captures, not editor rendering.

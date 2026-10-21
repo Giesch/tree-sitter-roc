@@ -1,6 +1,6 @@
 # E01: Grammar tag and mode pin
 
-Status: done (grammar `e13e92b3ee585a00ac34c00372b9f8233e933cad`, published tag `2026-10-20.01`; local mode `5eb4f8fb6b5b9c737b47b4894351e781a78654a6`). E02/E03 and mode publication remain pending.
+Status: done (initial grammar `e13e92b3ee585a00ac34c00372b9f8233e933cad`, tag `2026-10-20.01`; mode pin/S06 commit `5eb4f8fb6b5b9c737b47b4894351e781a78654a6`). E02 adopted grammar tag `2026-10-20.02`; E01–E04 are published in mode `7558c81` and installed in the daily editor. See [E04 evidence](04-publish.md#execution-evidence-2026-10-21). Execution notes below retain historical intermediate states.
 
 ## Goal
 
@@ -12,7 +12,7 @@ All plans in [../grammar/](../grammar/README.md), [../queries/01-shared-query-pa
 
 ## Context
 
-- The unpublished mode source branch pins published grammar tag `2026-10-20.01` in `roc-ts-mode.el:149-151`; the published mode and daily installation still use `2026-10-13.01`. Do not load the new source with the old installed grammar.
+- The initial E01 pin was `2026-10-20.01`; E02 advanced it to `2026-10-20.02`. Published mode `7558c81`, Doom's grammar override, and the daily installation now use `.02`. Do not load this mode with an old installed grammar.
 - Tag scheme in tree-sitter-roc: `YYYY-MM-DD.NN`, for example `2026-10-13.01`. Remote name for the fork: `fork` (`git@github.com:Giesch/tree-sitter-roc.git`). Upstream is `upstream`; do not push there.
 - `treesit-install-language-grammar` clones the tag and compiles `src/parser.c` and `src/scanner.c`. The tag must contain regenerated parser files.
 

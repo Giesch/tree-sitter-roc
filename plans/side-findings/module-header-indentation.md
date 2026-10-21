@@ -1,6 +1,6 @@
 # S06: Migrate module-header indentation with the grammar pin
 
-Status: locally implemented and tested in unpublished roc-ts-mode `5eb4f8fb6b5b9c737b47b4894351e781a78654a6`; full-suite and publication gates remain open.
+Status: done (roc-ts-mode `5eb4f8fb6b5b9c737b47b4894351e781a78654a6`), published and installed in final mode `7558c81`. E03 and fresh E04 full ERT both passed 31/31, zero unexpected/skipped. See [E04 evidence](../emacs-mode/04-publish.md#execution-evidence-2026-10-21). Execution notes below retain historical intermediate gates.
 
 ## Goal
 
@@ -58,5 +58,5 @@ When roc-ts-mode adopts a grammar containing S01, its after-header indentation c
 
 - [x] The after-header indentation condition uses `module_exposes` while the generic bracket rule remains separate.
 - [x] Focused layout, rule-selection, stability, and import-control tests pass with both local tagged-source and actual remote-tag installed grammar. The old condition fails the rule-selection assertion but produces the same visible column in the tested fixture.
-- [ ] Full-suite migration verification passes after E02/E03, before mode publication.
-- [x] The unpublished pin-update commit contains the rule change and tests; remote grammar push and E01 installer check are complete. Mode publication remains open.
+- [x] Full-suite migration verification passed after E02/E03 and again before E04 publication: 31/31, zero unexpected/skipped.
+- [x] The pin-update commit contains the rule change and tests; grammar release, mode publication, and daily installation are complete.
