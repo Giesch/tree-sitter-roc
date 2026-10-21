@@ -14,7 +14,7 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 | Side findings S01–S03 and S06 | Complete; S06 shipped with the mode | None |
 | Query 03 | Complete; five topic fixtures and failure detection verified | None |
 | S05 import-exposure highlighting | Complete; precedence failure reproduced and fixed | None |
-| S04 additional exposure forms | Planned | Reuse S05 coverage; verify upstream syntax before implementation |
+| S04 additional exposure forms | Complete; versioned syntax, grammar, corpus, and highlighting verified | Release/pin update is separate |
 
 ### Published and installed versions
 
@@ -31,7 +31,7 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 - Earlier E02 paired graphical highlighting/layout inspection passed. Its graphical navigation subcheck did not execute. E03 programmatic declaration lookup, defun selection, imenu, and indentation passed. E04 daily acceptance was programmatic, not a new screenshot/navigation check.
 - Grammar/query CI at `.02` passed: 198 corpus parses, three highlight fixtures, 17 shared-capture assertions, generated-query and exact-capture checks. Independent private Emacs query-runtime ERT passed 10/10, zero unexpected/skipped.
 - Release CI at `e13e92b` passed both npm and just entry points in a clean worktree using existing project-local dependencies. Fresh `npm ci --offline` under Node 24 failed building a native dependency; fresh dependency installation was not demonstrated.
-- Parser ceilings remain 3,133 states, 903 large states, and 5,213,834 bytes. Do not refresh budgets automatically.
+- S04's reviewed, operator-approved parser ceilings are 3,144 states, 903 large states, and 5,227,711 bytes. Final size is 5,227,026 bytes. Do not refresh budgets automatically.
 
 Detailed evidence: [E04 publication and installation](emacs-mode/04-publish.md), [E02 query integration](emacs-mode/02-consume-generated-queries.md), [E03 structural migration](emacs-mode/03-structural-elisp.md), and individual grammar plans.
 
@@ -41,7 +41,7 @@ Detailed evidence: [E04 publication and installation](emacs-mode/04-publish.md),
 
 [S05: Import-exposure highlights](side-findings/import-exposure-highlights.md) is complete. The original parent capture lost to `variable`; capturing identifier children fixes the regression. `just ci` passed with 198 corpus parses and all eight highlight fixtures.
 
-1. [S04: Additional exposure forms](side-findings/module-exposure-forms.md): reuse S05's plain-import tests and verify qualified names, wildcards, and aliases against versioned upstream syntax.
+[S04: Additional exposure forms](side-findings/module-exposure-forms.md) is complete against Roc revision `37daf70979eae0cbf6bc603ab9b6721076ed0654`: qualified names, wildcards, and item aliases have corpus/highlight coverage. Pinned-CLI `just ci` and `npm run ci` passed with 220 corpus parses and all ten highlight fixtures. Publishing and downstream grammar/query pin updates remain separate work.
 
 Grammar work regenerates shared parser files; execute separate grammar changes serially. These follow-ups do not reopen the completed E01–E04 release.
 

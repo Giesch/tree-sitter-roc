@@ -2,7 +2,7 @@
 
 ## Current state — 2026-10-21
 
-S01–S03 are complete. S06 is complete and shipped in mode `7558c81` through E04; its full-suite and daily-installation gates are closed. S05 is complete: plain-import highlight precedence was reproduced and fixed, with seven new assertions and passing CI. S04 remains planned and should extend S05's coverage to additional syntax forms.
+S01–S03 are complete. S06 is complete and shipped in mode `7558c81` through E04; its full-suite and daily-installation gates are closed. S05 is complete: plain-import highlight precedence was reproduced and fixed, with seven new assertions and passing CI. S04 is complete: versioned upstream syntax supports qualified names, wildcards, and item aliases in both exposure contexts, with 22 new corpus cases, 38 highlight assertions, and passing CI. Publication and downstream pin updates are separate.
 
 The original prerequisite changes below were completed before the numbered grammar plans.
 

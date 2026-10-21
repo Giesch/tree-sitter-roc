@@ -1,6 +1,6 @@
 # tree-sitter-roc
 
-Last verified: 2026-10-19
+Last verified: 2026-10-21
 
 ## Workflow
 - JavaScript grammar with a Tree-sitter external scanner; `grammar.js` is the grammar source, `src/scanner.c` handles scanner behavior.
@@ -9,7 +9,7 @@ Last verified: 2026-10-19
 - `npm run ts:generate-check` regenerates `src/parser.c`, `src/grammar.json`, and `src/node-types.json`, checks their format/version, and requires a clean generated diff. Commit generated artifacts with grammar changes.
 - `npm run ts:test` runs the corpus inventory guard and the test wrapper that verifies every highlight fixture completed. A bare CLI success can miss later highlight assertions; use the wrapper for verification.
 - `npm run queries:generate` regenerates editor queries. See `queries/AGENTS.md` for query contracts.
-- Parser growth is bounded by `tools/check-parser-metrics.js`: 3133 states, 903 large states, and 5213834 parser bytes. Treat ceiling changes as a reviewed decision, not an automatic baseline refresh.
+- Parser growth is bounded by `tools/check-parser-metrics.js`: 3144 states, 903 large states, and 5227711 parser bytes (approved for exposure-item syntax). Treat ceiling changes as a reviewed decision, not an automatic baseline refresh.
 
 ## Structure
 - `grammar.js`, `src/scanner.c`: editable language implementation; `src/grammar.json`, `src/node-types.json`, and `src/parser.c`: generated outputs.
@@ -26,3 +26,4 @@ Last verified: 2026-10-19
 - `match_branch` exposes `pattern`, optional `guard`, and direct expression `expr`. Fielded expression bodies no longer introduce `expr_body` wrappers; wrappers still exist in other contexts.
 - Both postfix and infix `?` expose `try_operator`; postfix `?` is immediate. Keywords such as `as`, `where`, and `to` are anonymous tokens, not named keyword nodes.
 - `tag_type` exposes `name: (tag_name)`; import exposing lists use `exposing: (exposes_list)` rather than an `exposing` node alias.
+- Module exports and import exposures retain `ident` for plain names. Richer items use `qualified_exposed_name` (`root`, repeated `segment`), `renamed_exposed_item` (`name`, `alias`), and `wildcard_exposed_item` (`name`, anonymous `wildcard: ".*"`). Qualified segments are contiguous; trivia is permitted before `.*`. Syntax follows the versioned parser evidence in `plans/side-findings/module-exposure-forms.md`, not semantic name resolution.
