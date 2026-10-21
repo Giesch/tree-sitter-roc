@@ -1,6 +1,14 @@
 # S05: Verify import-exposure highlight precedence
 
-Status: planned
+Status: complete — 2026-10-21
+
+## Implementation result
+
+- Added `test/highlight/import_exposes.roc` with seven assertions: lowercase and uppercase exposed names, import path, module alias, brackets, and comma. The pinned CLI parsed the fixture without `ERROR` or missing nodes.
+- Against the original query, the corrected fixture failed at the lowercase exposed name: expected `special.roc-special.exposed`, actual `variable`. An initial misplaced punctuation caret was corrected before this reproduction.
+- Changed only the import-exposure pattern to capture the `identifier` and `module` children of `ident`, matching the module-export approach. All seven assertions and the existing module-export fixture then passed.
+- Regenerated all four editor outputs without changing maps. Neovim continues to remove the exposed-name capture; Emacs, Helix, and Zed retain their existing mapped captures.
+- `npm run ts:test` and `PATH="$PWD/node_modules/.bin:$PATH" just ci` passed: 198 corpus parses, all eight highlight fixtures, generated-artifact checks, parser budgets, and query regression checks. Intended query outputs were staged for the generation-diff gate. No grammar changes, editor rendering tests, or publication were needed.
 
 ## Goal
 
@@ -44,7 +52,7 @@ Plain lowercase and uppercase names in import exposure lists receive the intende
 
 ## Done when
 
-- [ ] The suspected failure is reproduced or explicitly ruled out by a regression test.
-- [ ] Both exposed-name cases pass without changing unrelated highlighting.
-- [ ] Generated queries and `just ci` pass.
-- [ ] The implementation commit records the observed behavior and focused fix, if needed.
+- [x] The suspected failure is reproduced or explicitly ruled out by a regression test.
+- [x] Both exposed-name cases pass without changing unrelated highlighting.
+- [x] Generated queries and `just ci` pass.
+- [x] The implementation commit records the observed behavior and focused fix, if needed.

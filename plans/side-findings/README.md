@@ -2,7 +2,7 @@
 
 ## Current state — 2026-10-21
 
-S01–S03 are complete. S06 is complete and shipped in mode `7558c81` through E04; its full-suite and daily-installation gates are closed. S05 and S04 remain planned: prefer S05's plain-import highlight investigation before S04's additional syntax forms.
+S01–S03 are complete. S06 is complete and shipped in mode `7558c81` through E04; its full-suite and daily-installation gates are closed. S05 is complete: plain-import highlight precedence was reproduced and fixed, with seven new assertions and passing CI. S04 remains planned and should extend S05's coverage to additional syntax forms.
 
 The original prerequisite changes below were completed before the numbered grammar plans.
 

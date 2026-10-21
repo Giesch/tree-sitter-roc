@@ -13,8 +13,8 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 | Emacs E01–E04 | Complete, published, installed, and verified in the daily editor | None |
 | Side findings S01–S03 and S06 | Complete; S06 shipped with the mode | None |
 | Query 03 | Complete; five topic fixtures and failure detection verified | None |
-| S05 import-exposure highlighting | Planned | Establish actual capture behavior with regression tests |
-| S04 additional exposure forms | Planned | Prefer S05 first; verify upstream syntax before implementation |
+| S05 import-exposure highlighting | Complete; precedence failure reproduced and fixed | None |
+| S04 additional exposure forms | Planned | Reuse S05 coverage; verify upstream syntax before implementation |
 
 ### Published and installed versions
 
@@ -39,8 +39,9 @@ Detailed evidence: [E04 publication and installation](emacs-mode/04-publish.md),
 
 [Q03: Highlight tests](queries/03-highlight-tests.md) is complete. `just ci` passed with 198 corpus parses and all seven highlight fixtures; a deliberately wrong capture failed as expected and was restored.
 
-1. [S05: Import-exposure highlights](side-findings/import-exposure-highlights.md): reproduce or rule out the suspected precedence failure before changing queries.
-2. [S04: Additional exposure forms](side-findings/module-exposure-forms.md): preferably after S05; reuse its plain-import tests and verify qualified names, wildcards, and aliases against versioned upstream syntax.
+[S05: Import-exposure highlights](side-findings/import-exposure-highlights.md) is complete. The original parent capture lost to `variable`; capturing identifier children fixes the regression. `just ci` passed with 198 corpus parses and all eight highlight fixtures.
+
+1. [S04: Additional exposure forms](side-findings/module-exposure-forms.md): reuse S05's plain-import tests and verify qualified names, wildcards, and aliases against versioned upstream syntax.
 
 Grammar work regenerates shared parser files; execute separate grammar changes serially. These follow-ups do not reopen the completed E01–E04 release.
 
