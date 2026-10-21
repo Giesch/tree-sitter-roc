@@ -5,7 +5,9 @@ Last verified: 2026-10-21
 ## Workflow
 - JavaScript grammar with a Tree-sitter external scanner; `grammar.js` is the grammar source, `src/scanner.c` handles scanner behavior.
 - Use the project-local Tree-sitter CLI pinned in `package.json` (currently 0.25.10). npm scripts resolve it automatically; direct commands use `./node_modules/.bin/tree-sitter`.
-- `npm run ci` checks generated artifacts, parser-size budgets, corpus inventory, parser/highlight tests, generated queries, and expression-body capture regressions.
+- `npm run ci` checks generated artifacts, parser-size budgets, corpus inventory, parser/highlight tests, generated queries, expression-body captures, shared highlights, and operator full-tree regressions with comparator self-tests.
+- `node tools/check-operator-trees.js --self-test` compares source and linewise XML, including operator fields, anonymous tokens, ranges, trivia, and mid-file recovery. The pinned CLI omits explicit missing-anonymous-token metadata from XML; the guard also checks its recovery diagnostic.
+- Operator baseline refreshes require a reviewed syntax-tree contract change. Record from the approved parser with production grammar, scanner, and generated files matching HEAD. `--record` creates a baseline; replacing an existing baseline requires explicit `--record --force`. Review the source/XML diff; never refresh it to hide a candidate regression. Normal verification does not write the baseline.
 - `npm run ts:generate-check` regenerates `src/parser.c`, `src/grammar.json`, and `src/node-types.json`, checks their format/version, and requires a clean generated diff. Commit generated artifacts with grammar changes.
 - `npm run ts:test` runs the corpus inventory guard and the test wrapper that verifies every highlight fixture completed. A bare CLI success can miss later highlight assertions; use the wrapper for verification.
 - `npm run queries:generate` regenerates editor queries. See `queries/AGENTS.md` for query contracts.
