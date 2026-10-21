@@ -41,6 +41,10 @@ None.
    - Use one capture: `(try_operator) @keyword.control.return`. Remove `(suffix_operator)` from the `@keyword.operator` list.
 10. Run `just queries-generate` and `just ci`.
 
+## Operator-as-function compatibility
+
+The review on 2026-10-21 confirmed that `value = (?)` is rejected after this change. Keep that rejection: current Roc treats operators as syntax rather than function values. Evidence: [current parser at 37daf709](https://github.com/roc-lang/roc/blob/37daf70979eae0cbf6bc603ab9b6721076ed0654/src/parse/Parser.zig) and [official operator documentation](https://github.com/roc-lang/roc/blob/b8040bf6a224cc82a0d146a960c3f8dfca20d58b/roc-for-elm-programmers.md). The older Tree-sitter grammar accepted `(?)`; that is not evidence that an older compiler accepted it. `test/corpus/try_operator_value.txt` locks the rejection. Other legacy operator-as-function forms are unchanged by this review.
+
 ## Out of scope
 
 - A separate `try_expr` node with a `handler:` field.
