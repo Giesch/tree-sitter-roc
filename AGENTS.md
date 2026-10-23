@@ -1,6 +1,6 @@
 # tree-sitter-roc
 
-Last verified: 2026-10-21
+Last verified: 2026-10-23
 
 ## Workflow
 - JavaScript grammar with a Tree-sitter external scanner; `grammar.js` is the grammar source, `src/scanner.c` handles scanner behavior.
@@ -11,7 +11,7 @@ Last verified: 2026-10-21
 - `npm run ts:generate-check` regenerates `src/parser.c`, `src/grammar.json`, and `src/node-types.json`, checks their format/version, and requires a clean generated diff. Commit generated artifacts with grammar changes.
 - `npm run ts:test` runs the corpus inventory guard and the test wrapper that verifies every highlight fixture completed. A bare CLI success can miss later highlight assertions; use the wrapper for verification.
 - `npm run queries:generate` regenerates editor queries. See `queries/AGENTS.md` for query contracts.
-- Parser growth is bounded by `tools/check-parser-metrics.js`: 3144 states, 903 large states, and 5227711 parser bytes (approved for exposure-item syntax). Treat ceiling changes as a reviewed decision, not an automatic baseline refresh.
+- Parser growth is bounded by `tools/check-parser-metrics.js`: 3144 states, 905 large states, and 5229274 parser bytes (approved for where-alias syntax). Treat ceiling changes as a reviewed decision, not an automatic baseline refresh.
 
 ## Structure
 - `grammar.js`, `src/scanner.c`: editable language implementation; `src/grammar.json`, `src/node-types.json`, and `src/parser.c`: generated outputs.
@@ -23,7 +23,8 @@ Last verified: 2026-10-21
 - `src/node-types.json` is a standard top-level array; the parser generator banner must match the pinned CLI version.
 - `_expr_inner`, `_pattern`, `_atomic_type`, and `_module_elem` are supertypes. Consumers should use fields and concrete children rather than assume hidden wrapper nodes exist.
 - `value_declaration` exposes `pattern: (decl_left)` and a direct expression `body`; `var_declaration` exposes `name: (identifier)` and a direct expression `body`.
-- `annotation_type_def` and `inferred_associated_annotation` expose `name: (annotation_pre_colon)`; alias, opaque, and nominal type definitions expose `name: (apply_type)`.
+- `annotation_type_def` and `inferred_associated_annotation` expose `name: (annotation_pre_colon)`; ordinary alias, opaque, and nominal type definitions expose `name: (apply_type)`.
+- Constraint aliases such as `item.Eq : where [...]` use `alias_type_def` with `name: (where_alias_name)` and `body: (static_dispatch_list)`. The name contains `bound_variable` and `concrete_type` leaves; constraint function types reuse inline-where nodes and captures.
 - Block annotations are sibling `annotation_type_def` statements, not children of the following declaration. Match an annotation/definition pair by sibling position and name where appropriate.
 - `match_branch` exposes `pattern`, optional `guard`, and direct expression `expr`. Fielded expression bodies no longer introduce `expr_body` wrappers; wrappers still exist in other contexts.
 - Both postfix and infix `?` expose `try_operator`; postfix `?` is immediate. Keywords such as `as`, `where`, and `to` are anonymous tokens, not named keyword nodes.
