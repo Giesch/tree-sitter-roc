@@ -1,6 +1,19 @@
 # W01: Type parameters on where-alias headers
 
-Status: not started
+Status: complete; independent review finished with no unresolved Critical or Important findings.
+
+## Implementation evidence (2026-10-23)
+
+- Starting HEAD: `3cd660266806e50081729811a140a081328fcd83`.
+- `where_alias_name` reuses optional `_apply_type_args`; generation requires no new conflict entry. References and spaced header forms are unchanged.
+- The initial metrics gate stopped at 3145 states, 905 large states, and 5231908 parser bytes. The operator explicitly approved those exact W01 ceilings (+1 state, unchanged large states, +429 bytes). The guard uses these values without speculative headroom; the later 1–2% allowance across all three fixes is not used here.
+- Five corpus cases cover one parameter, two parameters with a trailing comma, the multiline repro, a nominal-method header, and underscore/named-underscore parameters. Full corpus diff reviewed: only the five new cases changed. All 237 corpus cases pass.
+- All 14 highlight fixtures completed; `where_aliases.roc` passes 27 assertions including both new header argument assertions. Direct CLI HTML highlighting confirms `fmt` and `_err` have `type.parameter`; no query change is needed. A temporary explicit parser-directory/theme configuration was removed after verification.
+- `npm run queries:generate` and `npm run queries:check` pass with no generated query changes. Node-type, corpus inventory, highlight completion, expression-body capture, shared-highlight, and operator full-tree/self-test guards pass. Regeneration is byte-stable across all three generated artifacts.
+- After independent review and explicit staging of the nine intended paths, literal `npm run ci` passed (exit 0): generated artifact/version checks, exact parser metrics, corpus inventory/self-tests, 237/237 corpus parses, all 14 highlight fixtures, generated query checks/self-tests, expression-body captures, 18 shared highlight captures, and operator full-tree/self-tests (22 operators, trivia, 5 recovery fixtures). The earlier unstaged clean-diff gate failure is resolved.
+- Review follow-up: all five new corpus expectations assert header `name`, alias `body`, and `type_args` on every argument. Exact fielded output comparison passes for each complete tree, including all seven header arguments and four body type arguments; existing `param` and nominal/tag name fields are also asserted. Broad type arguments and trailing commas remain intentional.
+- Builtin verification used the documented local Roc checkout at `d93715878ca0258b24576a6649928df0dbea8f52`: lines 235, 243, and 2117 have `where_alias_name` nodes outside every `ERROR`/`MISSING` region. The file still exits 1 with W02 reference errors/recovery cascades (11 distinct error ranges, 22 nested `ERROR` nodes); W01 does not claim a clean whole-file parse.
+- Commit scope is limited to the nine intended implementation, generated, test, budget, and documentation paths. Unrelated untracked files are preserved; W02 and W03 are unchanged.
 
 ## Goal
 
