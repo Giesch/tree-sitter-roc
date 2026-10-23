@@ -15,6 +15,7 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 | Query 03 | Complete; five topic fixtures and failure detection verified | None |
 | S05 import-exposure highlighting | Complete; precedence failure reproduced and fixed | None |
 | S04 additional exposure forms | Complete; versioned syntax, grammar, corpus, and highlighting verified | Release/pin update is separate |
+| Where aliases W01–W03 | Not started; W01 and W02 are required for Builtin.roc to parse clean | Do W01 |
 
 ### Published and installed versions
 
@@ -42,6 +43,8 @@ Detailed evidence: [E04 publication and installation](emacs-mode/04-publish.md),
 [S05: Import-exposure highlights](side-findings/import-exposure-highlights.md) is complete. The original parent capture lost to `variable`; capturing identifier children fixes the regression. `just ci` passed with 198 corpus parses and all eight highlight fixtures.
 
 [S04: Additional exposure forms](side-findings/module-exposure-forms.md) is complete against Roc revision `37daf70979eae0cbf6bc603ab9b6721076ed0654`: qualified names, wildcards, and item aliases have corpus/highlight coverage. Pinned-CLI `just ci` and `npm run ci` passed with 220 corpus parses and all ten highlight fixtures. Publishing and downstream grammar/query pin updates remain separate work.
+
+[Where-alias plans](where-aliases/README.md): W01 and W02 make Roc `src/build/roc/Builtin.roc` parse without `ERROR` nodes. The Zed outline test (faldor20/tree-sitter-roc#39) uses that file as its fixture. Do W01 and W02 before the outline work. W03 is not needed for Builtin.roc.
 
 Grammar work regenerates shared parser files; execute separate grammar changes serially. These follow-ups do not reopen the completed E01–E04 release.
 
