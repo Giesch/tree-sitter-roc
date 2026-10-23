@@ -38,8 +38,8 @@ Obey the "Constraints for every grammar plan" in [../grammar/README.md](../gramm
 
 - W01 is committed at `3f0031cf143c5ad3f18bc7c4191cc532d994e55d`.
 - W02 is complete in the commit containing this record. Requested independent reviews found no unresolved Critical or Important findings, and literal `npm run ci` passed after explicit staging, including clean-diff gates, 247 corpus parses and all 14 highlight fixtures. The exact pinned Builtin blob parses with 0 ERROR and 0 MISSING nodes. See the W02 execution evidence for full details.
-- Current exact parser ceilings are 3146 states / 905 large states / 5232408 bytes. The operator authorized measured increases within a cumulative 2% of original pre-W01 ceilings (3144 / 905 / 5231479) across all three plans, not 2% per plan. Current cumulative growth is +2 / +0 / +929. This approval supersedes the no-approval stop condition above only within that bound.
-- W03 is not started; qualified references remain out of scope for W02.
+- Current exact parser ceilings are 3149 states / 905 large states / 5234140 bytes. The operator authorized measured increases within a cumulative 2% of original pre-W01 ceilings (3144 / 905 / 5231479) across all three plans, not 2% per plan. Current cumulative growth is +5 / +0 / +2661. This approval supersedes the no-approval stop condition above only within that bound; see W03's scoped exception.
+- W03 is complete and reviewed after W02 `e0c78286d1b1730d7ce5ac8df8252f7d53da1c3d`, in the commit containing this record. Literal staged CI passes with 268 corpus parses and all 14 highlight fixtures. Its latest-main evidence, accepted/rejected matrix, 21 targeted corpus cases, both-segment highlight assertions, byte-preserving single-file attribute exception, and historical/latest Builtin verification are recorded in the W03 plan.
 
 ## Done when
 

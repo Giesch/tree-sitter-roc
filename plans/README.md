@@ -15,7 +15,7 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 | Query 03 | Complete; five topic fixtures and failure detection verified | None |
 | S05 import-exposure highlighting | Complete; precedence failure reproduced and fixed | None |
 | S04 additional exposure forms | Complete; versioned syntax, grammar, corpus, and highlighting verified | Release/pin update is separate |
-| Where aliases W01–W03 | W01 committed at `3f0031c`; W02 complete and reviewed in the commit containing this record, with literal npm CI and pinned Builtin.roc passing; W03 not started | W01/W02 no longer block outline work; W03 remains separate |
+| Where aliases W01–W03 | W01 committed at `3f0031c`; W02 complete and reviewed in the commit containing this record, with literal npm CI and pinned Builtin.roc passing; W03 complete and reviewed with latest-main evidence, literal staged CI, 268 corpus parses and all 14 highlight fixtures passing | None; W01/W02 no longer block outline work |
 
 ### Published and installed versions
 

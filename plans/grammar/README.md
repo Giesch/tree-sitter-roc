@@ -24,7 +24,7 @@ Completed side task — feature-preserving parser size reduction: from the post-
 
 1. Read the current rule before you edit it. Line numbers in the plans can drift.
 2. After the edit, run `tree-sitter generate`. Fix new conflicts with the smallest change. Do not add a conflict entry without a comment that states the shared prefix.
-3. Run `just parser-metrics-check`. Do not raise the limits in `tools/check-parser-metrics.js` unless the plan says so. If a plan exceeds the budget, stop and report the metrics.
+3. Run `just parser-metrics-check`. Do not raise the limits in `tools/check-parser-metrics.js` unless the plan says so. If a plan exceeds the budget, stop and report the metrics. The operator-approved W01–W03 exception is scoped in [W03](../where-aliases/03-qualified-alias-reference.md#scoped-budget-exception); it permits only exact measured increases within the cumulative original-ceiling bound and does not relax this rule for other work.
 4. Run `just test-update`. Read the full corpus diff. Each changed tree must show only the intended change.
 5. Update every file in `queries/` that names a changed node: `highlights.scm`, `locals.scm`, `tags.scm`, `textobjects.scm`, `indents.scm`, `rainbows.scm`, `injections.scm`. Use `grep -n '<node_name>' queries/*.scm`.
 6. Run `just queries-generate`. Add map entries in `query-maps/*.json` for new capture names.
