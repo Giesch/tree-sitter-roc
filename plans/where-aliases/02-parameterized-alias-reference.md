@@ -1,6 +1,18 @@
 # W02: Type arguments on where-alias references
 
-Status: not started
+Status: done (W02 commit containing this record)
+
+## Execution evidence — 2026-10-23
+
+- Started at W01 commit `3f0031cf143c5ad3f18bc7c4191cc532d994e55d`. Added only `optional($._apply_type_args)` to `where_alias_ref`; no scanner, conflict, or qualified-reference changes.
+- Generated parser: **3146 states / 905 large states / 5232408 bytes**. W02 adds 1 state and 500 bytes to W01. The initial metrics guard failed against W01 ceilings; the operator explicitly authorized exact measured increases within a cumulative 2% of original pre-W01 ceilings **3144 / 905 / 5231479** across W01–W03, not per fix. Current cumulative growth is **+2 / +0 / +929** (0.063614% / 0% / 0.017758%). Only states and bytes ceilings were raised, to these measurements; stop above any original ceiling times 1.02.
+- Ten added corpus cases cover empty unions, variables, open unions, own-line `where`, both inline-constraint orders, multiple arguments/trailing comma, spacing and empty-argument recovery, and the exact SOURCE sections of all four named upstream snapshots at `6de96ed3afba20699688bc30ce40c062267f2382`. New valid trees retain `type_args` fields; all pre-existing corpus content is byte-identical.
+- `tree-sitter test --update --show-fields` generated the valid expectations. Its broad formatting updates were removed; malformed-case expectations were inspected and entered explicitly. Guarded tests pass: **247 corpus parses**, **all 14 highlight fixtures**, including 10 reference-fixture assertions. Existing leaf queries cover reference arguments; no query change is needed.
+- `Builtin.roc` was extracted with `git show` from the pinned revision, not read from the current checkout. Expected and extracted blob hashes both equal `eb0de2678ce94ee549385770842b767f6ff16c59`. Parse exit 0 with **0 ERROR / 0 MISSING**.
+- A second pinned parser generation is byte-stable for all three generated artifacts (SHA-256 checked before/after). Standalone `tree-sitter highlight --html --css-classes` succeeds with a temporary parser-directory config; argument leaves have existing type captures. `git diff --check` passes.
+- All substantive npm CI checks pass: node-types self-tests, parser metrics, corpus inventory, guarded corpus/highlight tests, generated-query checks, expression-body exact captures, shared highlights, and operator full-tree regressions/self-tests. Queries regenerate unchanged.
+- Requested independent reviews completed with no unresolved Critical or Important findings. The two new malformed-case expectations were expanded to one node per line without changing fields or recovery; pinned Builtin parsing and regeneration stability were independently confirmed.
+- Literal `npm run ci` passed with exit 0 after staging the eleven intended tracked paths, including generated-artifact and generated-query clean-diff gates, 247/247 corpus parses, all 14 highlight fixtures, exact-capture checks (locals 189 / indents 69 / textobjects 41 / rainbows 139 / highlights 512 / tags 16), 18 shared captures, and operator regression/self-tests (22 operators / 5 recovery fixtures). The earlier unstaged clean-diff failure is resolved. W03 remains out of scope.
 
 ## Goal
 

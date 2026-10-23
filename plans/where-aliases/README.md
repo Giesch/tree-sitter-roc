@@ -34,6 +34,13 @@ Obey the "Constraints for every grammar plan" in [../grammar/README.md](../gramm
 - If `just parser-metrics-check` fails, stop and report the metrics. Do not raise the ceilings without operator approval.
 - Do not add a conflict entry without a comment that states the shared prefix.
 
+## Implementation status — 2026-10-23
+
+- W01 is committed at `3f0031cf143c5ad3f18bc7c4191cc532d994e55d`.
+- W02 is complete in the commit containing this record. Requested independent reviews found no unresolved Critical or Important findings, and literal `npm run ci` passed after explicit staging, including clean-diff gates, 247 corpus parses and all 14 highlight fixtures. The exact pinned Builtin blob parses with 0 ERROR and 0 MISSING nodes. See the W02 execution evidence for full details.
+- Current exact parser ceilings are 3146 states / 905 large states / 5232408 bytes. The operator authorized measured increases within a cumulative 2% of original pre-W01 ceilings (3144 / 905 / 5231479) across all three plans, not 2% per plan. Current cumulative growth is +2 / +0 / +929. This approval supersedes the no-approval stop condition above only within that bound.
+- W03 is not started; qualified references remain out of scope for W02.
+
 ## Done when
 
 - W01 and W02 are done.
