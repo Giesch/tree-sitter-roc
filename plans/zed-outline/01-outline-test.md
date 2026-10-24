@@ -1,6 +1,6 @@
 # Z01: Builtin.roc fixture and a failing outline test
 
-Status: implemented and verified (2026-10-23); awaiting review and the Z01 commit
+Status: committed at `0427b67` (2026-10-23).
 
 ## Goal
 

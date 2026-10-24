@@ -11,7 +11,7 @@ These plans add a Zed `outline.scm` query that shows nested types and their asso
 
 Each plan is one commit. Z01 leaves the outline test failing. Z01 does not add the test to `npm run ci`. Z02 adds it.
 
-Status (2026-10-23): Z01 is implemented and verified, awaiting review and its separate commit. `npm run ci` passes; outline self-tests pass before the intentional missing `Builtin > Str > is_empty` failure. Z02 implementation has not started; its four operator decisions are resolved in [02-nested-outline.md](02-nested-outline.md).
+Status (2026-10-23): Z01 is committed at `0427b67`. Z02 is completed in the commit containing this record: nested captures, query-only signature precedence, inferred entries, punctuation labels, local exclusion, a reviewed 2,827-entry snapshot, and CI integration. Outline checks, the nested-pattern removal test, and literal `npm run ci` with Z02 staged in the actual repository pass; verification and review evidence is recorded in [02-nested-outline.md](02-nested-outline.md).
 
 ## Decisions
 

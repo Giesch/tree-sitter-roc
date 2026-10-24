@@ -16,7 +16,7 @@ Each leaf plan is self-contained. Read [context.md](context.md), its directory R
 | S05 import-exposure highlighting | Complete; precedence failure reproduced and fixed | None |
 | S04 additional exposure forms | Complete; versioned syntax, grammar, corpus, and highlighting verified | Release/pin update is separate |
 | Where aliases W01–W03 | W01 committed at `3f0031c`; W02 complete and reviewed in the commit containing this record, with literal npm CI and pinned Builtin.roc passing; W03 complete and reviewed with latest-main evidence, literal staged CI, 268 corpus parses and all 14 highlight fixtures passing | None; W01/W02 no longer block outline work |
-| Zed outline Z01–Z02 | Z01 implemented and verified, awaiting review/commit; outline self-tests pass and nested-path check intentionally fails outside CI. Z02 decisions resolved, implementation not started | Review and commit Z01 before Z02 |
+| Zed outline Z01–Z02 | Z01 committed at `0427b67`; Z02 completed in the commit containing this record with query-only signature precedence, nested captures, reviewed snapshot, and CI integration; literal staged repository CI passed | Verification and review evidence in Z02 |
 
 ### Published and installed versions
 
