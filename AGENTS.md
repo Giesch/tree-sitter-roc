@@ -1,11 +1,13 @@
 # tree-sitter-roc
 
-Last verified: 2026-10-23
+Last verified: 2026-10-27
 
 ## Workflow
 - JavaScript grammar with a Tree-sitter external scanner; `grammar.js` is the grammar source, `src/scanner.c` handles scanner behavior.
 - Use the project-local Tree-sitter CLI pinned in `package.json` (currently 0.25.10). npm scripts resolve it automatically; direct commands use `./node_modules/.bin/tree-sitter`.
-- `npm run ci` checks generated artifacts, parser-size budgets, corpus inventory, parser/highlight tests, generated queries, expression-body captures, shared highlights, operator full-tree regressions with comparator self-tests, and the Zed outline snapshot with production-query self-tests.
+- `npm run ci` starts with pinned-syntax self-tests, checks generated artifacts, parser-size budgets, corpus inventory, parser/highlight tests, generated queries, expression-body captures, shared highlights, operator full-tree regressions with comparator self-tests, and the Zed outline snapshot with production-query self-tests, then runs the pinned whole-file acceptance check last.
+- `npm run pinned-syntax:check` validates `test/fixtures/pinned-syntax/` provenance/checksums and parses the unchanged upstream file offline with the pinned CLI and production parser (`--cst --rebuild --time`, `NO_COLOR=1`). Exit 1 is an unsuppressed syntax discrepancy; exit 2 is an input/infrastructure failure. `npm run pinned-syntax:self-test` independently exercises recovery and failure reporting. See README for coordinates and CLI limitations.
+- The pinned syntax fixture is upstream UPL-1.0 software with a copied license notice. Pin changes require explicit review; verification does not download or rewrite inputs. There are zero exceptions. Stop for individual user decisions before grammar fixes or expected-difference entries; acceptance does not establish compiler acceptance or structural parity.
 - `node tools/check-operator-trees.js --self-test` compares source and linewise XML, including operator fields, anonymous tokens, ranges, trivia, and mid-file recovery. The pinned CLI omits explicit missing-anonymous-token metadata from XML; the guard also checks its recovery diagnostic.
 - Operator baseline refreshes require a reviewed syntax-tree contract change. Record from the approved parser with production grammar, scanner, and generated files matching HEAD. `--record` creates a baseline; replacing an existing baseline requires explicit `--record --force`. Review the source/XML diff; never refresh it to hide a candidate regression. Normal verification does not write the baseline.
 - `npm run ts:generate-check` regenerates `src/parser.c`, `src/grammar.json`, and `src/node-types.json`, checks their format/version, and requires a clean generated diff. Commit generated artifacts with grammar changes.
